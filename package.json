@@ -1,0 +1,25 @@
+{
+	"name": "meetup-clone",
+	"version": "1.0.0",
+	"description": "A fullstack clone of Meetup",
+	"main": "index.js",
+	"scripts": {
+		"install": "npm --prefix backend install backend",
+		"dev:backend": "npm install --prefix backend start",
+		"sequelize": "npm run --prefix backend sequelize",
+		"sequelize-cli": "npm run --prefix backend sequelize-cli",
+		"start": "npm start --prefix backend",
+		"build": "npm run --prefix backend build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/christian-spada/Meetup-Clone.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/christian-spada/Meetup-Clone/issues"
+	},
+	"homepage": "https://github.com/christian-spada/Meetup-Clone#readme"
+}
