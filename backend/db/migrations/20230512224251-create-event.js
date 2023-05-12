@@ -5,13 +5,13 @@ if (process.env.NODE_ENV === 'production') {
 	options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
-options.tableName = 'Memberships';
+options.tableName = 'Events';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
 		await queryInterface.createTable(
-			'Memberships',
+			'Events',
 			{
 				id: {
 					allowNull: false,
@@ -19,14 +19,32 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER,
 				},
-				userId: {
+				venueId: {
 					type: Sequelize.INTEGER,
 				},
 				groupId: {
 					type: Sequelize.INTEGER,
 				},
-				status: {
+				name: {
+					type: Sequelize.STRING,
+				},
+				description: {
+					type: Sequelize.TEXT,
+				},
+				type: {
 					type: Sequelize.ENUM,
+				},
+				capacity: {
+					type: Sequelize.INTEGER,
+				},
+				price: {
+					type: Sequelize.INTEGER,
+				},
+				startDate: {
+					type: Sequelize.DATE,
+				},
+				endDate: {
+					type: Sequelize.DATE,
 				},
 				createdAt: {
 					allowNull: false,
