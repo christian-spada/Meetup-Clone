@@ -29,8 +29,8 @@ const venueData = [
 		address: '789 Bluesky Ln',
 		city: 'Ann Arbor',
 		state: 'MI',
-		lat: 37.254,
-		lng: -110.349,
+		lat: 60.25,
+		lng: -69.349,
 	},
 ];
 
