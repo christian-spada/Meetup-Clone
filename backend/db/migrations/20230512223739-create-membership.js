@@ -21,12 +21,23 @@ module.exports = {
 				},
 				userId: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
+					references: {
+						model: 'Users',
+						key: 'id',
+					},
 				},
 				groupId: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
+					references: {
+						model: 'Groups',
+						key: 'id',
+					},
 				},
 				status: {
 					type: Sequelize.ENUM('co-host', 'member', 'pending'),
+					defaultValue: 'pending',
 				},
 				createdAt: {
 					allowNull: false,
