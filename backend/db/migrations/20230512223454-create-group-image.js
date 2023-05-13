@@ -21,12 +21,18 @@ module.exports = {
 				},
 				groupId: {
 					type: Sequelize.INTEGER,
+					references: {
+						model: 'Groups',
+						key: 'id',
+					},
 				},
 				url: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				preview: {
 					type: Sequelize.BOOLEAN,
+					allowNull: false,
 				},
 				createdAt: {
 					allowNull: false,
