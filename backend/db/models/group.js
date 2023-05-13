@@ -8,18 +8,53 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			// define association here
+			// Many-to-One: Groups to Users
+			Group.belongsTo(models.User, { foreignKey: 'organizerId' });
+
+			// Many-to-Many: Groups to Users
+			Group.belongsToMany(models.Users, {
+				through: 'Membership',
+				foreignKey: 'groupId',
+				otherKey: 'userId',
+			});
+
+			// One-to-Many: Groups to Events
+			Group.hasMany(models.Event, { foreignKey: 'groupId' });
+
+			// One-to-Many: Groups to Venues
+			Group.hasMany(models.Venue, { foreignKey: 'groupId' });
+
+			// One-to-Many: Groups to GroupImages
+			Group.hasMany(models.GroupImage, { foreignKey: 'groupId' });
 		}
 	}
 	Group.init(
 		{
 			organizerId: DataTypes.INTEGER,
-			name: DataTypes.STRING,
-			about: DataTypes.TEXT,
-			type: DataTypes.ENUM('In person', 'Online'),
-			private: DataTypes.BOOLEAN,
-			city: DataTypes.STRING,
-			state: DataTypes.STRING,
+			name: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			about: {
+				type: DataTypes.TEXT,
+				allowNull: false,
+			},
+			type: {
+				type: DataTypes.ENUM('In person', 'Online'),
+				allowNull: false,
+			},
+			private: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
+			},
+			city: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			state: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
 		},
 		{
 			sequelize,
