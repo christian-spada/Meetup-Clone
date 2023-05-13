@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
 			// Many-to-Many: Groups to Users
 			Group.belongsToMany(models.Users, {
-				through: 'Membership',
+				through: 'Memberships',
 				foreignKey: 'groupId',
 				otherKey: 'userId',
 			});
