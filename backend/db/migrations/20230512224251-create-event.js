@@ -21,30 +21,38 @@ module.exports = {
 				},
 				venueId: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
 				},
 				groupId: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
 				},
 				name: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				description: {
 					type: Sequelize.TEXT,
+					allowNull: false,
 				},
 				type: {
 					type: Sequelize.ENUM('In person', 'Online'),
 				},
 				capacity: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
 				},
 				price: {
 					type: Sequelize.INTEGER,
+					allowNull: false,
 				},
 				startDate: {
 					type: Sequelize.DATE,
+					allowNull: false,
 				},
 				endDate: {
 					type: Sequelize.DATE,
+					allowNull: false,
 				},
 				createdAt: {
 					allowNull: false,
