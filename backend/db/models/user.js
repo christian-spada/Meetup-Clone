@@ -4,7 +4,22 @@ const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		static associate(models) {
-			// define association here
+			// One-to-Many: Users to Groups
+			User.hasMany(models.Group, { foreignKey: 'organizerId' });
+
+			// Many-to-Many: Users to Groups
+			User.belongsToMany(models.Group, {
+				through: 'Memberships',
+				foreignKey: 'userId',
+				otherKey: 'groupId',
+			});
+
+			// Many-to-Many: Users to Events
+			User.belongsToMany(models.Event, {
+				through: 'Attendances',
+				foreignKey: 'userId',
+				otherKey: 'eventId',
+			});
 		}
 	}
 

@@ -5,13 +5,13 @@ if (process.env.NODE_ENV === 'production') {
 	options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
-options.tableName = 'Users';
+options.tableName = 'Events';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-	up: async (queryInterface, Sequelize) => {
-		return queryInterface.createTable(
-			'Users',
+	async up(queryInterface, Sequelize) {
+		await queryInterface.createTable(
+			'Events',
 			{
 				id: {
 					allowNull: false,
@@ -19,26 +19,39 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER,
 				},
-				username: {
-					type: Sequelize.STRING(30),
+				venueId: {
+					type: Sequelize.INTEGER,
 					allowNull: false,
-					unique: true,
 				},
-				firstName: {
+				groupId: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+				},
+				name: {
 					type: Sequelize.STRING,
 					allowNull: false,
 				},
-				lastName: {
-					type: Sequelize.STRING,
+				description: {
+					type: Sequelize.TEXT,
 					allowNull: false,
 				},
-				email: {
-					type: Sequelize.STRING(256),
-					allowNull: false,
-					unique: true,
+				type: {
+					type: Sequelize.ENUM('In person', 'Online'),
 				},
-				hashedPassword: {
-					type: Sequelize.STRING.BINARY,
+				capacity: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+				},
+				price: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+				},
+				startDate: {
+					type: Sequelize.DATE,
+					allowNull: false,
+				},
+				endDate: {
+					type: Sequelize.DATE,
 					allowNull: false,
 				},
 				createdAt: {
@@ -55,7 +68,7 @@ module.exports = {
 			options
 		);
 	},
-	down: async (queryInterface, Sequelize) => {
-		return queryInterface.dropTable(options);
+	async down(queryInterface, Sequelize) {
+		await queryInterface.dropTable(options);
 	},
 };

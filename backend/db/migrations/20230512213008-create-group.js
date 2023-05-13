@@ -5,13 +5,13 @@ if (process.env.NODE_ENV === 'production') {
 	options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
-options.tableName = 'Users';
+options.tableName = 'Groups';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-	up: async (queryInterface, Sequelize) => {
-		return queryInterface.createTable(
-			'Users',
+	async up(queryInterface, Sequelize) {
+		await queryInterface.createTable(
+			'Groups',
 			{
 				id: {
 					allowNull: false,
@@ -19,26 +19,35 @@ module.exports = {
 					primaryKey: true,
 					type: Sequelize.INTEGER,
 				},
-				username: {
-					type: Sequelize.STRING(30),
-					allowNull: false,
-					unique: true,
+				organizerId: {
+					type: Sequelize.INTEGER,
+					references: {
+						model: 'Users',
+						key: 'id',
+					},
 				},
-				firstName: {
+				name: {
 					type: Sequelize.STRING,
 					allowNull: false,
 				},
-				lastName: {
+				about: {
+					type: Sequelize.TEXT,
+					allowNull: false,
+				},
+				type: {
+					type: Sequelize.ENUM('In person', 'Online'),
+					allowNull: false,
+				},
+				private: {
+					type: Sequelize.BOOLEAN,
+					allowNull: false,
+				},
+				city: {
 					type: Sequelize.STRING,
 					allowNull: false,
 				},
-				email: {
-					type: Sequelize.STRING(256),
-					allowNull: false,
-					unique: true,
-				},
-				hashedPassword: {
-					type: Sequelize.STRING.BINARY,
+				state: {
+					type: Sequelize.STRING,
 					allowNull: false,
 				},
 				createdAt: {
@@ -55,7 +64,7 @@ module.exports = {
 			options
 		);
 	},
-	down: async (queryInterface, Sequelize) => {
-		return queryInterface.dropTable(options);
+	async down(queryInterface, Sequelize) {
+		await queryInterface.dropTable(options);
 	},
 };
