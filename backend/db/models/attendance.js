@@ -7,9 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 		 * This method is not a part of Sequelize lifecycle.
 		 * The `models/index` file will call this method automatically.
 		 */
-		static associate(models) {
-			// define association here
-		}
+		static associate(models) {}
 	}
 	Attendance.init(
 		{
@@ -19,8 +17,14 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				autoIncrement: true,
 			},
-			eventId: DataTypes.INTEGER,
-			userId: DataTypes.INTEGER,
+			eventId: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			},
+			userId: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			},
 			status: DataTypes.ENUM('attending', 'waitlist', 'pending'),
 		},
 		{
