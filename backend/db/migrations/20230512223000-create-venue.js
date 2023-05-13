@@ -21,21 +21,30 @@ module.exports = {
 				},
 				groupId: {
 					type: Sequelize.INTEGER,
+					references: {
+						model: 'Groups',
+						key: 'id',
+					},
 				},
 				address: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				city: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				state: {
 					type: Sequelize.STRING,
+					allowNull: false,
 				},
 				lat: {
 					type: Sequelize.DECIMAL,
+					allowNull: false,
 				},
 				lng: {
 					type: Sequelize.DECIMAL,
+					allowNull: false,
 				},
 				createdAt: {
 					allowNull: false,
