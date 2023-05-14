@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
 		groupArr.push(groupObj);
 	}
 
-	res.json(groupArr);
+	res.json({ Groups: groupArr });
 });
 
 module.exports = router;
