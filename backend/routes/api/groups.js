@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Group, Membership, GroupImage } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 
+// === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
 	const groups = await Group.findAll({
 		include: {
