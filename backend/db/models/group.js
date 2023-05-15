@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// Many-to-One: Groups to Users
-			Group.belongsTo(models.User, { foreignKey: 'organizerId' });
+			Group.belongsTo(models.User, { foreignKey: 'organizerId', as: 'Organizer' });
 
 			// Many-to-Many: Groups to Users
 			Group.belongsToMany(models.User, {
