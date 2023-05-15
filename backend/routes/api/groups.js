@@ -67,4 +67,22 @@ router.get('/:groupId', async (req, res) => {
 	res.json(groupPojo);
 });
 
+// === CREATE A GROUP ===
+router.post('/', requireAuth, async (req, res) => {
+	const { name, about, type, private, city, state } = req.body;
+
+	const newGroup = await Group.create({
+		organizerId: req.user.id,
+		name,
+		about,
+		type,
+		private,
+		city,
+		state,
+	});
+
+	res.status(201);
+	res.json(newGroup);
+});
+
 module.exports = router;
