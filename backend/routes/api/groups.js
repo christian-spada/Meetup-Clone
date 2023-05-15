@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { requireAuth } = require('../../utils/auth.js');
 const { Group, Membership, GroupImage } = require('../../db/models');
-const { toJSONArray } = require('../../utils/helpers.js');
 
 router.get('/', async (req, res) => {
 	const groups = await Group.findAll({
