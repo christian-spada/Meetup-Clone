@@ -66,4 +66,12 @@ const requireAuth = (req, res, next) => {
 	return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+// === AUTHORIZATION RESPONSE HELPER ===
+const requireAuthorizationResponse = res => {
+	res.status(403);
+	res.json({
+		message: 'Forbidden',
+	});
+};
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, requireAuthorizationResponse };
