@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
+const { entityNotFound } = require('../../utils/helpers');
+const { handleValidationErrors } = require('../../utils/validation');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -53,10 +55,7 @@ router.get('/:groupId', async (req, res) => {
 	});
 
 	if (!group) {
-		res.status(404);
-		return res.json({
-			message: "Group couldn't be found",
-		});
+		return entityNotFound(res, 'Group');
 	}
 
 	const groupPojo = group.toJSON();
@@ -95,14 +94,11 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 	const group = await Group.findByPk(groupId);
 
 	if (!group) {
-		res.status(404);
-		return res.json({
-			message: "Group couldn't be found",
-		});
+		return entityNotFound(res, 'Group');
 	}
 
 	if (groupId !== organizerId) {
-		return res.json({ message: 'You must be group organizer to add an image' });
+		return requireAuthorizationResponse(res);
 	}
 
 	if (groupId === organizerId) {
@@ -117,6 +113,37 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 
 		return res.json(groupImgPojo);
 	}
+});
+
+// === EDIT A GROUP ===
+router.put('/:groupId', requireAuth, async (req, res) => {
+	let { groupId } = req.params;
+	const { id: currUserId } = req.user;
+	const { name, about, type, private, city, state } = req.body;
+	groupId = parseInt(groupId);
+
+	const groupToEdit = await Group.findByPk(groupId);
+
+	if (!groupToEdit) {
+		return entityNotFound(res, 'Group');
+	}
+
+	if (groupId !== currUserId) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const updatedGroup = await groupToEdit.update({
+		name: name ?? groupToEdit.name,
+		about: about ?? groupToEdit.about,
+		type: type ?? groupToEdit.type,
+		private: private ?? groupToEdit.private,
+		city: city ?? groupToEdit.city,
+		state: state ?? groupToEdit.state,
+	});
+
+	updatedGroup.organizerId = currUserId;
+
+	return res.json(updatedGroup);
 });
 
 module.exports = router;
