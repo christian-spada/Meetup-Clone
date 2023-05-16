@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
 			});
 
 			// One-to-Many: Groups to Events
-			Group.hasMany(models.Event, { foreignKey: 'groupId' });
+			Group.hasMany(models.Event, { foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true });
 
 			// One-to-Many: Groups to Venues
 			Group.hasMany(models.Venue, { foreignKey: 'groupId' });
 
 			// One-to-Many: Groups to GroupImages
-			Group.hasMany(models.GroupImage, { foreignKey: 'groupId' });
+			Group.hasMany(models.GroupImage, { foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true });
 		}
 	}
 	Group.init(
