@@ -179,7 +179,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 		return entityNotFound(res, 'Group');
 	}
 
-	if (groupId !== currUserId) {
+	if (groupToDelete.organizerId !== currUserId) {
 		return requireAuthorizationResponse(res);
 	}
 
