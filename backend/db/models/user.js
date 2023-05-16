@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		static associate(models) {
 			// One-to-Many: Users to Groups
-			User.hasMany(models.Group, { foreignKey: 'organizerId' });
+			User.hasMany(models.Group, { foreignKey: 'organizerId', onDelete: 'CASCADE', hooks: true });
 
 			// Many-to-Many: Users to Groups
 			User.belongsToMany(models.Group, {
