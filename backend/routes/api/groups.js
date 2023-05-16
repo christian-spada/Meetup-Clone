@@ -173,14 +173,14 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 	let { groupId } = req.params;
 	groupId = parseInt(groupId);
 
-	if (groupId !== currUserId) {
-		return requireAuthorizationResponse(res);
-	}
-
 	const groupToDelete = await Group.findByPk(groupId);
 
 	if (!groupToDelete) {
 		return entityNotFound(res, 'Group');
+	}
+
+	if (groupId !== currUserId) {
+		return requireAuthorizationResponse(res);
 	}
 
 	await groupToDelete.destroy();
