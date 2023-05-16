@@ -23,11 +23,6 @@ const membershipData = [
 		groupId: 1,
 		status: 'co-host',
 	},
-	{
-		userId: 4,
-		groupId: 1,
-		status: 'member',
-	},
 ];
 
 /** @type {import('sequelize-cli').Migration} */
@@ -41,7 +36,7 @@ module.exports = {
 		await queryInterface.bulkDelete(
 			options,
 			{
-				userId: { [Op.in]: [1, 2, 3, 4] },
+				userId: { [Op.in]: [1, 2, 3] },
 			},
 			{}
 		);
