@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 			Event.belongsTo(models.Group, { foreignKey: 'groupId' });
 
 			// One-to-Many: Events to EventImages
-			Event.hasMany(models.EventImage, { foreignKey: 'eventId' });
+			Event.hasMany(models.EventImage, { foreignKey: 'eventId', onDelete: 'CASCADE', hooks: true });
 
 			// Many-to-Many: Events to Users
 			Event.belongsToMany(models.User, {
