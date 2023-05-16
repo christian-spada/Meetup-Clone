@@ -3,6 +3,7 @@ const router = express.Router();
 const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
+const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 // === GET ALL GROUPS ===
@@ -67,7 +68,17 @@ router.get('/:groupId', async (req, res) => {
 });
 
 // === CREATE A GROUP ===
-router.post('/', requireAuth, async (req, res) => {
+const validateGroupCreation = [
+	check('name').isLength({ min: 1, max: 60 }).withMessage('Name must be 60 characters or less'),
+	check('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
+	check('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
+	check('private').isBoolean().withMessage('Private must be a boolean'),
+	check('city').exists({ checkFalsy: true }).withMessage('City is required'),
+	check('state').exists({ checkFalsy: true }).withMessage('State is required'),
+	handleValidationErrors,
+];
+
+router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 	const { name, about, type, private, city, state } = req.body;
 
 	const newGroup = await Group.create({
@@ -116,7 +127,17 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 });
 
 // === EDIT A GROUP ===
-router.put('/:groupId', requireAuth, async (req, res) => {
+const validateGroupEdit = [
+	check('name').isLength({ min: 1, max: 60 }).withMessage('Name must be 60 characters or less'),
+	check('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
+	check('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
+	check('private').isBoolean().withMessage('Private must be a boolean'),
+	check('city').exists({ checkFalsy: true }).withMessage('City is required'),
+	check('state').exists({ checkFalsy: true }).withMessage('State is required'),
+	handleValidationErrors,
+];
+
+router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
 	let { groupId } = req.params;
 	const { id: currUserId } = req.user;
 	const { name, about, type, private, city, state } = req.body;
