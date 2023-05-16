@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 			Group.hasMany(models.Event, { foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true });
 
 			// One-to-Many: Groups to Venues
-			Group.hasMany(models.Venue, { foreignKey: 'groupId' });
+			Group.hasMany(models.Venue, { foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true });
 
 			// One-to-Many: Groups to GroupImages
 			Group.hasMany(models.GroupImage, { foreignKey: 'groupId', onDelete: 'CASCADE', hooks: true });
