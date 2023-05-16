@@ -23,11 +23,6 @@ const membershipData = [
 		groupId: 1,
 		status: 'co-host',
 	},
-	{
-		userId: 4,
-		groupId: 1,
-		status: 'member',
-	},
 ];
 
 /** @type {import('sequelize-cli').Migration} */
