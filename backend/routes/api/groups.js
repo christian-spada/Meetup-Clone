@@ -3,6 +3,7 @@ const router = express.Router();
 const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
+const { handleValidationErrors } = require('../../utils/validation');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
