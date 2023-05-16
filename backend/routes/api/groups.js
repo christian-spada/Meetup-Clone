@@ -167,4 +167,26 @@ router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
 	return res.json(updatedGroup);
 });
 
+// === DELETE A GROUP ===
+router.delete('/:groupId', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	let { groupId } = req.params;
+	groupId = parseInt(groupId);
+
+	const groupToDelete = await Group.findByPk(groupId);
+
+	if (!groupToDelete) {
+		return entityNotFound(res, 'Group');
+	}
+
+	if (groupId !== currUserId) {
+		return requireAuthorizationResponse(res);
+	}
+
+	await groupToDelete.destroy();
+
+	res.json({
+		message: 'Successfully deleted',
+	});
+});
 module.exports = router;
