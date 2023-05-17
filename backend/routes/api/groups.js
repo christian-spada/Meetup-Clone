@@ -3,8 +3,7 @@ const router = express.Router();
 const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { validateGroupCreation, validateGroupEdit } = require('../../utils/custom-validators');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -21,19 +20,67 @@ router.get('/', async (req, res) => {
 
 	const groupArr = [];
 	for (const group of groups) {
-		const groupObj = group.toJSON();
+		const groupPojo = group.toJSON();
 		const numMembers = await Membership.count({
 			where: {
 				groupId: group.id,
+				status: ['host', 'co-host', 'member'],
 			},
 		});
 
-		const url = groupObj.GroupImages[0]?.url;
-		groupObj.previewImage = url || null;
-		groupObj.numMembers = numMembers;
-		delete groupObj.GroupImages;
+		groupPojo.numMembers = 1;
+		groupPojo.numMembers += numMembers;
+		groupPojo.previewImage = null;
 
-		groupArr.push(groupObj);
+		for (const image of groupPojo.GroupImages) {
+			groupPojo.previewImage = image.url;
+		}
+
+		delete groupPojo.GroupImages;
+
+		groupArr.push(groupPojo);
+	}
+
+	res.json({ Groups: groupArr });
+});
+
+// === GET ALL GROUPS JOINED OR ORGANIZED BY CURRENT USER ===
+router.get('/current', async (req, res) => {
+	const groups = await Group.findAll({
+		include: {
+			model: GroupImage,
+			where: {
+				preview: true,
+			},
+			attributes: ['url'],
+			required: false,
+		},
+		where: {
+			organizerId: req.user.id,
+		},
+	});
+
+	const groupArr = [];
+	for (const group of groups) {
+		const groupPojo = group.toJSON();
+		const numMembers = await Membership.count({
+			where: {
+				groupId: group.id,
+				status: ['host', 'co-host', 'member'],
+			},
+		});
+
+		groupPojo.previewImage = null;
+		groupPojo.numMembers = 1;
+		groupPojo.numMembers += numMembers;
+
+		for (const image of groupPojo.GroupImages) {
+			groupPojo.previewImage = image.url;
+		}
+
+		delete groupPojo.GroupImages;
+
+		groupArr.push(groupPojo);
 	}
 
 	res.json({ Groups: groupArr });
@@ -61,23 +108,16 @@ router.get('/:groupId', async (req, res) => {
 
 	const groupPojo = group.toJSON();
 
-	const numMembers = await Membership.count({ where: { groupId } });
+	const numMembers = await Membership.count({
+		where: { groupId, status: ['host', 'co-host', 'member'] },
+	});
 
-	groupPojo.numMembers = numMembers;
+	groupPojo.numMembers = 1;
+	groupPojo.numMembers += numMembers;
 	res.json(groupPojo);
 });
 
 // === CREATE A GROUP ===
-const validateGroupCreation = [
-	check('name').isLength({ min: 1, max: 60 }).withMessage('Name must be 60 characters or less'),
-	check('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
-	check('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
-	check('private').isBoolean().withMessage('Private must be a boolean'),
-	check('city').exists({ checkFalsy: true }).withMessage('City is required'),
-	check('state').exists({ checkFalsy: true }).withMessage('State is required'),
-	handleValidationErrors,
-];
-
 router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 	const { name, about, type, private, city, state } = req.body;
 
@@ -127,16 +167,6 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 });
 
 // === EDIT A GROUP ===
-const validateGroupEdit = [
-	check('name').isLength({ min: 1, max: 60 }).withMessage('Name must be 60 characters or less'),
-	check('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
-	check('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
-	check('private').isBoolean().withMessage('Private must be a boolean'),
-	check('city').exists({ checkFalsy: true }).withMessage('City is required'),
-	check('state').exists({ checkFalsy: true }).withMessage('State is required'),
-	handleValidationErrors,
-];
-
 router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
 	let { groupId } = req.params;
 	const { id: currUserId } = req.user;
@@ -189,4 +219,5 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 		message: 'Successfully deleted',
 	});
 });
+
 module.exports = router;
