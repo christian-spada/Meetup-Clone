@@ -40,14 +40,18 @@ router.get('/', async (req, res) => {
 	const eventsArr = [];
 	for (const event of events) {
 		const eventPojo = event.toJSON();
-		const numAttendees = await Attendance.count({
+		const numAttending = await Attendance.count({
 			where: {
 				eventId: event.id,
 				status: ['attending', 'waitlist'],
 			},
 		});
 
-		eventPojo.numAttendees = numAttendees;
+		eventPojo.numAttending = numAttending;
+		eventPojo.previewImage = null;
+		if (!eventPojo.Venue) {
+			eventPojo.Venue = null;
+		}
 		for (const image of eventPojo.EventImages) {
 			if (image.preview === true) {
 				eventPojo.previewImage = image.url;
