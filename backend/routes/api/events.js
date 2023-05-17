@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
 			},
 		],
 		attributes: {
-			exclude: ['createdAt', 'updatedAt'],
+			exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt'],
 		},
 	});
 
@@ -43,6 +43,7 @@ router.get('/', async (req, res) => {
 		const numAttendees = await Attendance.count({
 			where: {
 				eventId: event.id,
+				status: ['attending', 'waitlist'],
 			},
 		});
 
