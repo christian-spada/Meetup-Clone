@@ -231,7 +231,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 
 // === EVENTS ===
 
-// === GET ALL EVENTS BY ID ===
+// === GET ALL EVENTS BY GROUP ID ===
 router.get('/:groupId/events', async (req, res) => {
 	let { groupId } = req.params;
 	groupId = parseInt(groupId);
