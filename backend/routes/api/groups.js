@@ -28,7 +28,8 @@ router.get('/', async (req, res) => {
 			},
 		});
 
-		groupPojo.numMembers = numMembers;
+		groupPojo.numMembers = 1;
+		groupPojo.numMembers += numMembers;
 		groupPojo.previewImage = null;
 
 		for (const image of groupPojo.GroupImages) {
@@ -65,12 +66,18 @@ router.get('/current', async (req, res) => {
 		const numMembers = await Membership.count({
 			where: {
 				groupId: group.id,
+				status: ['host', 'co-host', 'member'],
 			},
 		});
 
-		const url = groupPojo.GroupImages[0]?.url;
-		groupPojo.previewImage = url || null;
-		groupPojo.numMembers = numMembers;
+		groupPojo.previewImage = null;
+		groupPojo.numMembers = 1;
+		groupPojo.numMembers += numMembers;
+
+		for (const image of groupPojo.GroupImages) {
+			groupPojo.previewImage = image.url;
+		}
+
 		delete groupPojo.GroupImages;
 
 		groupArr.push(groupPojo);
@@ -105,7 +112,8 @@ router.get('/:groupId', async (req, res) => {
 		where: { groupId, status: ['host', 'co-host', 'member'] },
 	});
 
-	groupPojo.numMembers = numMembers;
+	groupPojo.numMembers = 1;
+	groupPojo.numMembers += numMembers;
 	res.json(groupPojo);
 });
 
