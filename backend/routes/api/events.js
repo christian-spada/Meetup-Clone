@@ -98,4 +98,40 @@ router.get('/:eventId', async (req, res) => {
 	res.json(eventPojo);
 });
 
+// === DELETE AN EVENT ===
+router.delete('/:eventId', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	let { eventId } = req.params;
+	eventId = parseInt(eventId);
+
+	const eventToDelete = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!eventToDelete) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = eventToDelete.Group;
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	await eventToDelete.destroy();
+
+	res.json({
+		message: 'Successfully deleted',
+	});
+});
+
 module.exports = router;
