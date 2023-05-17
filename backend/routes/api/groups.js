@@ -100,7 +100,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 	const { url, preview } = req.body;
 	let { groupId } = req.params;
 	groupId = parseInt(groupId);
-	const { id: organizerId } = req.user;
+	const { id: currUserId } = req.user;
 
 	const group = await Group.findByPk(groupId);
 
@@ -108,11 +108,11 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 		return entityNotFound(res, 'Group');
 	}
 
-	if (groupId !== organizerId) {
+	if (group.organizerId !== currUserId) {
 		return requireAuthorizationResponse(res);
 	}
 
-	if (groupId === organizerId) {
+	if (group.organizerId === currUserId) {
 		const newGroupImage = await GroupImage.create({
 			url,
 			preview,
@@ -149,7 +149,7 @@ router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
 		return entityNotFound(res, 'Group');
 	}
 
-	if (groupId !== currUserId) {
+	if (groupToEdit.organizerId !== currUserId) {
 		return requireAuthorizationResponse(res);
 	}
 
