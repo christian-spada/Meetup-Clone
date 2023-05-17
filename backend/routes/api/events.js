@@ -98,4 +98,34 @@ router.get('/:eventId', async (req, res) => {
 	res.json(eventPojo);
 });
 
+// === ADD IMAGE TO EVENT BY ID ===
+router.post('/:eventId/images', requireAuth, async (req, res) => {
+	const { url, preview } = req.body;
+	let { eventId } = req.params;
+	eventId = parseInt(eventId);
+	const { id: currUserId } = req.user;
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: 2,
+			userId: currUserId,
+		},
+	});
+
+	console.log(membershipStatus);
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	res.json(group);
+});
+
 module.exports = router;
