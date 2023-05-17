@@ -19,7 +19,22 @@ const groupImagesData = [
 		preview: true,
 	},
 	{
-		groupId: 2,
+		groupId: 3,
+		url: '/pic',
+		preview: false,
+	},
+	{
+		groupId: 4,
+		url: '/pic',
+		preview: true,
+	},
+	{
+		groupId: 5,
+		url: '/pic',
+		preview: true,
+	},
+	{
+		groupId: 6,
 		url: '/pic',
 		preview: false,
 	},
@@ -36,7 +51,7 @@ module.exports = {
 		await queryInterface.bulkDelete(
 			options,
 			{
-				preview: { [Op.in]: [true, true, false] },
+				groupId: { [Op.in]: [1, 2, 3, 4, 5, 6] },
 			},
 			{}
 		);

@@ -32,6 +32,30 @@ const venueData = [
 		lat: 60.25,
 		lng: -69.349,
 	},
+	{
+		groupId: 4,
+		address: '15 Cherry Ln',
+		city: 'Detroit',
+		state: 'MI',
+		lat: 90.25,
+		lng: -9.349,
+	},
+	{
+		groupId: 5,
+		address: '1 Orchid Way',
+		city: 'San Diego',
+		state: 'Ca',
+		lat: 14.25,
+		lng: -120.349,
+	},
+	{
+		groupId: 6,
+		address: '50 Redbrick St',
+		city: 'Salt Lake City',
+		state: 'UT',
+		lat: 50.25,
+		lng: -3.349,
+	},
 ];
 
 /** @type {import('sequelize-cli').Migration} */
@@ -45,7 +69,7 @@ module.exports = {
 		await queryInterface.bulkDelete(
 			options,
 			{
-				address: { [Op.in]: ['123 Flower Dr', '456 Spot St', '789 Bluesky Ln'] },
+				groupId: { [Op.in]: [1, 2, 3, 4, 5, 6] },
 			},
 			{}
 		);

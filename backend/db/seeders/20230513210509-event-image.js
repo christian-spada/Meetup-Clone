@@ -16,10 +16,25 @@ const eventImagesData = [
 	{
 		eventId: 2,
 		url: '/image',
-		preview: false,
+		preview: true,
 	},
 	{
 		eventId: 3,
+		url: '/image',
+		preview: true,
+	},
+	{
+		eventId: 4,
+		url: '/image',
+		preview: true,
+	},
+	{
+		eventId: 5,
+		url: '/image',
+		preview: false,
+	},
+	{
+		eventId: 6,
 		url: '/image',
 		preview: true,
 	},
@@ -37,7 +52,7 @@ module.exports = {
 			options,
 			{
 				eventId: {
-					[Op.in]: [1, 2, 3],
+					[Op.in]: [1, 2, 3, 4, 5, 6],
 				},
 			},
 			{}
