@@ -49,6 +49,9 @@ router.get('/', async (req, res) => {
 
 		eventPojo.numAttending = numAttending;
 		eventPojo.previewImage = null;
+		if (!eventPojo.Venue) {
+			eventPojo.Venue = null;
+		}
 		for (const image of eventPojo.EventImages) {
 			if (image.preview === true) {
 				eventPojo.previewImage = image.url;
