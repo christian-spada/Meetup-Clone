@@ -280,4 +280,46 @@ router.get('/:groupId/events', async (req, res) => {
 	res.json({ Events: eventsArr });
 });
 
+// === CREATE AN EVENT FOR GROUP BY ID ===
+router.post('/:groupId/events', requireAuth, async (req, res) => {
+	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+	const { id: currUserId } = req.user;
+	let { groupId } = req.params;
+	groupId = parseInt(groupId);
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const role = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			userId: currUserId,
+			groupId,
+		},
+	});
+
+	const hasValidRole = role?.status === 'co-host' || group.organizerId === currUserId;
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const newEvent = await Event.create({
+		groupId,
+		venueId,
+		name,
+		type,
+		capacity,
+		price,
+		description,
+		startDate,
+		endDate,
+	});
+
+	res.json(newEvent);
+});
+
 module.exports = router;
