@@ -21,7 +21,7 @@ const eventData = [
 	},
 	{
 		venueId: 2,
-		groupId: 3,
+		groupId: 2,
 		name: 'Basketball Tournament',
 		description: 'B-ball tourney for ballers',
 		type: 'In person',
@@ -41,6 +41,39 @@ const eventData = [
 		startDate: '2023-1-2 12:00:00',
 		endDate: '2023-1-2 20:00:00',
 	},
+	{
+		venueId: 4,
+		groupId: 4,
+		name: 'Poker',
+		description: 'Texas hold em',
+		type: 'In person',
+		capacity: 30,
+		price: 500,
+		startDate: '2023-6-5 18:00:00',
+		endDate: '2023-6-5 22:00:00',
+	},
+	{
+		venueId: 5,
+		groupId: 5,
+		name: 'Baseball Tournament',
+		description: 'Baseball tourney for ballers',
+		type: 'In person',
+		capacity: 80,
+		price: 20,
+		startDate: '2023-8-9 12:00:00',
+		endDate: '2023-8-9 18:00:00',
+	},
+	{
+		venueId: 6,
+		groupId: 6,
+		name: 'Pokemon battle',
+		description: 'Pokemon trainers fight',
+		type: 'Online',
+		capacity: 50,
+		price: 10,
+		startDate: '2023-1-2 12:00:00',
+		endDate: '2023-1-2 20:00:00',
+	},
 ];
 
 /** @type {import('sequelize-cli').Migration} */
@@ -54,7 +87,7 @@ module.exports = {
 		await queryInterface.bulkDelete(
 			options,
 			{
-				venueId: { [Op.in]: [1, 2, 3] },
+				venueId: { [Op.in]: [1, 2, 3, 4, 5, 6] },
 			},
 			{}
 		);

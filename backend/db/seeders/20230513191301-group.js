@@ -75,7 +75,7 @@ module.exports = {
 		await queryInterface.bulkDelete(
 			options,
 			{
-				name: { [Op.in]: ['Basketball', 'Gaming', 'Live Music'] },
+				organizerId: { [Op.in]: [1, 2, 3, 4, 5, 6] },
 			},
 			{}
 		);
