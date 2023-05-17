@@ -20,19 +20,24 @@ router.get('/', async (req, res) => {
 
 	const groupArr = [];
 	for (const group of groups) {
-		const groupObj = group.toJSON();
+		const groupPojo = group.toJSON();
 		const numMembers = await Membership.count({
 			where: {
 				groupId: group.id,
+				status: ['host', 'co-host', 'member'],
 			},
 		});
 
-		const url = groupObj.GroupImages[0]?.url;
-		groupObj.previewImage = url || null;
-		groupObj.numMembers = numMembers;
-		delete groupObj.GroupImages;
+		groupPojo.numMembers = numMembers;
+		groupPojo.previewImage = null;
 
-		groupArr.push(groupObj);
+		for (const image of groupPojo.GroupImages) {
+			groupPojo.previewImage = image.url;
+		}
+
+		delete groupPojo.GroupImages;
+
+		groupArr.push(groupPojo);
 	}
 
 	res.json({ Groups: groupArr });
