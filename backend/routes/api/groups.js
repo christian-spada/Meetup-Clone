@@ -65,7 +65,9 @@ router.get('/:groupId', async (req, res) => {
 
 	const groupPojo = group.toJSON();
 
-	const numMembers = await Membership.count({ where: { groupId } });
+	const numMembers = await Membership.count({
+		where: { groupId, status: ['host', 'co-host', 'member'] },
+	});
 
 	groupPojo.numMembers = numMembers;
 	res.json(groupPojo);
