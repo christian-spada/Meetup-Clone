@@ -43,6 +43,42 @@ router.get('/', async (req, res) => {
 	res.json({ Groups: groupArr });
 });
 
+// === GET ALL GROUPS JOINED OR ORGANIZED BY CURRENT USER ===
+router.get('/current', async (req, res) => {
+	const groups = await Group.findAll({
+		include: {
+			model: GroupImage,
+			where: {
+				preview: true,
+			},
+			attributes: ['url'],
+			required: false,
+		},
+		where: {
+			organizerId: req.user.id,
+		},
+	});
+
+	const groupArr = [];
+	for (const group of groups) {
+		const groupPojo = group.toJSON();
+		const numMembers = await Membership.count({
+			where: {
+				groupId: group.id,
+			},
+		});
+
+		const url = groupPojo.GroupImages[0]?.url;
+		groupPojo.previewImage = url || null;
+		groupPojo.numMembers = numMembers;
+		delete groupPojo.GroupImages;
+
+		groupArr.push(groupPojo);
+	}
+
+	res.json({ Groups: groupArr });
+});
+
 // === GET GROUP DETAILS BY ID ===
 router.get('/:groupId', async (req, res) => {
 	const { groupId } = req.params;
