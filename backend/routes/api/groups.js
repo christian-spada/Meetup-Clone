@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
+const {
+	Group,
+	Membership,
+	GroupImage,
+	User,
+	Venue,
+	EventImage,
+	Event,
+	Attendance,
+} = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
 const { validateGroupCreation, validateGroupEdit } = require('../../utils/custom-validators');
@@ -218,6 +227,57 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 	res.json({
 		message: 'Successfully deleted',
 	});
+});
+
+// === EVENTS ===
+
+// === GET ALL EVENTS BY GROUP ID ===
+router.get('/:groupId/events', async (req, res) => {
+	let { groupId } = req.params;
+	groupId = parseInt(groupId);
+
+	const events = await Event.findAll({
+		where: {
+			groupId,
+		},
+		attributes: {
+			exclude: ['description', 'price', 'capacity', 'createdAt', 'updatedAt'],
+		},
+		include: [
+			{ model: Group, attributes: ['id', 'name', 'city', 'state'] },
+			{ model: Venue, attributes: ['id', 'city', 'state'] },
+			{ model: EventImage },
+		],
+	});
+
+	if (!events.length) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const eventsArr = [];
+	for (const event of events) {
+		const eventPojo = event.toJSON();
+		const numAttending = await Attendance.count({
+			where: {
+				eventId: event.id,
+			},
+		});
+
+		eventPojo.numAttending = numAttending;
+		eventPojo.previewImage = null;
+
+		for (const image of eventPojo.EventImages) {
+			if (image.preview === true) {
+				eventPojo.previewImage = image.url;
+			}
+		}
+
+		delete eventPojo.EventImages;
+
+		eventsArr.push(eventPojo);
+	}
+
+	res.json({ Events: eventsArr });
 });
 
 module.exports = router;
