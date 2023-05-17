@@ -35,6 +35,33 @@ const groupData = [
 		city: 'Los Angeles',
 		state: 'CA',
 	},
+	{
+		organizerId: 4,
+		name: 'Golf',
+		about: 'Group for Golf',
+		type: 'In person',
+		private: true,
+		city: 'San Antonio',
+		state: 'TX',
+	},
+	{
+		organizerId: 5,
+		name: 'Tennis',
+		about: 'Tennis match',
+		type: 'In person',
+		private: false,
+		city: 'St. Petersburg',
+		state: 'FL',
+	},
+	{
+		organizerId: 6,
+		name: 'Zoom Book Club',
+		about: 'Book club over zoom',
+		type: 'Online',
+		private: true,
+		city: 'Omaha',
+		state: 'NE',
+	},
 ];
 
 /** @type {import('sequelize-cli').Migration} */
