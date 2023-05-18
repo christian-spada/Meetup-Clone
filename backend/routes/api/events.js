@@ -98,6 +98,63 @@ router.get('/:eventId', async (req, res) => {
 	res.json(eventPojo);
 });
 
+// === EDIT AN EVENT BY ID ===
+router.put('/:eventId', requireAuth, async (req, res) => {
+	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+	const { id: currUserId } = req.user;
+	let { eventId } = req.params;
+	eventId = parseInt(eventId);
+
+	const eventToEdit = await Event.findByPk(eventId, {
+		attributes: {
+			exclude: ['createdAt', 'updatedAt'],
+		},
+		include: [{ model: Group }, { model: Venue }],
+	});
+	const group = eventToEdit.Group;
+	const venue = eventToEdit.Venue;
+
+	if (!eventToEdit) {
+		return entityNotFound(res, 'Event');
+	}
+	if (!venue) {
+		return entityNotFound(res, 'Venue');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = membershipStatus?.status === 'co-host' || group.organizerId === currUserId;
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const updatedEvent = await eventToEdit.update({
+		venueId: venueId ?? eventToEdit.venueId,
+		name: name ?? eventToEdit.name,
+		type: type ?? eventToEdit.type,
+		capacity: capacity ?? eventToEdit.capacity,
+		description: description ?? eventToEdit.description,
+		startDate: startDate ?? eventToEdit.startDate,
+		endDate: endDate ?? eventToEdit.endDate,
+	});
+
+	const updatedEventPojo = updatedEvent.toJSON();
+	updatedEventPojo.id = eventToEdit.id;
+	updatedEventPojo.groupId = group.id;
+
+	delete updatedEventPojo.Group;
+	delete updatedEventPojo.Venue;
+
+	res.json(updatedEventPojo);
+});
+
 // === DELETE AN EVENT ===
 router.delete('/:eventId', requireAuth, async (req, res) => {
 	const { id: currUserId } = req.user;
