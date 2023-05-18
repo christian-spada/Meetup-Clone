@@ -3,6 +3,7 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const groupsRouter = require('./groups.js');
 const eventsRouter = require('./events.js');
+const groupImagesRouter = require('./group-images.js');
 const { restoreUser } = require('../../utils/auth.js');
 
 // If current user session is valid, set req.user to the user in the database
@@ -13,6 +14,7 @@ router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/groups', groupsRouter);
 router.use('/events', eventsRouter);
+router.use('/group-images', groupImagesRouter);
 
 router.post('/test', async (req, res) => {
 	res.json({ requestBody: req.body });
