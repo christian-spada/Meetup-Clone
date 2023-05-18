@@ -134,4 +134,89 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
 	});
 });
 
+// === ATTENDEES ===
+
+// === GET ALL ATTENDEES BY EVENT ID ===
+router.get('/:eventId/attendees', async (req, res) => {
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	const result = {};
+
+	if (hasValidRole) {
+		const allAttendees = await Attendance.findAll({
+			where: {
+				eventId,
+			},
+		});
+
+		const attendeesArr = [];
+		for (const attendee of allAttendees) {
+			const user = await User.findByPk(attendee.userId);
+			const attendeePojo = attendee.toJSON();
+
+			const newAttendeeObj = {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				Attendance: {
+					status: attendeePojo.status,
+				},
+			};
+
+			attendeesArr.push(newAttendeeObj);
+		}
+
+		result.Attendees = attendeesArr;
+	} else {
+		const someAttendees = await Attendance.findAll({
+			where: {
+				eventId,
+				status: ['attending', 'waitlist'],
+			},
+		});
+
+		const attendeesArr = [];
+
+		for (const attendee of someAttendees) {
+			const user = await User.findByPk(attendee.userId);
+			const attendeePojo = attendee.toJSON();
+			const newAttendeeObj = {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				Attendance: {
+					status: attendeePojo.status,
+				},
+			};
+
+			attendeesArr.push(newAttendeeObj);
+		}
+
+		result.Attendees = attendeesArr;
+	}
+
+	res.json(result);
+});
+
 module.exports = router;
