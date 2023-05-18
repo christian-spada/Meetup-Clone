@@ -134,4 +134,215 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
 	});
 });
 
+// === ATTENDEES ===
+
+// === GET ALL ATTENDEES BY EVENT ID ===
+router.get('/:eventId/attendees', async (req, res) => {
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	const result = {};
+
+	if (hasValidRole) {
+		const allAttendees = await Attendance.findAll({
+			where: {
+				eventId,
+			},
+		});
+
+		const attendeesArr = [];
+		for (const attendee of allAttendees) {
+			const user = await User.findByPk(attendee.userId);
+			const attendeePojo = attendee.toJSON();
+
+			const newAttendeeObj = {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				Attendance: {
+					status: attendeePojo.status,
+				},
+			};
+
+			attendeesArr.push(newAttendeeObj);
+		}
+
+		result.Attendees = attendeesArr;
+	} else {
+		const someAttendees = await Attendance.findAll({
+			where: {
+				eventId,
+				status: ['attending', 'waitlist'],
+			},
+		});
+
+		const attendeesArr = [];
+
+		for (const attendee of someAttendees) {
+			const user = await User.findByPk(attendee.userId);
+			const attendeePojo = attendee.toJSON();
+			const newAttendeeObj = {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				Attendance: {
+					status: attendeePojo.status,
+				},
+			};
+
+			attendeesArr.push(newAttendeeObj);
+		}
+
+		result.Attendees = attendeesArr;
+	}
+
+	res.json(result);
+});
+
+// === REQUEST TO ATTEND EVENT BY EVENT ID ===
+router.post('/:eventId/attendance', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status !== 'pending';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const attendanceStatus = await Attendance.findOne({
+		attributes: ['status'],
+		where: {
+			eventId,
+			userId: currUserId,
+		},
+	});
+
+	if (attendanceStatus?.status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Attendance has already been requested',
+		});
+	}
+
+	if (attendanceStatus?.status === 'attending' || attendanceStatus?.status === 'waitlist') {
+		res.status(400);
+		return res.json({
+			message: 'User is already an attendee of the event',
+		});
+	}
+
+	const newAttendance = await Attendance.create({
+		eventId,
+		userId: currUserId,
+		status: 'pending',
+	});
+
+	const newAttendancePojo = newAttendance.toJSON();
+	delete newAttendancePojo.id;
+	delete newAttendancePojo.createdAt;
+	delete newAttendancePojo.updatedAt;
+
+	res.json(newAttendancePojo);
+});
+
+// === CHANGE STATUS OF ATTENDANCE ===
+router.put('/:eventId/attendance', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const { userId, status } = req.body;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: { model: Group },
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	if (status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Cannot change an attendance status to pending',
+		});
+	}
+
+	const attendance = await Attendance.findOne({
+		where: {
+			userId,
+			eventId,
+		},
+	});
+
+	if (!attendance) {
+		res.status(404);
+		return res.json({
+			message: 'Attendance between the user and the event does not exist',
+		});
+	}
+
+	const updatedAttendance = await attendance.update({
+		userId,
+		status,
+	});
+
+	const updatedAttendancePojo = updatedAttendance.toJSON();
+	delete updatedAttendancePojo.updatedAt;
+
+	res.json(updatedAttendancePojo);
+});
+
 module.exports = router;
