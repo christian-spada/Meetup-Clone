@@ -1,5 +1,6 @@
 const { handleValidationErrors } = require('./validation');
 const { check } = require('express-validator');
+const { Op } = require('sequelize');
 
 // === CREATE A GROUP ===
 const validateGroupCreation = [
