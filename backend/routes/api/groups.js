@@ -54,7 +54,9 @@ router.get('/', async (req, res) => {
 });
 
 // === GET ALL GROUPS JOINED OR ORGANIZED BY CURRENT USER ===
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+
 	const groups = await Group.findAll({
 		include: {
 			model: GroupImage,
@@ -65,7 +67,7 @@ router.get('/current', async (req, res) => {
 			required: false,
 		},
 		where: {
-			organizerId: req.user.id,
+			organizerId: currUserId,
 		},
 	});
 
@@ -80,8 +82,7 @@ router.get('/current', async (req, res) => {
 		});
 
 		groupPojo.previewImage = null;
-		groupPojo.numMembers = 1;
-		groupPojo.numMembers += numMembers;
+		groupPojo.numMembers = numMembers;
 
 		for (const image of groupPojo.GroupImages) {
 			groupPojo.previewImage = image.url;
