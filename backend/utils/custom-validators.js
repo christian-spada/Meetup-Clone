@@ -23,4 +23,28 @@ const validateGroupEdit = [
 	handleValidationErrors,
 ];
 
-module.exports = { validateGroupCreation, validateGroupEdit };
+// === VALIDATE VENUE CREATION ===
+const validateVenueCreation = (req, res, next) => {
+	const { address, city, state, lat, lng } = req.body;
+	const errorsResult = { message: 'Bad Request', errors: {} };
+
+	if (!address) {
+		errorsResult.errors.address = 'Street address is required';
+	}
+	if (!city) {
+		errorsResult.errors.city = 'City is required';
+	}
+	if (!state) {
+		errorsResult.errors.state = 'State is required';
+	}
+	if (typeof lat !== 'number') {
+		errorsResult.errors.lat = 'Latitude is not valid';
+	}
+	if (typeof lng !== 'number') {
+		errorsResult.errors.lng = 'Longitude is not valid';
+	}
+
+	return errorsResult;
+};
+
+module.exports = { validateGroupCreation, validateGroupEdit, validateVenueCreation };

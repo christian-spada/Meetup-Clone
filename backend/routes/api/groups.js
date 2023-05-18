@@ -12,7 +12,11 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const { validateGroupCreation, validateGroupEdit } = require('../../utils/custom-validators');
+const {
+	validateGroupCreation,
+	validateGroupEdit,
+	validateVenueCreation,
+} = require('../../utils/custom-validators');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -229,6 +233,8 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 	});
 });
 
+// === VENUES ===
+
 // === GET ALL VENUES BY GROUP ID ===
 router.get('/:groupId/venues', requireAuth, async (req, res) => {
 	const { id: currUserId } = req.user;
@@ -271,6 +277,53 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 	});
 
 	res.json({ Venues: venuesArr });
+});
+
+// === CREATE A NEW VENUE BY GROUP ID ===
+router.post('/:groupId/venues', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { address, city, state, lat, lng } = req.body;
+
+	const errorsResultObj = validateVenueCreation(req, res);
+
+	if (errorsResultObj.errors.length) {
+		return res.json(errorsResultObj);
+	}
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const newVenue = await Venue.create({
+		address,
+		city,
+		state,
+		lat,
+		lng,
+	});
+
+	const newVenuePojo = newVenue.toJSON();
+	delete newVenuePojo.createdAt;
+	delete newVenuePojo.updatedAt;
+
+	res.json(newVenuePojo);
 });
 
 // === EVENTS ===
