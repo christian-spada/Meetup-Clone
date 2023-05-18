@@ -140,6 +140,12 @@ router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 		state,
 	});
 
+	const newMembership = await Membership.create({
+		userId: req.user.id,
+		groupId: newGroup.id,
+		status: 'host',
+	});
+
 	res.status(201);
 	res.json(newGroup);
 });
@@ -163,15 +169,12 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 
 	if (group.organizerId === currUserId) {
 		const newGroupImage = await GroupImage.create({
+			groupId,
 			url,
 			preview,
 		});
 
-		const groupImgPojo = newGroupImage.toJSON();
-		delete groupImgPojo.createdAt;
-		delete groupImgPojo.updatedAt;
-
-		return res.json(groupImgPojo);
+		return res.json({ id: newGroupImage.id, url, preview });
 	}
 });
 
