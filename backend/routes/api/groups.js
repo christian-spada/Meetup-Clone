@@ -229,6 +229,50 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 	});
 });
 
+// === GET ALL VENUES BY GROUP ID ===
+router.get('/:groupId/venues', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const venues = await Venue.findAll({
+		include: [{ model: Group }],
+		where: {
+			groupId,
+		},
+		attributes: {
+			exclude: ['createdAt', 'updatedAt'],
+		},
+	});
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const venuesArr = venues.map(venue => {
+		const venuePojo = venue.toJSON();
+		delete venuePojo.Group;
+		return venuePojo;
+	});
+
+	res.json({ Venues: venuesArr });
+});
+
 // === EVENTS ===
 
 // === GET ALL EVENTS BY GROUP ID ===
