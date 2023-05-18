@@ -445,4 +445,47 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 	});
 });
 
+// === REQUEST A MEMBERSHIP
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	if (membershipStatus?.status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Membership has already been requested',
+		});
+	}
+
+	const memberStatuses = ['member', 'co-host', 'host'];
+	if (memberStatuses.includes(membershipStatus?.status)) {
+		res.status(400);
+		return res.json({
+			message: 'User is already a member of the group',
+		});
+	}
+
+	const newMembership = await Membership.create({
+		groupId,
+		userId: currUserId,
+		status: 'pending',
+	});
+
+	res.json({ memberId: newMembership.id, status: 'pending' });
+});
+
 module.exports = router;
