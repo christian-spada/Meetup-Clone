@@ -140,6 +140,12 @@ router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 		state,
 	});
 
+	const newMembership = await Membership.create({
+		userId: req.user.id,
+		groupId: newGroup.id,
+		status: 'host',
+	});
+
 	res.status(201);
 	res.json(newGroup);
 });
