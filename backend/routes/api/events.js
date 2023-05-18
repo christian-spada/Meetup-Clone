@@ -12,6 +12,7 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
+const { validateEventEdit } = require('../../utils/custom-validators');
 
 // === GET ALL EVENTS ===
 router.get('/', async (req, res) => {
@@ -102,8 +103,9 @@ router.get('/:eventId', async (req, res) => {
 router.put('/:eventId', requireAuth, async (req, res) => {
 	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 	const { id: currUserId } = req.user;
-	let { eventId } = req.params;
-	eventId = parseInt(eventId);
+	const eventId = parseInt(req.params.eventId);
+
+	validateEventEdit(req, res);
 
 	const eventToEdit = await Event.findByPk(eventId, {
 		attributes: {
@@ -140,6 +142,7 @@ router.put('/:eventId', requireAuth, async (req, res) => {
 		name: name ?? eventToEdit.name,
 		type: type ?? eventToEdit.type,
 		capacity: capacity ?? eventToEdit.capacity,
+		price: price ?? eventToEdit.price,
 		description: description ?? eventToEdit.description,
 		startDate: startDate ?? eventToEdit.startDate,
 		endDate: endDate ?? eventToEdit.endDate,
