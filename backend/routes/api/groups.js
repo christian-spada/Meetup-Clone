@@ -390,4 +390,59 @@ router.get('/:groupId/members', async (req, res) => {
 	}
 });
 
+// === DELETE A MEMBERSHIP ===
+router.delete('/:groupId/membership', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { memberId } = req.body;
+
+	const group = await Group.findByPk(groupId);
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipToDelete = await Membership.findByPk(memberId);
+	if (membershipToDelete) {
+		const user = await User.findByPk(membershipToDelete.userId);
+
+		if (!user) {
+			res.status(400);
+			return res.json({
+				message: 'Validation Error',
+				errors: {
+					memberId: "User couldn't be found",
+				},
+			});
+		}
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: currUserId,
+		},
+	});
+
+	if (!membershipStatus) {
+		res.status(404);
+		return res.json({
+			message: 'Membership does not exist for this User',
+		});
+	}
+
+	const isAuthorizedToDelete =
+		membershipToDelete?.userId === currUserId || membershipStatus?.status === 'host';
+
+	if (!isAuthorizedToDelete) {
+		return requireAuthorizationResponse(res);
+	}
+
+	await membershipToDelete.destroy();
+
+	res.json({
+		message: 'Successfully deleted membership from group',
+	});
+});
+
 module.exports = router;
