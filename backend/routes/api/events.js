@@ -284,4 +284,65 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 	res.json(newAttendancePojo);
 });
 
+// === CHANGE STATUS OF ATTENDANCE ===
+router.put('/:eventId/attendance', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const { userId, status } = req.body;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: { model: Group },
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	if (status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Cannot change an attendance status to pending',
+		});
+	}
+
+	const attendance = await Attendance.findOne({
+		where: {
+			userId,
+			eventId,
+		},
+	});
+
+	if (!attendance) {
+		res.status(404);
+		return res.json({
+			message: 'Attendance between the user and the event does not exist',
+		});
+	}
+
+	const updatedAttendance = await attendance.update({
+		userId,
+		status,
+	});
+
+	const updatedAttendancePojo = updatedAttendance.toJSON();
+	delete updatedAttendancePojo.updatedAt;
+
+	res.json(updatedAttendancePojo);
+});
+
 module.exports = router;
