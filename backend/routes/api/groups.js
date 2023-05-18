@@ -280,4 +280,70 @@ router.get('/:groupId/events', async (req, res) => {
 	res.json({ Events: eventsArr });
 });
 
+// === MEMBERS ===
+
+// === GET ALL MEMBERS OF GROUP ===
+router.get('/:groupId/members', async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+
+	const group = await Group.findByPk(groupId, {
+		include: [{ model: User }],
+	});
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	if (group.organizerId === currUserId) {
+		const members = await Membership.findAll({
+			where: {
+				groupId,
+			},
+		});
+
+		const allMembersArr = [];
+		for (const member of members) {
+			const { userId } = member;
+			const user = await User.findByPk(userId);
+			const userObj = {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				Membership: {
+					status: member.status,
+				},
+			};
+
+			allMembersArr.push(userObj);
+		}
+		res.json({ Members: allMembersArr });
+	} else {
+		const members = await Membership.findAll({
+			where: {
+				groupId,
+			},
+		});
+
+		const allMembersArr = [];
+		for (const member of members) {
+			const { userId } = member;
+			const user = await User.findByPk(userId);
+			if (member.status !== 'pending') {
+				const userObj = {
+					id: user.id,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					Membership: {
+						status: member.status,
+					},
+				};
+
+				allMembersArr.push(userObj);
+			}
+		}
+		res.json({ Members: allMembersArr });
+	}
+});
+
 module.exports = router;
