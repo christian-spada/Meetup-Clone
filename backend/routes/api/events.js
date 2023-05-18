@@ -101,31 +101,45 @@ router.get('/:eventId', async (req, res) => {
 // === ADD IMAGE TO EVENT BY ID ===
 router.post('/:eventId/images', requireAuth, async (req, res) => {
 	const { url, preview } = req.body;
-	let { eventId } = req.params;
-	eventId = parseInt(eventId);
 	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
 
 	const event = await Event.findByPk(eventId, {
 		include: [{ model: Group }],
 	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
 
 	const group = event.Group;
 
 	const membershipStatus = await Membership.findOne({
 		attributes: ['status'],
 		where: {
-			groupId: 2,
+			groupId: group.id,
 			userId: currUserId,
 		},
 	});
 
-	console.log(membershipStatus);
+	const attendanceStatus = await Attendance.findOne({
+		attributes: ['status'],
+		where: {
+			eventId,
+			userId: currUserId,
+		},
+	});
 
-	if (!event) {
-		return entityNotFound(res, 'Event');
+	const validStatuses = ['host', 'co-host', 'waitlist', 'attending'];
+	const hasValidRole =
+		validStatuses.includes(membershipStatus?.status) ||
+		validStatuses.includes(attendanceStatus?.status);
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
 	}
 
-	res.json(group);
+	res.json({ url, preview });
 });
 
 module.exports = router;
