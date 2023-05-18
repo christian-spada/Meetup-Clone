@@ -113,12 +113,14 @@ router.put('/:eventId', requireAuth, async (req, res) => {
 		},
 		include: [{ model: Group }, { model: Venue }],
 	});
-	const group = eventToEdit.Group;
-	const venue = eventToEdit.Venue;
 
 	if (!eventToEdit) {
 		return entityNotFound(res, 'Event');
 	}
+
+	const group = eventToEdit.Group;
+	const venue = eventToEdit.Venue;
+
 	if (!venue) {
 		return entityNotFound(res, 'Venue');
 	}
