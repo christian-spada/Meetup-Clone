@@ -37,8 +37,7 @@ router.get('/', async (req, res) => {
 			},
 		});
 
-		groupPojo.numMembers = 1;
-		groupPojo.numMembers += numMembers;
+		groupPojo.numMembers = numMembers;
 		groupPojo.previewImage = null;
 
 		for (const image of groupPojo.GroupImages) {
