@@ -18,6 +18,23 @@ const handleValidationErrors = (req, res, next) => {
 	next();
 };
 
+// === VALIDATE ROLE HELPER: WORK IN PROGRESS ===
+const validateRole = async (req, entityId, entityType) => {
+	const { id: currUserId } = req.user;
+	if (entityType === 'Event') {
+		const event = await Event.findByPk(entityId, {
+			include: { model: Group },
+		});
+		const group = event.Group;
+		const membershipStatus = await Membership.findOne({
+			attributes: ['status'],
+			userId: currUserId,
+			groupId: group.id,
+		});
+	}
+};
+
 module.exports = {
 	handleValidationErrors,
+	validateRole,
 };
