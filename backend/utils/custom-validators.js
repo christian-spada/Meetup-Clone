@@ -1,5 +1,6 @@
 const { handleValidationErrors } = require('./validation');
 const { check } = require('express-validator');
+const { Op } = require('sequelize');
 
 // === CREATE A GROUP ===
 const validateGroupCreation = [
@@ -23,4 +24,50 @@ const validateGroupEdit = [
 	handleValidationErrors,
 ];
 
-module.exports = { validateGroupCreation, validateGroupEdit };
+const validateEventQueryParams = (req, res) => {
+	console.log(Op);
+	let { page, size, name, type, startDate } = req.query;
+	const errorResult = { message: 'Bad Request', errors: {} };
+
+	page = parseInt(page);
+	size = parseInt(size);
+
+	if (page < 1) {
+		errorResult.errors.page = 'Page must be greater than or equal to 1';
+	}
+	if (size < 1) {
+		errorResult.errors.size = 'Size must be greater than or equal to 1';
+	}
+	if (typeof name !== 'string') {
+		errorResult.errors.name = 'Name must be a string';
+	}
+	if (type !== 'Online' && type !== 'In person') {
+		errorResult.errors.type = 'Type must be "Online" or "In Person"';
+	}
+	if (!startDate) {
+		errorResult.errors.startDate = 'Start date must be a valid datetime';
+	}
+
+	if (Object.keys(errorResult).length) {
+		res.status(400);
+		return res.json({ errorResult });
+	}
+
+	const pagination = {
+		limit: size,
+		offset: (page - 1) * size,
+	};
+
+	const where = {
+		name: {
+			[Op.like]: `${name}`,
+		},
+		type,
+		startDate,
+	};
+
+	req.pagination = pagination;
+	req.where = where;
+};
+
+module.exports = { validateGroupCreation, validateGroupEdit, validateEventQueryParams };

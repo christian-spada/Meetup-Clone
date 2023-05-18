@@ -12,9 +12,12 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
+const { validateEventQueryParams } = require('../../utils/custom-validators');
 
 // === GET ALL EVENTS ===
 router.get('/', async (req, res) => {
+	validateEventQueryParams(req, res);
+
 	const events = await Event.findAll({
 		include: [
 			{
@@ -35,6 +38,8 @@ router.get('/', async (req, res) => {
 		attributes: {
 			exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt'],
 		},
+		...req.where,
+		...req.pagination,
 	});
 
 	const eventsArr = [];
