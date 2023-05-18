@@ -219,4 +219,69 @@ router.get('/:eventId/attendees', async (req, res) => {
 	res.json(result);
 });
 
+// === REQUEST TO ATTEND EVENT BY EVENT ID ===
+router.post('/:eventId/attendance', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status !== 'pending';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const attendanceStatus = await Attendance.findOne({
+		attributes: ['status'],
+		where: {
+			eventId,
+			userId: currUserId,
+		},
+	});
+
+	if (attendanceStatus?.status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Attendance has already been requested',
+		});
+	}
+
+	if (attendanceStatus?.status === 'attending' || attendanceStatus?.status === 'waitlist') {
+		res.status(400);
+		return res.json({
+			message: 'User is already an attendee of the event',
+		});
+	}
+
+	const newAttendance = await Attendance.create({
+		eventId,
+		userId: currUserId,
+		status: 'pending',
+	});
+
+	const newAttendancePojo = newAttendance.toJSON();
+	delete newAttendancePojo.id;
+	delete newAttendancePojo.createdAt;
+	delete newAttendancePojo.updatedAt;
+
+	res.json(newAttendancePojo);
+});
+
 module.exports = router;
