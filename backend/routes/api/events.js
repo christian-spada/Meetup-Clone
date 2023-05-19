@@ -11,9 +11,11 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
+const { validateEvent } = require('../../utils/custom-validators');
+const { validateEventQueryParams } = require('../../utils/custom-validators');
 
 // === GET ALL EVENTS ===
-router.get('/', async (req, res) => {
+router.get('/', validateEventQueryParams, async (req, res) => {
 	const events = await Event.findAll({
 		include: [
 			{
@@ -34,6 +36,8 @@ router.get('/', async (req, res) => {
 		attributes: {
 			exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt'],
 		},
+		where: req.where,
+		...req.pagination,
 	});
 
 	const eventsArr = [];
@@ -42,7 +46,7 @@ router.get('/', async (req, res) => {
 		const numAttending = await Attendance.count({
 			where: {
 				eventId: event.id,
-				status: ['attending', 'waitlist'],
+				status: ['attending'],
 			},
 		});
 
@@ -90,11 +94,72 @@ router.get('/:eventId', async (req, res) => {
 	const eventPojo = event.toJSON();
 
 	const numAttending = await Attendance.count({
-		where: { eventId, status: ['waitlist', 'attending'] },
+		where: { eventId, status: ['attending'] },
 	});
 
 	eventPojo.numAttending = numAttending;
 	res.json(eventPojo);
+});
+
+// === EDIT AN EVENT BY ID ===
+router.put('/:eventId', requireAuth, validateEvent, async (req, res) => {
+	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const eventToEdit = await Event.findByPk(eventId, {
+		attributes: {
+			exclude: ['createdAt', 'updatedAt'],
+		},
+		include: [{ model: Group }, { model: Venue }],
+	});
+
+	if (!eventToEdit) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = eventToEdit.Group;
+	const venue = eventToEdit.Venue;
+
+	if (!venue) {
+		return entityNotFound(res, 'Venue');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = membershipStatus?.status === 'co-host' || group.organizerId === currUserId;
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const updatedEvent = await eventToEdit.update({
+		venueId: venueId ?? eventToEdit.venueId,
+		name: name ?? eventToEdit.name,
+		type: type ?? eventToEdit.type,
+		capacity: capacity ?? eventToEdit.capacity,
+		price: price ?? eventToEdit.price,
+		description: description ?? eventToEdit.description,
+		startDate: startDate ?? eventToEdit.startDate,
+		endDate: endDate ?? eventToEdit.endDate,
+	});
+
+	const updatedEventPojo = updatedEvent.toJSON();
+	updatedEventPojo.id = eventToEdit.id;
+	updatedEventPojo.groupId = group.id;
+
+	delete updatedEventPojo.Group;
+	delete updatedEventPojo.Venue;
+	delete updatedEventPojo.createdAt;
+	delete updatedEventPojo.updatedAt;
+
+	res.json(updatedEventPojo);
 });
 
 // === DELETE AN EVENT ===
