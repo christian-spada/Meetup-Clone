@@ -54,8 +54,8 @@ const validateEventCreation = (req, res, next) => {
 	}
 
 	if (Object.keys(errorResult.errors).length) {
-		errorResult.status = 400;
-		return next(errorResult);
+		res.status(400);
+		return res.json(errorResult);
 	}
 
 	next();
