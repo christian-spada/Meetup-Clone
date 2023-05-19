@@ -285,7 +285,7 @@ router.get('/:groupId/events', async (req, res) => {
 });
 
 // === CREATE AN EVENT FOR GROUP BY ID ===
-router.post('/:groupId/events', requireAuth, validateEventCreation, async (req, res) => {
+router.post('/:groupId/events', requireAuth, async (req, res) => {
 	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 	const { id: currUserId } = req.user;
 	const groupId = parseInt(req.params.groupId);
