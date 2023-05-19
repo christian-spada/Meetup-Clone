@@ -397,9 +397,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 	const { memberId, status } = req.body;
 
 	const membership = await Membership.findByPk(memberId);
-	console.log(membership.toJSON());
 	const user = await User.findByPk(membership.userId);
-	console.log(user.toJSON());
 
 	if (!user) {
 		res.status(400);
@@ -422,6 +420,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 	}
 
 	const group = await Group.findByPk(groupId);
+
 	if (!group) {
 		return entityNotFound(res, 'Group');
 	}
