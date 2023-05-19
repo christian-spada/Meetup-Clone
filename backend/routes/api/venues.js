@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
+const { Group, Membership, Venue } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
 const { validateVenue } = require('../../utils/custom-validators');

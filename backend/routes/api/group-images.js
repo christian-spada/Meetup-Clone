@@ -1,18 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {
-	Group,
-	Membership,
-	GroupImage,
-	User,
-	Venue,
-	EventImage,
-	Event,
-	Attendance,
-} = require('../../db/models');
+const { Group, Membership, GroupImage } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const { validateGroupCreation, validateGroupEdit } = require('../../utils/custom-validators');
 
 // === DELETE A GROUP IMAGE ===
 router.delete('/:imageId', requireAuth, async (req, res) => {

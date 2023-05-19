@@ -5,7 +5,6 @@ const {
 	EventImage,
 	Group,
 	Membership,
-	GroupImage,
 	User,
 	Venue,
 	Attendance,
