@@ -310,6 +310,7 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
 	});
 
 	const newVenuePojo = newVenue.toJSON();
+	newVenuePojo.groupId = groupId;
 	delete newVenuePojo.createdAt;
 	delete newVenuePojo.updatedAt;
 
