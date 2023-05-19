@@ -1,7 +1,3 @@
-const { handleValidationErrors } = require('./validation');
-const { check } = require('express-validator');
-const { Op } = require('sequelize');
-
 // === CREATE/EDIT A GROUP VALIDATION ===
 const validateGroup = (req, res, next) => {
 	const { name, about, type, private, city, state } = req.body;
@@ -108,6 +104,7 @@ const validateEvent = (req, res, next) => {
 	next();
 };
 
+// === VALIDATE AND ADD QUERY FILTERS TO GET ALL EVENTS ===
 const validateEventQueryParams = (req, res, next) => {
 	let { page, size, name, type, startDate } = req.query;
 	const errorResult = { message: 'Bad Request', errors: {} };
@@ -158,4 +155,4 @@ const validateEventQueryParams = (req, res, next) => {
 	next();
 };
 
-module.exports = { validateGroupCreation, validateGroupEdit, validateEventQueryParams };
+module.exports = { validateGroup, validateEvent, validateVenue, validateEventQueryParams };
