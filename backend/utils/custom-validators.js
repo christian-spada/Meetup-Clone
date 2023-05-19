@@ -64,8 +64,8 @@ const validateVenue = (req, res, next) => {
 	next();
 };
 
-// === VALIDATE EVENT EDIT ===
-const validateEventEdit = (req, res) => {
+// === CREATE/EDIT AN EVENT VALIDATION ===
+const validateEvent = (req, res, next) => {
 	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
 	const errorResult = { message: 'Bad Request', errors: {} };
@@ -104,6 +104,8 @@ const validateEventEdit = (req, res) => {
 		res.status(400);
 		return res.json(errorResult);
 	}
+
+	next();
 };
 
-module.exports = { validateGroupCreation, validateGroupEdit, validateEventEdit };
+module.exports = { validateGroup, validateVenue, validateEvent };

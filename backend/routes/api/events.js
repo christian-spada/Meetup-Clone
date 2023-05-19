@@ -11,7 +11,7 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const { validateEventEdit } = require('../../utils/custom-validators');
+const { validateEvent } = require('../../utils/custom-validators');
 
 // === GET ALL EVENTS ===
 router.get('/', async (req, res) => {
@@ -99,12 +99,10 @@ router.get('/:eventId', async (req, res) => {
 });
 
 // === EDIT AN EVENT BY ID ===
-router.put('/:eventId', requireAuth, async (req, res) => {
+router.put('/:eventId', requireAuth, validateEvent, async (req, res) => {
 	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 	const { id: currUserId } = req.user;
 	const eventId = parseInt(req.params.eventId);
-
-	validateEventEdit(req, res);
 
 	const eventToEdit = await Event.findByPk(eventId, {
 		attributes: {
