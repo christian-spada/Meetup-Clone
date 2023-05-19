@@ -1,5 +1,6 @@
 const { handleValidationErrors } = require('./validation');
 const { check } = require('express-validator');
+const { Op } = require('sequelize');
 
 // === CREATE A GROUP ===
 const validateGroupCreation = [
@@ -47,4 +48,34 @@ const validateVenueCreation = (req, res, next) => {
 	return errorsResult;
 };
 
-module.exports = { validateGroupCreation, validateGroupEdit, validateVenueCreation };
+// === EDIT A VENUE ===
+const validateVenueEdit = (req, res, next) => {
+	const { address, city, state, lat, lng } = req.body;
+
+	const errorResult = { message: 'Bad Request', errors: {} };
+
+	if (!address) {
+		errorResult.errors.address = 'Street address is required';
+	}
+	if (!city) {
+		errorResult.errors.city = 'City is required';
+	}
+	if (!state) {
+		errorResult.errors.state = 'State is required';
+	}
+	if (typeof lat !== 'number') {
+		errorResult.errors.lat = 'Latitude is not valid';
+	}
+	if (typeof lng !== 'number') {
+		errorResult.errors.lng = 'Longitude is not valid';
+	}
+
+	if (Object.keys(errorResult.errors).length) {
+		res.status(400);
+		return res.json(errorResult);
+	}
+
+	next();
+};
+
+module.exports = { validateGroupCreation, validateGroupEdit, validateVenueEdit };

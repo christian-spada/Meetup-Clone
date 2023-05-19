@@ -345,4 +345,92 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
 	res.json(updatedAttendancePojo);
 });
 
+// === ADD IMAGE TO EVENT BY ID ===
+router.post('/:eventId/images', requireAuth, async (req, res) => {
+	const { url, preview } = req.body;
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const attendanceStatus = await Attendance.findOne({
+		attributes: ['status'],
+		where: {
+			eventId,
+			userId: currUserId,
+		},
+	});
+
+	const validStatuses = ['host', 'co-host', 'waitlist', 'attending'];
+	const hasValidRole =
+		validStatuses.includes(membershipStatus?.status) ||
+		validStatuses.includes(attendanceStatus?.status);
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	res.json({ url, preview });
+});
+
+// === DELETE ATTENDANCE TO EVENT ===
+router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+	const { userId: attendeeId } = req.body;
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+	const attendance = await Attendance.findOne({
+		where: {
+			eventId,
+			userId: attendeeId,
+		},
+	});
+
+	if (!attendance) {
+		res.status(404);
+		return res.json({
+			message: 'Attendance does not exist for this User',
+		});
+	}
+
+	const hasValidRole = group.organizerId === currUserId || attendeeId === currUserId;
+
+	if (!hasValidRole) {
+		res.status(403);
+		return res.json({
+			message: 'Only the User or organizer may delete an Attendance',
+		});
+	}
+
+	await attendance.destroy();
+	res.json({
+		message: 'Successfully deleted attendance from event',
+	});
+});
+
 module.exports = router;

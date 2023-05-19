@@ -41,8 +41,7 @@ router.get('/', async (req, res) => {
 			},
 		});
 
-		groupPojo.numMembers = 1;
-		groupPojo.numMembers += numMembers;
+		groupPojo.numMembers = numMembers;
 		groupPojo.previewImage = null;
 
 		for (const image of groupPojo.GroupImages) {
@@ -58,7 +57,9 @@ router.get('/', async (req, res) => {
 });
 
 // === GET ALL GROUPS JOINED OR ORGANIZED BY CURRENT USER ===
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+
 	const groups = await Group.findAll({
 		include: {
 			model: GroupImage,
@@ -69,7 +70,7 @@ router.get('/current', async (req, res) => {
 			required: false,
 		},
 		where: {
-			organizerId: req.user.id,
+			organizerId: currUserId,
 		},
 	});
 
@@ -84,8 +85,7 @@ router.get('/current', async (req, res) => {
 		});
 
 		groupPojo.previewImage = null;
-		groupPojo.numMembers = 1;
-		groupPojo.numMembers += numMembers;
+		groupPojo.numMembers = numMembers;
 
 		for (const image of groupPojo.GroupImages) {
 			groupPojo.previewImage = image.url;
@@ -144,6 +144,12 @@ router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 		state,
 	});
 
+	const newMembership = await Membership.create({
+		userId: req.user.id,
+		groupId: newGroup.id,
+		status: 'host',
+	});
+
 	res.status(201);
 	res.json(newGroup);
 });
@@ -167,15 +173,12 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 
 	if (group.organizerId === currUserId) {
 		const newGroupImage = await GroupImage.create({
+			groupId,
 			url,
 			preview,
 		});
 
-		const groupImgPojo = newGroupImage.toJSON();
-		delete groupImgPojo.createdAt;
-		delete groupImgPojo.updatedAt;
-
-		return res.json(groupImgPojo);
+		return res.json({ id: newGroupImage.id, url, preview });
 	}
 });
 
@@ -441,6 +444,104 @@ router.get('/:groupId/members', async (req, res) => {
 		}
 		res.json({ Members: allMembersArr });
 	}
+});
+
+// === DELETE A MEMBERSHIP ===
+router.delete('/:groupId/membership', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { memberId } = req.body;
+
+	const group = await Group.findByPk(groupId);
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipToDelete = await Membership.findByPk(memberId);
+	if (membershipToDelete) {
+		const user = await User.findByPk(membershipToDelete.userId);
+
+		if (!user) {
+			res.status(400);
+			return res.json({
+				message: 'Validation Error',
+				errors: {
+					memberId: "User couldn't be found",
+				},
+			});
+		}
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: currUserId,
+		},
+	});
+
+	if (!membershipStatus) {
+		res.status(404);
+		return res.json({
+			message: 'Membership does not exist for this User',
+		});
+	}
+
+	const isAuthorizedToDelete =
+		membershipToDelete?.userId === currUserId || membershipStatus?.status === 'host';
+
+	if (!isAuthorizedToDelete) {
+		return requireAuthorizationResponse(res);
+	}
+
+	await membershipToDelete.destroy();
+
+	res.json({
+		message: 'Successfully deleted membership from group',
+	});
+});
+
+// === REQUEST A MEMBERSHIP
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	if (membershipStatus?.status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Membership has already been requested',
+		});
+	}
+
+	const memberStatuses = ['member', 'co-host', 'host'];
+	if (memberStatuses.includes(membershipStatus?.status)) {
+		res.status(400);
+		return res.json({
+			message: 'User is already a member of the group',
+		});
+	}
+
+	const newMembership = await Membership.create({
+		groupId,
+		userId: currUserId,
+		status: 'pending',
+	});
+
+	res.json({ memberId: newMembership.id, status: 'pending' });
 });
 
 module.exports = router;
