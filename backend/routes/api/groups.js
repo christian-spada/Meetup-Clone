@@ -396,8 +396,12 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 	const groupId = parseInt(req.params.groupId);
 	const { memberId, status } = req.body;
 
-	const membership = await Membership.findByPk(memberId);
-	const user = await User.findByPk(membership.userId);
+	const user = await User.findByPk(memberId);
+	const membership = await Membership.findOne({
+		where: {
+			userId: memberId,
+		},
+	});
 
 	if (!user) {
 		res.status(400);
@@ -429,7 +433,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 		attributes: ['status'],
 		where: {
 			groupId,
-			userId: currUserId,
+			userId: memberId,
 		},
 	});
 
