@@ -12,11 +12,7 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const {
-	validateGroupCreation,
-	validateGroupEdit,
-	validateVenueCreation,
-} = require('../../utils/custom-validators');
+const { validateGroup, validateVenue } = require('../../utils/custom-validators');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -131,7 +127,7 @@ router.get('/:groupId', async (req, res) => {
 });
 
 // === CREATE A GROUP ===
-router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
+router.post('/', requireAuth, validateGroup, async (req, res) => {
 	const { name, about, type, private, city, state } = req.body;
 
 	const newGroup = await Group.create({
@@ -182,7 +178,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 });
 
 // === EDIT A GROUP ===
-router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
+router.put('/:groupId', requireAuth, validateGroup, async (req, res) => {
 	const { id: currUserId } = req.user;
 	const groupId = parseInt(req.params.groupId);
 	const { name, about, type, private, city, state } = req.body;
@@ -280,7 +276,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 });
 
 // === CREATE A NEW VENUE BY GROUP ID ===
-router.post('/:groupId/venues', requireAuth, validateVenueCreation, async (req, res) => {
+router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => {
 	const { id: currUserId } = req.user;
 	const groupId = parseInt(req.params.groupId);
 	const { address, city, state, lat, lng } = req.body;
