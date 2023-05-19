@@ -156,10 +156,9 @@ router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 
 // === ADD IMAGE FOR GROUP ID ===
 router.post('/:groupId/images', requireAuth, async (req, res) => {
-	const { url, preview } = req.body;
-	let { groupId } = req.params;
-	groupId = parseInt(groupId);
 	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { url, preview } = req.body;
 
 	const group = await Group.findByPk(groupId);
 
@@ -184,10 +183,9 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 
 // === EDIT A GROUP ===
 router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
-	let { groupId } = req.params;
 	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
 	const { name, about, type, private, city, state } = req.body;
-	groupId = parseInt(groupId);
 
 	const groupToEdit = await Group.findByPk(groupId);
 
@@ -216,8 +214,7 @@ router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
 // === DELETE A GROUP ===
 router.delete('/:groupId', requireAuth, async (req, res) => {
 	const { id: currUserId } = req.user;
-	let { groupId } = req.params;
-	groupId = parseInt(groupId);
+	const groupId = parseInt(req.params.groupId);
 
 	const groupToDelete = await Group.findByPk(groupId);
 
@@ -327,8 +324,7 @@ router.post('/:groupId/venues', requireAuth, validateVenueCreation, async (req, 
 
 // === GET ALL EVENTS BY GROUP ID ===
 router.get('/:groupId/events', async (req, res) => {
-	let { groupId } = req.params;
-	groupId = parseInt(groupId);
+	const groupId = parseInt(req.params.groupId);
 
 	const events = await Event.findAll({
 		where: {
