@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
 		const numAttending = await Attendance.count({
 			where: {
 				eventId: event.id,
-				status: ['attending', 'waitlist'],
+				status: ['attending'],
 			},
 		});
 
@@ -91,7 +91,7 @@ router.get('/:eventId', async (req, res) => {
 	const eventPojo = event.toJSON();
 
 	const numAttending = await Attendance.count({
-		where: { eventId, status: ['waitlist', 'attending'] },
+		where: { eventId, status: ['attending'] },
 	});
 
 	eventPojo.numAttending = numAttending;
