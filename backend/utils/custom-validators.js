@@ -25,26 +25,27 @@ const validateGroupEdit = [
 ];
 
 const validateEventQueryParams = (req, res, next) => {
-	console.log(Op);
 	let { page, size, name, type, startDate } = req.query;
 	const errorResult = { message: 'Bad Request', errors: {} };
 
 	page = parseInt(page);
 	size = parseInt(size);
 
-	if (page && page < 1 && page > 10) {
+	const startDateObj = new Date(startDate);
+
+	if (page && (page < 1 || page > 10)) {
 		errorResult.errors.page = 'Page must be greater than or equal to 1';
 	}
-	if (size && size < 1) {
+	if (size && (size < 1 || size > 20)) {
 		errorResult.errors.size = 'Size must be greater than or equal to 1';
 	}
-	if (typeof name !== 'string') {
+	if (name && typeof name !== 'string') {
 		errorResult.errors.name = 'Name must be a string';
 	}
-	if (type !== 'Online' && type !== 'In person') {
+	if (type && type !== 'Online' && type !== 'In person') {
 		errorResult.errors.type = 'Type must be "Online" or "In Person"';
 	}
-	if (!startDate) {
+	if (startDate && Number.isNaN(startDateObj.getTime())) {
 		errorResult.errors.startDate = 'Start date must be a valid datetime';
 	}
 
@@ -53,16 +54,19 @@ const validateEventQueryParams = (req, res, next) => {
 		return res.json({ errorResult });
 	}
 
+	if (!page) page = 1;
+	if (!size) size = 20;
+
 	const pagination = {
 		limit: size,
 		offset: (page - 1) * size,
 	};
 
-	const where = {
-		name,
-		type,
-		startDate,
-	};
+	const where = {};
+
+	if (name) where.name = name;
+	if (type) where.type = type;
+	if (startDate) where.startDate = startDate;
 
 	req.pagination = pagination;
 	req.where = where;

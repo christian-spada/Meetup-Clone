@@ -36,7 +36,7 @@ router.get('/', validateEventQueryParams, async (req, res) => {
 		attributes: {
 			exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt'],
 		},
-		...req.where,
+		where: req.where,
 		...req.pagination,
 	});
 
