@@ -485,42 +485,38 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 	const { memberId } = req.body;
 
 	const group = await Group.findByPk(groupId);
+
 	if (!group) {
 		return entityNotFound(res, 'Group');
 	}
 
-	const membershipToDelete = await Membership.findByPk(memberId);
-	if (membershipToDelete) {
-		const user = await User.findByPk(membershipToDelete.userId);
+	const user = await User.findByPk(memberId);
 
-		if (!user) {
-			res.status(400);
-			return res.json({
-				message: 'Validation Error',
-				errors: {
-					memberId: "User couldn't be found",
-				},
-			});
-		}
+	if (!user) {
+		res.status(400);
+		return res.json({
+			message: 'Validation Error',
+			errors: {
+				memberId: "User couldn't be found",
+			},
+		});
 	}
 
-	const membershipStatus = await Membership.findOne({
-		attributes: ['status'],
+	const membershipToDelete = await Membership.findOne({
 		where: {
 			groupId,
-			userId: currUserId,
+			userId: memberId,
 		},
 	});
 
-	if (!membershipStatus) {
+	if (!membershipToDelete) {
 		res.status(404);
 		return res.json({
 			message: 'Membership does not exist for this User',
 		});
 	}
 
-	const isAuthorizedToDelete =
-		membershipToDelete?.userId === currUserId || membershipStatus?.status === 'host';
+	const isAuthorizedToDelete = memberId === currUserId || membershipToDelete?.status === 'host';
 
 	if (!isAuthorizedToDelete) {
 		return requireAuthorizationResponse(res);
