@@ -485,7 +485,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
 		status: 'pending',
 	});
 
-	res.json({ memberId: newMembership.id, status: 'pending' });
+	res.json({ memberId: currUserId, status: 'pending' });
 });
 
 module.exports = router;
