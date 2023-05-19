@@ -283,16 +283,10 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 });
 
 // === CREATE A NEW VENUE BY GROUP ID ===
-router.post('/:groupId/venues', requireAuth, async (req, res) => {
+router.post('/:groupId/venues', requireAuth, validateVenueCreation, async (req, res) => {
 	const { id: currUserId } = req.user;
 	const groupId = parseInt(req.params.groupId);
 	const { address, city, state, lat, lng } = req.body;
-
-	const errorsResultObj = validateVenueCreation(req, res);
-
-	if (errorsResultObj.errors.length) {
-		return res.json(errorsResultObj);
-	}
 
 	const group = await Group.findByPk(groupId);
 

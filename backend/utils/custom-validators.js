@@ -45,7 +45,12 @@ const validateVenueCreation = (req, res, next) => {
 		errorsResult.errors.lng = 'Longitude is not valid';
 	}
 
-	return errorsResult;
+	if (Object.keys(errorsResult.errors).length) {
+		res.status(404);
+		return res.json(errorsResult);
+	}
+
+	next();
 };
 
 // === EDIT A VENUE ===
@@ -78,4 +83,9 @@ const validateVenueEdit = (req, res, next) => {
 	next();
 };
 
-module.exports = { validateGroupCreation, validateGroupEdit, validateVenueEdit };
+module.exports = {
+	validateGroupCreation,
+	validateGroupEdit,
+	validateVenueCreation,
+	validateVenueEdit,
+};
