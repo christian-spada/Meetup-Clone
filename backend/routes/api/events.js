@@ -156,6 +156,8 @@ router.put('/:eventId', requireAuth, async (req, res) => {
 
 	delete updatedEventPojo.Group;
 	delete updatedEventPojo.Venue;
+	delete updatedEventPojo.createdAt;
+	delete updatedEventPojo.updatedAt;
 
 	res.json(updatedEventPojo);
 });

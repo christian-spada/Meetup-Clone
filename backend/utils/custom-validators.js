@@ -30,6 +30,11 @@ const validateEventEdit = (req, res) => {
 
 	const errorResult = { message: 'Bad Request', errors: {} };
 
+	const startDateStr = new Date(startDate).toDateString();
+	const endDateStr = new Date(endDate).toDateString();
+	const startDateObj = new Date(startDateStr);
+	const endDateObj = new Date(endDateStr);
+
 	if (!venueId) {
 		errorResult.errors.venueId = 'Venue does not exist';
 	}
@@ -48,10 +53,10 @@ const validateEventEdit = (req, res) => {
 	if (!description) {
 		errorResult.errors.description = 'Description is required';
 	}
-	if (!startDate) {
+	if (startDateObj.getTime() < Date.now()) {
 		errorResult.errors.startDate = 'Start date must be in the future';
 	}
-	if (!endDate) {
+	if (endDateObj.getTime() < startDateObj.getTime()) {
 		errorResult.errors.endDate = 'End date is less than start date';
 	}
 
