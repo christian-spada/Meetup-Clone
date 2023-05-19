@@ -198,6 +198,56 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
 	});
 });
 
+// === ADD IMAGE TO EVENT BY ID ===
+router.post('/:eventId/images', requireAuth, async (req, res) => {
+	const { url, preview } = req.body;
+	const { id: currUserId } = req.user;
+	const eventId = parseInt(req.params.eventId);
+
+	const event = await Event.findByPk(eventId, {
+		include: [{ model: Group }],
+	});
+
+	if (!event) {
+		return entityNotFound(res, 'Event');
+	}
+
+	const group = event.Group;
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId: group.id,
+			userId: currUserId,
+		},
+	});
+
+	const attendanceStatus = await Attendance.findOne({
+		attributes: ['status'],
+		where: {
+			eventId,
+			userId: currUserId,
+		},
+	});
+
+	const validStatuses = ['host', 'co-host', 'waitlist', 'attending'];
+	const hasValidRole =
+		validStatuses.includes(membershipStatus?.status) ||
+		validStatuses.includes(attendanceStatus?.status);
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const newEventImage = await EventImage.create({
+		eventId,
+		url,
+		preview,
+	});
+
+	res.json({ id: newEventImage.id, url, preview });
+});
+
 // === ATTENDEES ===
 
 // === GET ALL ATTENDEES BY EVENT ID ===
@@ -407,50 +457,6 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
 	delete updatedAttendancePojo.updatedAt;
 
 	res.json(updatedAttendancePojo);
-});
-
-// === ADD IMAGE TO EVENT BY ID ===
-router.post('/:eventId/images', requireAuth, async (req, res) => {
-	const { url, preview } = req.body;
-	const { id: currUserId } = req.user;
-	const eventId = parseInt(req.params.eventId);
-
-	const event = await Event.findByPk(eventId, {
-		include: [{ model: Group }],
-	});
-
-	if (!event) {
-		return entityNotFound(res, 'Event');
-	}
-
-	const group = event.Group;
-
-	const membershipStatus = await Membership.findOne({
-		attributes: ['status'],
-		where: {
-			groupId: group.id,
-			userId: currUserId,
-		},
-	});
-
-	const attendanceStatus = await Attendance.findOne({
-		attributes: ['status'],
-		where: {
-			eventId,
-			userId: currUserId,
-		},
-	});
-
-	const validStatuses = ['host', 'co-host', 'waitlist', 'attending'];
-	const hasValidRole =
-		validStatuses.includes(membershipStatus?.status) ||
-		validStatuses.includes(attendanceStatus?.status);
-
-	if (!hasValidRole) {
-		return requireAuthorizationResponse(res);
-	}
-
-	res.json({ url, preview });
 });
 
 // === DELETE ATTENDANCE TO EVENT ===
