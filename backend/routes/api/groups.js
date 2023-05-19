@@ -12,7 +12,7 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const { validateGroupCreation, validateGroupEdit } = require('../../utils/custom-validators');
+const { validateGroup, validateVenue } = require('../../utils/custom-validators');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -37,8 +37,7 @@ router.get('/', async (req, res) => {
 			},
 		});
 
-		groupPojo.numMembers = 1;
-		groupPojo.numMembers += numMembers;
+		groupPojo.numMembers = numMembers;
 		groupPojo.previewImage = null;
 
 		for (const image of groupPojo.GroupImages) {
@@ -54,7 +53,9 @@ router.get('/', async (req, res) => {
 });
 
 // === GET ALL GROUPS JOINED OR ORGANIZED BY CURRENT USER ===
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+
 	const groups = await Group.findAll({
 		include: {
 			model: GroupImage,
@@ -65,7 +66,7 @@ router.get('/current', async (req, res) => {
 			required: false,
 		},
 		where: {
-			organizerId: req.user.id,
+			organizerId: currUserId,
 		},
 	});
 
@@ -80,8 +81,7 @@ router.get('/current', async (req, res) => {
 		});
 
 		groupPojo.previewImage = null;
-		groupPojo.numMembers = 1;
-		groupPojo.numMembers += numMembers;
+		groupPojo.numMembers = numMembers;
 
 		for (const image of groupPojo.GroupImages) {
 			groupPojo.previewImage = image.url;
@@ -127,7 +127,7 @@ router.get('/:groupId', async (req, res) => {
 });
 
 // === CREATE A GROUP ===
-router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
+router.post('/', requireAuth, validateGroup, async (req, res) => {
 	const { name, about, type, private, city, state } = req.body;
 
 	const newGroup = await Group.create({
@@ -152,10 +152,9 @@ router.post('/', requireAuth, validateGroupCreation, async (req, res) => {
 
 // === ADD IMAGE FOR GROUP ID ===
 router.post('/:groupId/images', requireAuth, async (req, res) => {
-	const { url, preview } = req.body;
-	let { groupId } = req.params;
-	groupId = parseInt(groupId);
 	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { url, preview } = req.body;
 
 	const group = await Group.findByPk(groupId);
 
@@ -179,11 +178,10 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 });
 
 // === EDIT A GROUP ===
-router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
-	let { groupId } = req.params;
+router.put('/:groupId', requireAuth, validateGroup, async (req, res) => {
 	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
 	const { name, about, type, private, city, state } = req.body;
-	groupId = parseInt(groupId);
 
 	const groupToEdit = await Group.findByPk(groupId);
 
@@ -212,8 +210,7 @@ router.put('/:groupId', requireAuth, validateGroupEdit, async (req, res) => {
 // === DELETE A GROUP ===
 router.delete('/:groupId', requireAuth, async (req, res) => {
 	const { id: currUserId } = req.user;
-	let { groupId } = req.params;
-	groupId = parseInt(groupId);
+	const groupId = parseInt(req.params.groupId);
 
 	const groupToDelete = await Group.findByPk(groupId);
 
@@ -231,6 +228,8 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 		message: 'Successfully deleted',
 	});
 });
+
+// === VENUES ===
 
 // === GET ALL VENUES BY GROUP ID ===
 router.get('/:groupId/venues', requireAuth, async (req, res) => {
@@ -276,12 +275,52 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 	res.json({ Venues: venuesArr });
 });
 
+// === CREATE A NEW VENUE BY GROUP ID ===
+router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { address, city, state, lat, lng } = req.body;
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: currUserId,
+		},
+	});
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (!hasValidRole) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const newVenue = await Venue.create({
+		address,
+		city,
+		state,
+		lat,
+		lng,
+	});
+
+	const newVenuePojo = newVenue.toJSON();
+	delete newVenuePojo.createdAt;
+	delete newVenuePojo.updatedAt;
+
+	res.json(newVenuePojo);
+});
+
 // === EVENTS ===
 
 // === GET ALL EVENTS BY GROUP ID ===
 router.get('/:groupId/events', async (req, res) => {
-	let { groupId } = req.params;
-	groupId = parseInt(groupId);
+	const groupId = parseInt(req.params.groupId);
 
 	const events = await Event.findAll({
 		where: {
