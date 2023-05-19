@@ -245,7 +245,7 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
 		preview,
 	});
 
-	res.json({ url, preview });
+	res.json({ id: newEventImage.id, url, preview });
 });
 
 // === ATTENDEES ===
