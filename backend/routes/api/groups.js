@@ -322,7 +322,11 @@ router.post('/:groupId/events', requireAuth, validateEventCreation, async (req, 
 		endDate,
 	});
 
-	res.json(newEvent);
+	const newEventPojo = newEvent.toJSON();
+	delete newEventPojo.updatedAt;
+	delete newEventPojo.createdAt;
+
+	res.json(newEventPojo);
 });
 
 module.exports = router;
