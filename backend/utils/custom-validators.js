@@ -24,7 +24,7 @@ const validateGroupEdit = [
 	handleValidationErrors,
 ];
 
-const validateEventQueryParams = (req, res) => {
+const validateEventQueryParams = (req, res, next) => {
 	console.log(Op);
 	let { page, size, name, type, startDate } = req.query;
 	const errorResult = { message: 'Bad Request', errors: {} };
@@ -32,10 +32,10 @@ const validateEventQueryParams = (req, res) => {
 	page = parseInt(page);
 	size = parseInt(size);
 
-	if (page < 1) {
+	if (page && page < 1 && page > 10) {
 		errorResult.errors.page = 'Page must be greater than or equal to 1';
 	}
-	if (size < 1) {
+	if (size && size < 1) {
 		errorResult.errors.size = 'Size must be greater than or equal to 1';
 	}
 	if (typeof name !== 'string') {
@@ -48,7 +48,7 @@ const validateEventQueryParams = (req, res) => {
 		errorResult.errors.startDate = 'Start date must be a valid datetime';
 	}
 
-	if (Object.keys(errorResult).length) {
+	if (Object.keys(errorResult.errors).length) {
 		res.status(400);
 		return res.json({ errorResult });
 	}
@@ -59,15 +59,15 @@ const validateEventQueryParams = (req, res) => {
 	};
 
 	const where = {
-		name: {
-			[Op.like]: `${name}`,
-		},
+		name,
 		type,
 		startDate,
 	};
 
 	req.pagination = pagination;
 	req.where = where;
+
+	next();
 };
 
 module.exports = { validateGroupCreation, validateGroupEdit, validateEventQueryParams };

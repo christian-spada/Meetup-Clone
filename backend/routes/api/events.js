@@ -15,9 +15,7 @@ const { entityNotFound } = require('../../utils/helpers');
 const { validateEventQueryParams } = require('../../utils/custom-validators');
 
 // === GET ALL EVENTS ===
-router.get('/', async (req, res) => {
-	validateEventQueryParams(req, res);
-
+router.get('/', validateEventQueryParams, async (req, res) => {
 	const events = await Event.findAll({
 		include: [
 			{
