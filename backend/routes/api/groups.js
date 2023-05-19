@@ -576,4 +576,77 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
 	res.json({ memberId: currUserId, status: 'pending' });
 });
 
+// === CHANGE MEMBERSHIP STATUS ===
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+	const { id: currUserId } = req.user;
+	const groupId = parseInt(req.params.groupId);
+	const { memberId, status } = req.body;
+
+	const user = await User.findByPk(memberId);
+	const membership = await Membership.findOne({
+		where: {
+			userId: memberId,
+		},
+	});
+
+	if (!user) {
+		res.status(400);
+		return res.json({
+			message: 'Validation Error',
+			errors: {
+				memberId: "User couldn't be found",
+			},
+		});
+	}
+
+	if (status === 'pending') {
+		res.status(400);
+		return res.json({
+			message: 'Validations Error',
+			errors: {
+				status: 'Cannot change a membership status to pending',
+			},
+		});
+	}
+
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: memberId,
+		},
+	});
+
+	if (!membershipStatus) {
+		res.status(404);
+		return res.json({
+			message: 'Membership between the user and the group does not exist',
+		});
+	}
+
+	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	const isOrganizer = group.organizerId === currUserId;
+
+	if (!hasValidRole || (!isOrganizer && status === 'co-host')) {
+		return requireAuthorizationResponse(res);
+	}
+
+	const updatedMembership = await membership.update({
+		memberId,
+		status,
+	});
+	const updatedMembershipPojo = updatedMembership.toJSON();
+	delete updatedMembershipPojo.updatedAt;
+	delete updatedMembershipPojo.createdAt;
+
+	res.json(updatedMembershipPojo);
+});
+
 module.exports = router;
