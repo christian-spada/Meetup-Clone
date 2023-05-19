@@ -12,7 +12,7 @@ const {
 } = require('../../db/models');
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
-const { validateGroup, validateVenue } = require('../../utils/custom-validators');
+const { validateGroup, validateVenue, validateEvent } = require('../../utils/custom-validators');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -368,7 +368,7 @@ router.get('/:groupId/events', async (req, res) => {
 });
 
 // === CREATE AN EVENT FOR GROUP BY ID ===
-router.post('/:groupId/events', requireAuth, async (req, res) => {
+router.post('/:groupId/events', requireAuth, validateEvent, async (req, res) => {
 	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 	const { id: currUserId } = req.user;
 	const groupId = parseInt(req.params.groupId);
