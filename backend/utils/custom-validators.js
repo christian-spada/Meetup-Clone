@@ -24,40 +24,41 @@ const validateGroupEdit = [
 ];
 
 // === CREATE AN EVENT BY GROUP ID ===
-const validateEventBody = ({
-	venueId,
-	name,
-	type,
-	capacity,
-	price,
-	description,
-	startDate,
-	endDate,
-}) => {
-	const errorObj = { errors: {}, message: 'Bad Request' };
+const validateEventCreation = (req, res, next) => {
+	const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+	const errorResult = { message: 'Bad Request', errors: {} };
 
-	if (venueId === null) {
-		errorObj.errors.venueId = 'Venue does not exist';
+	if (!venueId) {
+		errorResult.errors.venueId = 'Venue does not exist';
 	}
 	if (name.length < 5) {
-		errorObj.errors.name = 'Name must be at least 5 characters';
+		errorResult.errors.name = 'Name must be at least 5 characters';
 	}
-	if (type !== 'Online' || type !== 'In person') {
-		errorObj.errors.type = 'Type must be Online or In person';
+	if (type !== 'Online' && type !== 'In person') {
+		errorResult.errors.type = 'Type must be Online or In person';
 	}
 	if (typeof capacity !== 'number') {
-		errorObj.errors.capacity = 'Capacity must be an integer';
+		errorResult.errors.capacity = 'Capacity must be an integer';
 	}
 	if (typeof price !== 'number') {
-		errorObj.errors.price = 'Price is invalid';
+		errorResult.errors.price = 'Price is invalid';
 	}
 	if (!description) {
-		errorObj.errors.description = 'Description is required';
+		errorResult.errors.description = 'Description is required';
 	}
-	// how do I know if a dates in the future
-	// if (startDate )
+	if (!startDate) {
+		errorResult.errors.startDate = 'Start date must be in the future';
+	}
+	if (!endDate) {
+		errorResult.errors.endDate = 'End date must less than start date';
+	}
+
+	if (Object.keys(errorResult.errors).length) {
+		errorResult.status = 400;
+		return next(errorResult);
+	}
+
+	next();
 };
 
-const validateEventCreation = [handleValidationErrors];
-
-module.exports = { validateGroupCreation, validateGroupEdit };
+module.exports = { validateGroupCreation, validateGroupEdit, validateEventCreation };
