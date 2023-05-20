@@ -642,7 +642,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 	delete updatedMembershipPojo.updatedAt;
 	delete updatedMembershipPojo.createdAt;
 
-	res.json(updatedMembershipPojo);
+	res.json({ id: updatedMembershipPojo.id, groupId, memberId, status });
 });
 
 module.exports = router;
