@@ -627,7 +627,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 		attributes: ['status'],
 		where: {
 			groupId,
-			userId: memberId,
+			userId: currUserId,
 		},
 	});
 
