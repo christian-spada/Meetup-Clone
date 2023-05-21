@@ -121,8 +121,7 @@ router.get('/:groupId', async (req, res) => {
 		where: { groupId, status: ['host', 'co-host', 'member'] },
 	});
 
-	groupPojo.numMembers = 1;
-	groupPojo.numMembers += numMembers;
+	groupPojo.numMembers = numMembers;
 	res.json(groupPojo);
 });
 
