@@ -516,7 +516,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 		});
 	}
 
-	const isAuthorizedToDelete = memberId === currUserId || membershipToDelete?.status === 'host';
+	const isAuthorizedToDelete = memberId === currUserId || group.organizerId === currUserId;
 
 	if (!isAuthorizedToDelete) {
 		return requireAuthorizationResponse(res);
