@@ -392,6 +392,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 
 	const newAttendancePojo = newAttendance.toJSON();
 	delete newAttendancePojo.id;
+	delete newAttendancePojo.eventId;
 	delete newAttendancePojo.createdAt;
 	delete newAttendancePojo.updatedAt;
 

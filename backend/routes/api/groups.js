@@ -427,7 +427,18 @@ router.get('/:groupId/members', async (req, res) => {
 		return entityNotFound(res, 'Group');
 	}
 
-	if (group.organizerId === currUserId) {
+	const membershipStatus = await Membership.findOne({
+		attributes: ['status'],
+		where: {
+			groupId,
+			userId: currUserId,
+		},
+	});
+
+	const isAuthorizedToSeeAllMembers =
+		group.organizerId === currUserId || membershipStatus?.status === 'co-host';
+
+	if (isAuthorizedToSeeAllMembers) {
 		const members = await Membership.findAll({
 			where: {
 				groupId,
@@ -457,7 +468,7 @@ router.get('/:groupId/members', async (req, res) => {
 			},
 		});
 
-		const allMembersArr = [];
+		const someMembersArr = [];
 		for (const member of members) {
 			const { userId } = member;
 			const user = await User.findByPk(userId);
@@ -471,10 +482,10 @@ router.get('/:groupId/members', async (req, res) => {
 					},
 				};
 
-				allMembersArr.push(userObj);
+				someMembersArr.push(userObj);
 			}
 		}
-		res.json({ Members: allMembersArr });
+		res.json({ Members: someMembersArr });
 	}
 });
 
@@ -516,7 +527,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 		});
 	}
 
-	const isAuthorizedToDelete = memberId === currUserId || membershipToDelete?.status === 'host';
+	const isAuthorizedToDelete = memberId === currUserId || group.organizerId === currUserId;
 
 	if (!isAuthorizedToDelete) {
 		return requireAuthorizationResponse(res);
@@ -582,6 +593,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 	const membership = await Membership.findOne({
 		where: {
 			userId: memberId,
+			groupId,
 		},
 	});
 
@@ -615,7 +627,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 		attributes: ['status'],
 		where: {
 			groupId,
-			userId: memberId,
+			userId: currUserId,
 		},
 	});
 
@@ -642,7 +654,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 	delete updatedMembershipPojo.updatedAt;
 	delete updatedMembershipPojo.createdAt;
 
-	res.json(updatedMembershipPojo);
+	res.json({ id: updatedMembershipPojo.id, groupId, memberId, status });
 });
 
 module.exports = router;

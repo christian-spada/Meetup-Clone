@@ -48,6 +48,7 @@ router.put('/:venueId', requireAuth, validateVenue, async (req, res, next) => {
 	updatedVenuePojo.id = venueToEdit.id;
 	updatedVenuePojo.groupId = venueToEdit.groupId;
 	delete updatedVenuePojo.Group;
+	delete updatedVenuePojo.updatedAt;
 
 	res.json(updatedVenuePojo);
 });
