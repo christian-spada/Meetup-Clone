@@ -11,7 +11,7 @@ const membershipData = [
 	{
 		userId: 1,
 		groupId: 1,
-		status: 'pending',
+		status: 'host',
 	},
 	{
 		userId: 2,
