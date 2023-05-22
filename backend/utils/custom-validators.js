@@ -4,10 +4,10 @@ const validateGroup = (req, res, next) => {
 
 	const errorResult = { message: 'Bad Request', errors: {} };
 
-	if (name.length > 60) {
+	if (name?.length > 60) {
 		errorResult.errors.name = 'Name must be 60 characters or less';
 	}
-	if (about.length < 50) {
+	if (about?.length < 50) {
 		errorResult.errors.about = 'About must be 50 characters or more';
 	}
 	if (type !== 'Online' && type !== 'In person') {
@@ -74,7 +74,7 @@ const validateEvent = (req, res, next) => {
 	if (!venueId) {
 		errorResult.errors.venueId = 'Venue does not exist';
 	}
-	if (name.length < 5) {
+	if (name?.length < 5) {
 		errorResult.errors.name = 'Name must be at least 5 characters';
 	}
 	if (type !== 'Online' && type !== 'In person') {
