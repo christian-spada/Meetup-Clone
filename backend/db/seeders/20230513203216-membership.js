@@ -16,12 +16,12 @@ const membershipData = [
 	{
 		userId: 2,
 		groupId: 2,
-		status: 'member',
+		status: 'host',
 	},
 	{
 		userId: 3,
 		groupId: 3,
-		status: 'co-host',
+		status: 'host',
 	},
 	{
 		userId: 4,
@@ -31,7 +31,7 @@ const membershipData = [
 	{
 		userId: 5,
 		groupId: 5,
-		status: 'member',
+		status: 'host',
 	},
 	{
 		userId: 6,
