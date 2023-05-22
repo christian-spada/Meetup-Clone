@@ -13,6 +13,7 @@ const {
 const { requireAuth, requireAuthorizationResponse } = require('../../utils/auth');
 const { entityNotFound } = require('../../utils/helpers');
 const { validateGroup, validateVenue, validateEvent } = require('../../utils/custom-validators');
+const { Op } = require('sequelize');
 
 // === GET ALL GROUPS ===
 router.get('/', async (req, res) => {
@@ -56,22 +57,31 @@ router.get('/', async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
 	const { id: currUserId } = req.user;
 
-	const groups = await Group.findAll({
-		include: {
-			model: GroupImage,
-			where: {
-				preview: true,
-			},
-			attributes: ['url'],
-			required: false,
-		},
+	const memberships = await Membership.findAll({
 		where: {
-			organizerId: currUserId,
+			userId: currUserId,
+			status: ['member', 'host', 'co-host'],
 		},
 	});
 
 	const groupArr = [];
-	for (const group of groups) {
+	for (const membership of memberships) {
+		const { groupId } = membership;
+
+		const group = await Group.findOne({
+			include: {
+				model: GroupImage,
+				where: {
+					preview: true,
+				},
+				attributes: ['url'],
+				required: false,
+			},
+			where: {
+				id: groupId,
+			},
+		});
+
 		const groupPojo = group.toJSON();
 		const numMembers = await Membership.count({
 			where: {
