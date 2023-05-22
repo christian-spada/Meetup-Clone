@@ -358,6 +358,7 @@ router.get('/:groupId/events', async (req, res) => {
 		const numAttending = await Attendance.count({
 			where: {
 				eventId: event.id,
+				status: ['attending'],
 			},
 		});
 
