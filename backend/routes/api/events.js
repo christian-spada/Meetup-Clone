@@ -165,8 +165,7 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res) => {
 // === DELETE AN EVENT ===
 router.delete('/:eventId', requireAuth, async (req, res) => {
 	const { id: currUserId } = req.user;
-	let { eventId } = req.params;
-	eventId = parseInt(eventId);
+	const eventId = parseInt(req.params.eventId);
 
 	const eventToDelete = await Event.findByPk(eventId, {
 		include: [{ model: Group }],
