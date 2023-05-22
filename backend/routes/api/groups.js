@@ -332,6 +332,12 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
 router.get('/:groupId/events', async (req, res) => {
 	const groupId = parseInt(req.params.groupId);
 
+	const group = await Group.findByPk(groupId);
+
+	if (!group) {
+		return entityNotFound(res, 'Group');
+	}
+
 	const events = await Event.findAll({
 		where: {
 			groupId,
@@ -345,10 +351,6 @@ router.get('/:groupId/events', async (req, res) => {
 			{ model: EventImage },
 		],
 	});
-
-	if (!events.length) {
-		return entityNotFound(res, 'Group');
-	}
 
 	const eventsArr = [];
 	for (const event of events) {
