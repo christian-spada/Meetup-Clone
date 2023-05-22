@@ -643,7 +643,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 		},
 	});
 
-	if (!membershipStatus) {
+	if (!membership) {
 		res.status(404);
 		return res.json({
 			message: 'Membership between the user and the group does not exist',
