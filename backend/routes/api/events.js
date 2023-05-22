@@ -355,7 +355,9 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 		},
 	});
 
-	const hasValidRole = group.organizerId === currUserId || membershipStatus?.status !== 'pending';
+	const validStatuses = ['host', 'co-host', 'member'];
+	const hasValidRole =
+		group.organizerId === currUserId || validStatuses.includes(membershipStatus?.status);
 
 	if (!hasValidRole) {
 		return requireAuthorizationResponse(res);
