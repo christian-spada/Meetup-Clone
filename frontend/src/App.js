@@ -7,6 +7,7 @@ import { restoreUserThunk as restoreUser } from './store/session';
 function App() {
 	const dispatch = useDispatch();
 	const [isLoaded, setIsLoaded] = useState(false);
+
 	useEffect(() => {
 		dispatch(restoreUser()).then(() => setIsLoaded(true));
 	}, [dispatch]);
