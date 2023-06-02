@@ -53,9 +53,7 @@ const ProfileButton = ({ user }) => {
 							{user.firstName} {user.lastName}
 						</li>
 						<li>{user.email}</li>
-						<li>
-							<button onClick={handleLogout}>Log Out</button>
-						</li>
+						<li onClick={handleLogout}>Log Out</li>
 					</>
 				) : (
 					<>
