@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk as login } from '../../store/session';
+import { ErrorView } from '../UtilComponents/ErrorView.js';
 import { Redirect } from 'react-router-dom';
 import './LoginForm.css';
-
-const ErrorView = ({ error }) => {
-	return <p>{error}</p>;
-};
 
 const LoginFormPage = () => {
 	const dispatch = useDispatch();
