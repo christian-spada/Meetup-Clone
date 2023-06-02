@@ -1,0 +1,14 @@
+.fa-user-circle {
+	color: hsl(343, 77%, 51%);
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+.profile-dropdown {
+	width: fit-content;
+	border: 1px solid black;
+}
