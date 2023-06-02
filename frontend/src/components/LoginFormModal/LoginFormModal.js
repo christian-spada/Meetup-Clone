@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginThunk as login } from '../../store/session';
 import { ErrorView } from '../UtilComponents/ErrorView.js';
-import { Redirect } from 'react-router-dom';
 import './LoginForm.css';
+import { useModal } from '../../context/Modal';
 
-const LoginFormPage = () => {
+const LoginFormModal = () => {
 	const dispatch = useDispatch();
-	const sessionUser = useSelector(state => state.session.user);
 	const [credential, setCredential] = useState('');
 	const [password, setPassword] = useState('');
 	const [errors, setErrors] = useState({});
-
-	if (sessionUser) return <Redirect to="/" />;
+	const { closeModal } = useModal();
 
 	const handleSubmit = e => {
 		e.preventDefault();
 		setErrors({});
-		return dispatch(login({ credential, password })).catch(async res => {
-			const data = await res.json();
-			if (data && data.errors) setErrors(data.errors);
-		});
+		return dispatch(login({ credential, password }))
+			.then(closeModal)
+			.catch(async res => {
+				const data = await res.json();
+				if (data && data.errors) {
+					setErrors(data.errors);
+				}
+			});
 	};
 
 	return (
@@ -54,4 +56,4 @@ const LoginFormPage = () => {
 	);
 };
 
-export default LoginFormPage;
+export default LoginFormModal;
