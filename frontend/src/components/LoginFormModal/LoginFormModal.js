@@ -26,33 +26,39 @@ const LoginFormModal = () => {
 	};
 
 	return (
-		<>
-			<h1>Log In</h1>
-			<form onSubmit={handleSubmit}>
-				<label>
-					Username or Email
+		<div className="login-modal">
+			<h1 className="login-title">Log In</h1>
+			<form onSubmit={handleSubmit} className="login-form">
+				<div className="login-input-container">
+					<label htmlFor="credential" className="login-input-label">
+						Username or Email
+					</label>
 					<input
+						id="credential"
 						type="text"
 						value={credential}
 						onChange={e => setCredential(e.target.value)}
 						required
 					/>
-				</label>
-				<label>
-					Password
+				</div>
+				<div className="login-input-container">
+					<label htmlFor="password" className="login-input-label">
+						Password
+					</label>
 					<input
+						id="password"
 						type="password"
 						value={password}
 						onChange={e => setPassword(e.target.value)}
 						required
 					/>
-				</label>
+				</div>
 				{errors.credential && <ErrorView error={errors.credential} />}
 				<button type="submit" className="login-btn">
 					Log In
 				</button>
 			</form>
-		</>
+		</div>
 	);
 };
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 *,
 *::before,
 *::after {
@@ -9,4 +11,14 @@
 
 body {
 	margin: 1rem;
+	font-family: 'Roboto';
+}
+
+.error-view {
+	font-size: 10px;
+	color: rgb(235, 40, 40);
+}
+
+button {
+	cursor: pointer;
 }
