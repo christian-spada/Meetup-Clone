@@ -18,9 +18,7 @@ const Navigation = ({ isLoaded }) => {
 					Start a new group
 				</NavLink>
 				<ul className="header__dropdown-container">
-					<li>
-						<ProfileButton user={sessionUser} />
-					</li>
+					<ProfileButton user={sessionUser} />
 				</ul>
 			</div>
 		);

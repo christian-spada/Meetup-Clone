@@ -1,0 +1,23 @@
+.start-group {
+	width: 75%;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.start-group > section:not(:last-child) {
+	border-bottom: 1px solid black;
+	padding: 1rem;
+}
+
+.start-group > :last-child {
+	padding: 1rem;
+}
+
+.start-group__submit-btn {
+	background-color: hsl(343, 77%, 51%);
+	color: #fff;
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 0.3rem 0.6rem;
+	box-shadow: 2px 2px hsla(0, 0%, 0%, 1);
+}

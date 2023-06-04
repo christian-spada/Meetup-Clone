@@ -45,13 +45,11 @@ const ProfileButton = ({ user }) => {
 				<i className={`fa-solid fa-chevron-${profileArrowDirection} header__profile-btn-arrow`}></i>
 			</div>
 			<ul className={ulClassName} ref={menuRef}>
-				<>
-					<li>Hello, {user.username}</li>
-					<li>{user.email}</li>
-					<li className="header__dropdown-logout-btn" onClick={handleLogout}>
-						Log Out
-					</li>
-				</>
+				<li>Hello, {user.username}</li>
+				<li>{user.email}</li>
+				<li className="header__dropdown-logout-btn" onClick={handleLogout}>
+					Log Out
+				</li>
 			</ul>
 		</>
 	);

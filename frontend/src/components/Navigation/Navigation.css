@@ -4,6 +4,7 @@
 	align-items: center;
 	border-bottom: 1.2px solid rgb(165, 165, 165);
 	padding: 0.8rem;
+	list-style: none;
 }
 
 .header__greetup-home-link {
@@ -77,6 +78,7 @@
 .header__dropdown-container {
 	display: flex;
 	gap: 0.5rem;
+	list-style: none;
 }
 
 .header__dropdown-logout-btn {
