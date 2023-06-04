@@ -43,67 +43,68 @@ const SignupFormModal = () => {
 	};
 
 	return (
-		<>
-			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
-				<label>
-					Email
-					<input type="text" value={email} onChange={e => setEmail(e.target.value)} required />
-				</label>
+		<div className="signup-modal">
+			<h1 className="signup-modal__title">Sign Up</h1>
+			<form className="signup-modal__form" onSubmit={handleSubmit}>
+				<label htmlFor="signup-email">Email</label>
+				<input
+					id="signup-email"
+					type="text"
+					value={email}
+					onChange={e => setEmail(e.target.value)}
+					required
+				/>
 				{errors.email && <ErrorView error={errors.email} />}
-				<label>
-					Username
-					<input
-						type="text"
-						value={username}
-						onChange={e => setUsername(e.target.value)}
-						required
-					/>
-				</label>
+				<label htmlFor="username">Username</label>
+				<input
+					id="username"
+					type="text"
+					value={username}
+					onChange={e => setUsername(e.target.value)}
+					required
+				/>
 				{errors.username && <ErrorView error={errors.username} />}
-				<label>
-					First Name
-					<input
-						type="text"
-						value={firstName}
-						onChange={e => setFirstName(e.target.value)}
-						required
-					/>
-				</label>
+				<label htmlFor="first-name">First Name</label>
+				<input
+					id="first-name"
+					type="text"
+					value={firstName}
+					onChange={e => setFirstName(e.target.value)}
+					required
+				/>
 				{errors.firstName && <ErrorView error={errors.firstName} />}
-				<label>
-					Last Name
-					<input
-						type="text"
-						value={lastName}
-						onChange={e => setLastName(e.target.value)}
-						required
-					/>
-				</label>
+				<label htmlFor="last-name">Last Name</label>
+				<input
+					id="last-name"
+					type="text"
+					value={lastName}
+					onChange={e => setLastName(e.target.value)}
+					required
+				/>
 				{errors.lastName && <ErrorView error={errors.lastName} />}
-				<label>
-					Password
-					<input
-						type="password"
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-						required
-					/>
-				</label>
+				<label htmlFor="signup-password">Password</label>
+				<input
+					id="signup-password"
+					type="password"
+					value={password}
+					onChange={e => setPassword(e.target.value)}
+					required
+				/>
 				{errors.password && <ErrorView error={errors.password} />}
-				<label>
-					Confirm Password
-					<input
-						type="password"
-						value={confirmPassword}
-						onChange={e => setConfirmPassword(e.target.value)}
-						required
-					/>
-				</label>
+				<label htmlFor="signup-confirm-password">Confirm Password</label>
+				<input
+					id="signup-confirm-password"
+					type="password"
+					value={confirmPassword}
+					onChange={e => setConfirmPassword(e.target.value)}
+					required
+				/>
 				{errors.confirmPassword && <ErrorView error={errors.confirmPassword} />}
-				<button type="submit">Sign Up</button>
+				<button className="signup-modal__signup-btn" type="submit">
+					Sign Up
+				</button>
 			</form>
-		</>
+		</div>
 	);
 };
 

@@ -1,3 +1,31 @@
+.login-modal {
+	/* padding: 2rem; */
+	text-align: center;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.login-title {
+	font-size: 1rem;
+	margin-bottom: 1rem;
+}
+
+.login-input-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+}
+
+.login-input-label {
+	margin-right: 1rem;
+	font-size: 10px;
+	text-align: left;
+}
+
 .login-btn {
 	background-color: hsl(343, 77%, 51%);
 	color: #fff;

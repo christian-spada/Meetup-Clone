@@ -1,3 +1,16 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1.2px solid rgb(165, 165, 165);
+	padding: 0.8rem;
+}
+
+.header__greetup-home-link {
+	font-weight: 900;
+	color: hsl(343, 77%, 51%);
+}
+
 .fa-user-circle {
 	color: hsl(343, 77%, 51%);
 	font-size: 20px;
@@ -8,9 +21,60 @@
 	display: none;
 }
 
+.header__action-btn-container {
+	display: flex;
+	gap: 1rem;
+	font-size: 8px;
+	align-items: center;
+}
+
+.header__action-btn-container > li {
+	cursor: pointer;
+}
+
+.header__action-btn:last-child {
+	padding: 0.3rem 0.6rem;
+	border-radius: 5px;
+	color: #fff;
+	background-color: hsl(188, 96%, 28%);
+}
+
+.header__profile-container {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.header__start-group {
+	font-size: 10px;
+}
+
+.header__profile-btn {
+	margin-right: 5px;
+}
+
+.header__profile-btn-arrow {
+	cursor: pointer;
+	color: rgb(189, 189, 189);
+}
+
 .profile-dropdown {
 	width: fit-content;
 	box-shadow: 1px 1px 7px 0px rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 	padding: 0.5rem;
+	font-size: 12px;
+	position: absolute;
+	right: 1rem;
+	top: 2.5rem;
+	z-index: 10;
+}
+
+.header__dropdown-container {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.header__dropdown-logout-btn {
+	border-top: 1px solid black;
 }
