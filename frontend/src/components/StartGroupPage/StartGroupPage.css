@@ -7,6 +7,9 @@
 .start-group > section:not(:last-child) {
 	border-bottom: 1px solid black;
 	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .start-group > :last-child {
@@ -20,4 +23,14 @@
 	border-radius: 3px;
 	padding: 0.3rem 0.6rem;
 	box-shadow: 2px 2px hsla(0, 0%, 0%, 1);
+}
+
+.start-group__group-desc-prompts {
+	margin-left: 1rem;
+}
+
+.start-group input,
+textarea {
+	border: 2px solid black;
+	box-shadow: 1px 1px hsla(0, 0%, 0%, 1);
 }

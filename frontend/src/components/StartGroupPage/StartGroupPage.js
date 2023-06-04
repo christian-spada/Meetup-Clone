@@ -32,7 +32,7 @@ const StartGroupPage = () => {
 					People will see this when we promote your group, but you'll be able to add to it later,
 					too.
 				</p>
-				<ol>
+				<ol className="start-group__group-desc-prompts">
 					<li>What's the purpose of the group?</li>
 					<li> Who should join?</li>
 					<li>What will you do at your events?</li>
@@ -54,6 +54,10 @@ const StartGroupPage = () => {
 						<option value="private">Private</option>
 						<option value="public">Public</option>
 					</select>
+				</div>
+				<div className="start-group__group-img-input">
+					<p>Please add an image url for your group below:</p>
+					<input placeholder="Image Url"></input>
 				</div>
 			</section>
 			<section className="start-group__submission-section">
