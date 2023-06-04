@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { logoutThunk as logout } from '../../store/session';
-import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
 
 const ProfileButton = ({ user }) => {
 	const dispatch = useDispatch();
@@ -40,6 +37,7 @@ const ProfileButton = ({ user }) => {
 
 	const ulClassName = 'profile-dropdown' + (showMenu ? '' : ' hidden');
 	const profileArrowDirection = showMenu ? 'up' : 'down';
+
 	return (
 		<>
 			<i className="fas fa-user-circle header__profile-btn" onClick={openMenu}></i>
@@ -48,29 +46,13 @@ const ProfileButton = ({ user }) => {
 				onClick={openMenu}
 			></i>
 			<ul className={ulClassName} ref={menuRef}>
-				{user ? (
-					<>
-						<li>Hello, {user.username}</li>
-						<li>{user.email}</li>
-						<li className="header__dropdown-logout-btn" onClick={handleLogout}>
-							Log Out
-						</li>
-					</>
-				) : (
-					<>
-						<OpenModalMenuItem
-							itemText="Log In"
-							onItemClick={closeMenu}
-							modalComponent={<LoginFormModal />}
-						/>
-
-						<OpenModalMenuItem
-							itemText="Sign Up"
-							onItemClick={closeMenu}
-							modalComponent={<SignupFormModal />}
-						/>
-					</>
-				)}
+				<>
+					<li>Hello, {user.username}</li>
+					<li>{user.email}</li>
+					<li className="header__dropdown-logout-btn" onClick={handleLogout}>
+						Log Out
+					</li>
+				</>
 			</ul>
 		</>
 	);

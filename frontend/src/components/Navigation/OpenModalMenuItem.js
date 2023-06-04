@@ -15,7 +15,11 @@ const OpenModalMenuItem = ({
 		if (onItemClick) onItemClick();
 	};
 
-	return <li onClick={onClick}>{itemText}</li>;
+	return (
+		<li className="header__action-btn" onClick={onClick}>
+			{itemText}
+		</li>
+	);
 };
 
 export default OpenModalMenuItem;
