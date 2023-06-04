@@ -40,11 +40,10 @@ const ProfileButton = ({ user }) => {
 
 	return (
 		<>
-			<i className="fas fa-user-circle header__profile-btn" onClick={openMenu}></i>
-			<i
-				className={`fa-solid fa-chevron-${profileArrowDirection} header__profile-btn-arrow`}
-				onClick={openMenu}
-			></i>
+			<div className="header__profile-btn-container" onClick={openMenu}>
+				<i className="fas fa-user-circle header__profile-btn"></i>
+				<i className={`fa-solid fa-chevron-${profileArrowDirection} header__profile-btn-arrow`}></i>
+			</div>
 			<ul className={ulClassName} ref={menuRef}>
 				<>
 					<li>Hello, {user.username}</li>

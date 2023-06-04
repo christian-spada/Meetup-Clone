@@ -14,7 +14,9 @@ const Navigation = ({ isLoaded }) => {
 	if (sessionUser) {
 		sessionLinks = (
 			<div className="header__profile-container">
-				<p className="header__start-group">Start a new group</p>
+				<NavLink to="/groups/new" className="header__start-group">
+					Start a new group
+				</NavLink>
 				<ul className="header__dropdown-container">
 					<li>
 						<ProfileButton user={sessionUser} />

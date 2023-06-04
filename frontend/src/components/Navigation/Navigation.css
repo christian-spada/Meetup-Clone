@@ -45,8 +45,13 @@
 	gap: 1rem;
 }
 
+.header__profile-btn-container {
+	cursor: pointer;
+}
+
 .header__start-group {
 	font-size: 10px;
+	cursor: pointer;
 }
 
 .header__profile-btn {
@@ -54,7 +59,6 @@
 }
 
 .header__profile-btn-arrow {
-	cursor: pointer;
 	color: rgb(189, 189, 189);
 }
 
