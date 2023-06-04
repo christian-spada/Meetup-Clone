@@ -39,19 +39,22 @@ const ProfileButton = ({ user }) => {
 	};
 
 	const ulClassName = 'profile-dropdown' + (showMenu ? '' : ' hidden');
-
+	const profileArrowDirection = showMenu ? 'up' : 'down';
 	return (
 		<>
-			<i className="fas fa-user-circle" onClick={openMenu}></i>
+			<i className="fas fa-user-circle header__profile-btn" onClick={openMenu}></i>
+			<i
+				className={`fa-solid fa-chevron-${profileArrowDirection} header__profile-btn-arrow`}
+				onClick={openMenu}
+			></i>
 			<ul className={ulClassName} ref={menuRef}>
 				{user ? (
 					<>
-						<li>{user.username}</li>
-						<li>
-							{user.firstName} {user.lastName}
-						</li>
+						<li>Hello, {user.username}</li>
 						<li>{user.email}</li>
-						<li onClick={handleLogout}>Log Out</li>
+						<li className="header__dropdown-logout-btn" onClick={handleLogout}>
+							Log Out
+						</li>
 					</>
 				) : (
 					<>
