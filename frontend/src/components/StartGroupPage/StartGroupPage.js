@@ -1,6 +1,19 @@
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import './StartGroupPage.css';
 
 const StartGroupPage = () => {
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const [location, setLocation] = useState('');
+	const [name, setName] = useState('');
+	const [desc, setDesc] = useState('');
+	const [groupType, setGroupType] = useState('(select one)');
+	const [groupStatus, setGroupStatus] = useState('(select one)');
+	const [imgUrl, setImgUrl] = useState('');
+
+	const handleGroupSubmit = e => {};
 	return (
 		<div className="start-group">
 			<section className="start-group__heading">
@@ -13,7 +26,12 @@ const StartGroupPage = () => {
 					Meetup groups meet locally, in person and online. We'll connect you with people in your
 					area, and more can join you online.
 				</p>
-				<input className="start-group__location-input" placeholder="City, STATE"></input>
+				<input
+					className="start-group__location-input"
+					placeholder="City, STATE"
+					value={location}
+					onChange={e => setLocation(e.target.value)}
+				></input>
 			</section>
 			<section className="start-group__group-name-input-section">
 				<h3>What will your group's name be?</h3>
@@ -24,6 +42,8 @@ const StartGroupPage = () => {
 				<input
 					className="start-group__group-name-input"
 					placeholder="What is your group name?"
+					value={name}
+					onChange={e => setName(e.target.value)}
 				></input>
 			</section>
 			<section className="start-group__group-desc-input-section">
@@ -37,31 +57,51 @@ const StartGroupPage = () => {
 					<li> Who should join?</li>
 					<li>What will you do at your events?</li>
 				</ol>
-				<textarea placeholder="Please write at least 30 characters" cols="35" rows="10"></textarea>
+				<textarea
+					placeholder="Please write at least 30 characters"
+					cols="35"
+					rows="10"
+					value={desc}
+					onChange={e => setDesc(e.target.value)}
+				></textarea>
 			</section>
 			<section className="start-group__final-steps-section">
 				<h3>Final steps...</h3>
 				<div className="start-group__group-type-container">
 					<p>Is this an in person or online group?</p>
-					<select className="start-group__group-type-input">
-						<option value="online">Online</option>
-						<option value="in-person">In Person</option>
+					<select
+						className="start-group__group-type-input"
+						value={groupType}
+						onChange={e => setGroupType(e.target.value)}
+					>
+						<option value={groupType}>Online</option>
+						<option value={groupType}>In Person</option>
 					</select>
 				</div>
 				<div className="start-group__group-status-container">
 					<p>Is this group private or public?</p>
-					<select className="start-group__group-status-input">
-						<option value="private">Private</option>
-						<option value="public">Public</option>
+					<select
+						className="start-group__group-status-input"
+						value={groupStatus}
+						onChange={e => setGroupStatus(e.target.value)}
+					>
+						<option value={groupStatus}>Private</option>
+						<option value={groupStatus}>Public</option>
 					</select>
 				</div>
 				<div className="start-group__group-img-input">
 					<p>Please add an image url for your group below:</p>
-					<input placeholder="Image Url"></input>
+					<input
+						placeholder="Image Url"
+						value={imgUrl}
+						onChange={e => setImgUrl(e.target.value)}
+					></input>
 				</div>
 			</section>
 			<section className="start-group__submission-section">
-				<button className="start-group__submit-btn">Create Group</button>
+				<button className="start-group__submit-btn" onClick={handleGroupSubmit}>
+					Create Group
+				</button>
 			</section>
 		</div>
 	);
