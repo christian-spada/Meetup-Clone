@@ -70,6 +70,14 @@ export const createGroupThunk = (group, image) => async dispatch => {
 
 const initalState = {};
 
+const normalizeData = data => {
+	const normalized = {};
+	for (const obj of data) {
+		normalized[obj.id] = obj;
+	}
+	return normalized;
+};
+
 const groupsReducer = (state = initalState, action) => {
 	switch (action.type) {
 		case CREATE_GROUP:
@@ -80,7 +88,7 @@ const groupsReducer = (state = initalState, action) => {
 		case GET_ALL_GROUPS:
 			return {
 				...state,
-				allGroups: action.payload,
+				allGroups: normalizeData(action.payload),
 			};
 		case ADD_GROUP_IMAGE:
 			return {
