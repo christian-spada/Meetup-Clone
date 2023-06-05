@@ -20,6 +20,16 @@ const createGroup = group => {
 };
 
 // === THUNKS ===
+export const getAllGroupsThunk = groups => async dispatch => {
+	const res = await csrfFetch('/api/groups');
+
+	if (res.ok) {
+		const groups = await res.json();
+		dispatch(getAllGroups(groups));
+		return groups;
+	}
+};
+
 export const createGroupThunk = group => async dispatch => {
 	const res = await csrfFetch('/api/groups', {
 		method: 'POST',
