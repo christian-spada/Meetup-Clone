@@ -4,7 +4,7 @@ import './GroupsListPage.css';
 const GroupCard = ({ group }) => {
 	const history = useHistory();
 
-	const handleGroupClick = e => {
+	const handleGroupClick = () => {
 		history.push(`/groups/${group.id}`);
 	};
 

@@ -1,0 +1,21 @@
+.group-details__group-section {
+	display: flex;
+	justify-content: center;
+	margin-top: 3rem;
+}
+
+.group-details__group-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.group-details__group-status-container {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.group-details__group-image {
+	width: 100%;
+	height: 100%;
+}
