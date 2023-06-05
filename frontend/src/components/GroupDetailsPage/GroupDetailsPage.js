@@ -36,8 +36,8 @@ const GroupDetailsPage = () => {
 						alt="img"
 					></img>
 				</div>
-				<div className="group-details__group-info">
-					<div>
+				<div className="group-details__group-info-container">
+					<div className="group-details__group-info">
 						<h2>{groupToDisplay.name}</h2>
 						<p>
 							{groupToDisplay.city}, {groupToDisplay.state}
@@ -49,7 +49,7 @@ const GroupDetailsPage = () => {
 						</div>
 						<p>Organized by first last</p>
 					</div>
-					<button>Join this group</button>
+					<button className="group-details__join-group-btn">Join this group</button>
 				</div>
 			</section>
 		</div>
