@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginThunk as login } from '../../store/session';
 import { ErrorView } from '../UtilComponents/ErrorView.js';
@@ -6,6 +7,7 @@ import './LoginForm.css';
 import { useModal } from '../../context/Modal';
 
 const LoginFormModal = () => {
+	const history = useHistory();
 	const dispatch = useDispatch();
 	const [credential, setCredential] = useState('');
 	const [password, setPassword] = useState('');
@@ -16,7 +18,10 @@ const LoginFormModal = () => {
 		e.preventDefault();
 		setErrors({});
 		return dispatch(login({ credential, password }))
-			.then(closeModal)
+			.then(() => {
+				closeModal();
+				history.push('/');
+			})
 			.catch(async res => {
 				const data = await res.json();
 				if (data && data.errors) {
