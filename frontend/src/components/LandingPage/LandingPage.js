@@ -1,7 +1,10 @@
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import './LandingPage.css';
+import { useSelector } from 'react-redux';
 
 const LandingPage = () => {
+	const userSession = useSelector(state => state.session.user);
+
 	return (
 		<div className="main-content">
 			<section className="main-content__title-section">
@@ -46,7 +49,11 @@ const LandingPage = () => {
 							src="https://secure.meetupstatic.com/next/images/shared/joinGroup.svg?w=384"
 							alt="img"
 						></img>
-						<NavLink to="/groups/new">Start a new group</NavLink>
+						{userSession ? (
+							<NavLink to="/groups/new">Start a new group</NavLink>
+						) : (
+							<p className="main-content__start-group-link-disabled">Start a new group</p>
+						)}
 						<p>Lorem ipsum dolor sit amet consectetur</p>
 					</div>
 				</div>

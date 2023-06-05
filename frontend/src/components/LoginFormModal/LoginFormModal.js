@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginThunk as login } from '../../store/session';
@@ -59,7 +59,7 @@ const LoginFormModal = () => {
 					/>
 				</div>
 				{errors.credential && <ErrorView error={errors.credential} />}
-				<button type="submit" className="login-btn">
+				<button type="submit" className="login-btn" disabled={Object.keys(errors).length > 0}>
 					Log In
 				</button>
 			</form>
