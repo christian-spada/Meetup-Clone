@@ -42,7 +42,12 @@ const StartGroupPage = () => {
 			state,
 		};
 
-		const res = await dispatch(createGroup(newGroup));
+		const newGroupImg = {
+			url: imgUrl,
+			preview: true,
+		};
+
+		const res = await dispatch(createGroup(newGroup, newGroupImg));
 
 		if (res.id) {
 			history.push(`/groups/${res.id}`);

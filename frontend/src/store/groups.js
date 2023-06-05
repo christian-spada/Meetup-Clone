@@ -44,8 +44,6 @@ export const addImageToGroupThunk = (image, groupId) => async dispatch => {
 
 	if (imgRes.ok) {
 		const img = await imgRes.json();
-		img.preview = true;
-		console.log(img);
 		dispatch(addGroupImage(img));
 		return img;
 	}
@@ -83,7 +81,10 @@ const groupsReducer = (state = initalState, action) => {
 		case CREATE_GROUP:
 			return {
 				...state,
-				singleGroup: action.payload,
+				allGroups: {
+					...state.allGroups,
+					[action.payload.id]: action.payload,
+				},
 			};
 		case GET_ALL_GROUPS:
 			return {
