@@ -15,12 +15,12 @@
 	gap: 0.9rem;
 }
 
-.active {
+.groups-view__title-container .active {
 	color: teal;
 	text-decoration: underline;
 }
 
-.inactive {
+.groups-view__title-container .inactive {
 	color: rgb(110, 110, 110);
 }
 
