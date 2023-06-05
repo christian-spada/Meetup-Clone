@@ -47,7 +47,6 @@ const StartGroupPage = () => {
 		if (res.id) {
 			history.push(`/groups/${res.id}`);
 		}
-		console.log('response', res);
 	};
 	return (
 		<div className="start-group">
@@ -93,7 +92,7 @@ const StartGroupPage = () => {
 					<li>What will you do at your events?</li>
 				</ol>
 				<textarea
-					placeholder="Please write at least 30 characters"
+					placeholder="Please write at least 50 characters"
 					cols="35"
 					rows="10"
 					value={desc}
