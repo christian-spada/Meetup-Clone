@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { createGroupThunk as createGroup } from '../../store/groups';
 import './StartGroupPage.css';
 
 const StartGroupPage = () => {
@@ -9,11 +10,34 @@ const StartGroupPage = () => {
 	const [location, setLocation] = useState('');
 	const [name, setName] = useState('');
 	const [desc, setDesc] = useState('');
-	const [groupType, setGroupType] = useState('(select one)');
-	const [groupStatus, setGroupStatus] = useState('(select one)');
+	const [groupType, setGroupType] = useState('In person');
+	const [groupStatus, setGroupStatus] = useState('Private');
 	const [imgUrl, setImgUrl] = useState('');
+	const [errors, setErrors] = useState({});
 
-	const handleGroupSubmit = e => {};
+	// useEffect(() => {
+
+	// })
+
+	const handleGroupSubmit = async e => {
+		const [city, state] = location.split(', ');
+
+		const newGroup = {
+			name,
+			about: desc,
+			type: groupType,
+			private: groupStatus === 'Private' ? true : false,
+			city,
+			state,
+		};
+
+		const res = await dispatch(createGroup(newGroup));
+
+		if (res.id) {
+			history.push(`/groups/${res.id}`);
+		}
+		console.log('response', res);
+	};
 	return (
 		<div className="start-group">
 			<section className="start-group__heading">
@@ -74,8 +98,8 @@ const StartGroupPage = () => {
 						value={groupType}
 						onChange={e => setGroupType(e.target.value)}
 					>
-						<option value={groupType}>Online</option>
-						<option value={groupType}>In Person</option>
+						<option value="Online">Online</option>
+						<option value="In person">In Person</option>
 					</select>
 				</div>
 				<div className="start-group__group-status-container">
@@ -85,8 +109,8 @@ const StartGroupPage = () => {
 						value={groupStatus}
 						onChange={e => setGroupStatus(e.target.value)}
 					>
-						<option value={groupStatus}>Private</option>
-						<option value={groupStatus}>Public</option>
+						<option value="Private">Private</option>
+						<option value="Public">Public</option>
 					</select>
 				</div>
 				<div className="start-group__group-img-input">
