@@ -29,6 +29,10 @@
 	align-items: center;
 }
 
+.main-content__cards-container > div a {
+	text-decoration: underline;
+}
+
 .main-content__join-meetup-section {
 	grid-column: span 2;
 	margin: 0 auto;
@@ -40,4 +44,8 @@
 	color: #fff;
 	border: 1px solid black;
 	box-shadow: 2px 1px 0 0 black;
+}
+
+.main-content__start-group-link-disabled {
+	color: gray;
 }
