@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createGroupThunk as createGroup } from '../../store/groups';
+import { ErrorView } from '../UtilComponents/ErrorView';
 import './StartGroupPage.css';
 
 const StartGroupPage = () => {
@@ -15,9 +16,19 @@ const StartGroupPage = () => {
 	const [imgUrl, setImgUrl] = useState('');
 	const [errors, setErrors] = useState({});
 
-	// useEffect(() => {
+	useEffect(() => {
+		const validation = {};
 
-	// })
+		if (!location) {
+			validation.location = 'Location is required';
+		}
+		if (!name) {
+			validation.name = 'Name is required';
+		}
+		if (desc.length < 30) {
+			validation.desc = 'Description must be at least 30 characters long';
+		}
+	});
 
 	const handleGroupSubmit = async e => {
 		const [city, state] = location.split(', ');

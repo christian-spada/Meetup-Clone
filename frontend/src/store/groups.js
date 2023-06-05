@@ -29,6 +29,13 @@ export const createGroupThunk = group => async dispatch => {
 	if (res.ok) {
 		const newGroup = await res.json();
 		dispatch(createGroup(newGroup));
+
+		// add image to group
+		const imgRes = await csrfFetch(`/api/${newGroup.id}/images`, {
+			method: 'POST',
+			body: JSON.stringify(),
+		});
+
 		return newGroup;
 	}
 };
