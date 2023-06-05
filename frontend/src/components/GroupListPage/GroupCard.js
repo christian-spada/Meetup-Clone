@@ -11,16 +11,15 @@ const GroupCard = ({ group }) => {
 				/>
 			</div>
 			<div className="card__info-container">
-				<h2 className="card__title">Group Name</h2>
-				<p>Location</p>
+				<h2 className="card__title">{group.name}</h2>
 				<p>
-					Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem
-					ipsum Lorem ipsum Lorem ipsum
+					{group.city}, {group.state}
 				</p>
+				<p>{group.about}</p>
 				<div className="card__status-info">
 					<p>## events</p>
-					<span>*</span>
-					<p>Public</p>
+					<span>•</span>
+					<p>{group.private ? 'Private' : 'Public'}</p>
 				</div>
 			</div>
 		</div>

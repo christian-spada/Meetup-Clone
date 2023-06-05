@@ -1,10 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllGroupsThunk as getAllGroups } from '../../store/groups';
 import GroupCard from './GroupCard';
 import './GroupsListPage.css';
 
 const GroupsListPage = () => {
+	const dispatch = useDispatch();
+	const allGroups = useSelector(state => state.groups.allGroups);
 	const [currentSelection, setCurrentSelection] = useState('');
+
+	let allGroupsArr;
+	if (allGroups) allGroupsArr = Object.values(allGroups);
+
+	useEffect(() => {
+		dispatch(getAllGroups());
+	}, []);
+
 	return (
 		<div className="groups-view">
 			<section className="groups-view__group-event-selection-section">
@@ -27,9 +39,9 @@ const GroupsListPage = () => {
 				<p>{currentSelection} in Meetup</p>
 			</section>
 			<section className="groups-view__list">
-				{[1, 2, 3].map(el => {
-					return <GroupCard />;
-				})}
+				{allGroupsArr?.map(group => (
+					<GroupCard key={group.id} group={group} />
+				))}
 			</section>
 		</div>
 	);

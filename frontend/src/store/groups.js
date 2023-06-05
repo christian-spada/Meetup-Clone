@@ -20,14 +20,12 @@ const createGroup = group => {
 };
 
 // === THUNKS ===
-export const getAllGroupsThunk = groups => async dispatch => {
+export const getAllGroupsThunk = () => async dispatch => {
 	const res = await csrfFetch('/api/groups');
 
-	if (res.ok) {
-		const groups = await res.json();
-		dispatch(getAllGroups(groups));
-		return groups;
-	}
+	const data = await res.json();
+	dispatch(getAllGroups(data.Groups));
+	return data.Groups;
 };
 
 export const createGroupThunk = group => async dispatch => {
@@ -54,6 +52,14 @@ export const createGroupThunk = group => async dispatch => {
 
 const initalState = {};
 
+const normalizeData = data => {
+	const normalized = {};
+	for (const obj of data) {
+		normalized[obj.id] = obj;
+	}
+	return normalized;
+};
+
 const groupsReducer = (state = initalState, action) => {
 	switch (action.type) {
 		case CREATE_GROUP:
@@ -64,7 +70,7 @@ const groupsReducer = (state = initalState, action) => {
 		case GET_ALL_GROUPS:
 			return {
 				...state,
-				allGroups: action.payload,
+				allGroups: normalizeData(action.payload),
 			};
 		default:
 			return state;
