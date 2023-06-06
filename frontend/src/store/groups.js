@@ -4,8 +4,7 @@ import { normalizeData } from './storeUtils';
 // === ACTIONS ===
 
 const GET_ALL_GROUPS = 'groups/getAllGroups';
-const CREATE_GROUP = 'groups/createGroup';
-const ADD_GROUP_IMAGE = 'groups/addGroupImage';
+const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 
 const getAllGroups = groups => {
 	return {
@@ -14,21 +13,15 @@ const getAllGroups = groups => {
 	};
 };
 
-const createGroup = group => {
+const getSingleGroup = group => {
 	return {
-		type: CREATE_GROUP,
+		type: GET_SINGLE_GROUP,
 		payload: group,
 	};
 };
 
-const addGroupImage = image => {
-	return {
-		type: ADD_GROUP_IMAGE,
-		payload: image,
-	};
-};
-
 // === THUNKS ===
+
 export const getAllGroupsThunk = () => async dispatch => {
 	const res = await csrfFetch('/api/groups');
 
@@ -37,16 +30,14 @@ export const getAllGroupsThunk = () => async dispatch => {
 	return data.Groups;
 };
 
-export const addImageToGroupThunk = (image, groupId) => async dispatch => {
-	const imgRes = await csrfFetch(`/api/groups/${groupId}/images`, {
-		method: 'POST',
-		body: JSON.stringify(image),
-	});
+export const getSingleGroupThunk = groupId => async dispatch => {
+	const res = await csrfFetch(`/api/groups/${groupId}`);
 
-	if (imgRes.ok) {
-		const img = await imgRes.json();
-		dispatch(addGroupImage(img));
-		return img;
+	if (res.ok) {
+		const group = await res.json();
+
+		dispatch(getSingleGroup([group]));
+		return group;
 	}
 };
 
@@ -58,8 +49,11 @@ export const createGroupThunk = (group, image) => async dispatch => {
 
 	if (res.ok) {
 		const newGroup = await res.json();
-		dispatch(createGroup(newGroup));
-		dispatch(addImageToGroupThunk(image, newGroup.id));
+
+		await csrfFetch(`/api/groups/${newGroup.id}/images`, {
+			method: 'POST',
+			body: JSON.stringify(image),
+		});
 
 		return newGroup;
 	}
@@ -71,16 +65,17 @@ const initialState = {};
 
 const groupsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case CREATE_GROUP:
-			return {
-				...state,
-				singleGroup: action.payload,
-			};
 		case GET_ALL_GROUPS:
 			return {
 				...state,
 				allGroups: normalizeData(action.payload),
 			};
+		case GET_SINGLE_GROUP:
+			return {
+				...state,
+				singleGroup: normalizeData(action.payload),
+			};
+
 		default:
 			return state;
 	}

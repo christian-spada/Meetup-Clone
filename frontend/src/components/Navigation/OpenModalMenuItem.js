@@ -6,6 +6,7 @@ const OpenModalMenuItem = ({
 	itemText, // text of the menu item that opens the modal
 	onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
 	onModalClose, // optional: callback function that will be called once the modal is closed
+	className,
 }) => {
 	const { setModalContent, setOnModalClose } = useModal();
 
@@ -16,7 +17,7 @@ const OpenModalMenuItem = ({
 	};
 
 	return (
-		<li className="header__action-btn" onClick={onClick}>
+		<li className={className} style={{ display: 'inline' }} onClick={onClick}>
 			{itemText}
 		</li>
 	);
