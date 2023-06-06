@@ -8,7 +8,7 @@ import './GroupsListPage.css';
 const GroupsListPage = () => {
 	const dispatch = useDispatch();
 	const allGroups = useSelector(state => state.groups.allGroups);
-	const [currentSelection, setCurrentSelection] = useState('');
+	const [currentSelection, setCurrentSelection] = useState('Groups');
 
 	useEffect(() => {
 		dispatch(getAllGroups());
