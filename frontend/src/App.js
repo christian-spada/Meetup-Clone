@@ -8,6 +8,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import GroupsListPage from './components/GroupListPage/GroupsListPage';
 import EventsListPage from './components/EventsListPage/EventsListPage';
 import GroupDetailsPage from './components/GroupDetailsPage/GroupDetailsPage';
+import ManageGroupsPage from './components/ManageGroupsPage/ManageGroupsPage';
 
 function App() {
 	const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
 					</Route>
 					<Route path="/groups/new">
 						<StartGroupPage />
+					</Route>
+					<Route path="/groups/current">
+						<ManageGroupsPage />
 					</Route>
 					<Route path="/groups/:groupId">
 						<GroupDetailsPage />

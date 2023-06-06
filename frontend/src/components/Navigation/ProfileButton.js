@@ -37,7 +37,10 @@ const ProfileButton = ({ user }) => {
 		history.push('/');
 	};
 
-	const handleYourGroupsClick = e => {};
+	const handleYourGroupsClick = e => {
+		closeMenu();
+		history.push('/groups/current');
+	};
 
 	const ulClassName = 'profile-dropdown' + (showMenu ? '' : ' hidden');
 	const profileArrowDirection = showMenu ? 'up' : 'down';

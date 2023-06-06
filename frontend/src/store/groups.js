@@ -21,6 +21,7 @@ const getSingleGroup = group => {
 };
 
 // === THUNKS ===
+
 export const getAllGroupsThunk = () => async dispatch => {
 	const res = await csrfFetch('/api/groups');
 
