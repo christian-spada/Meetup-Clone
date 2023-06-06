@@ -27,7 +27,11 @@ const Navigation = ({ isLoaded }) => {
 			<div className="header__action-btn-container">
 				<OpenModalMenuItem itemText="Log In" modalComponent={<LoginFormModal />} />
 
-				<OpenModalMenuItem itemText="Sign Up" modalComponent={<SignupFormModal />} />
+				<OpenModalMenuItem
+					className="header__action-btn"
+					itemText="Sign Up"
+					modalComponent={<SignupFormModal />}
+				/>
 			</div>
 		);
 	}

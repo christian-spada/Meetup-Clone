@@ -35,7 +35,7 @@ function App() {
 					<Route path="/groups/current">
 						<ManageGroupsPage />
 					</Route>
-					<Route path="/groups/:groupId">
+					<Route exact path="/groups/:groupId">
 						<GroupDetailsPage />
 					</Route>
 					<Route exact path="/events">

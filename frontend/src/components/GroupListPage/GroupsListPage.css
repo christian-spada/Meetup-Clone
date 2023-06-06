@@ -68,7 +68,8 @@
 	gap: 0.5rem;
 }
 
-.card__host-btns > button,
+.card__host-btns > li,
+.card__host-btns > a,
 .card__member-btn {
 	padding: 0.3rem 0.6rem;
 	border: none;
@@ -87,5 +88,5 @@
 }
 
 .card__member-btn {
-	background-color: hsl(188, 96%, 28%);
+	background-color: hsl(343, 77%, 51%);
 }

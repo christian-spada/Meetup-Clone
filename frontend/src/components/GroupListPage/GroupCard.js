@@ -3,13 +3,22 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './GroupsListPage.css';
 import { csrfFetch } from '../../store/csrf';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
+import { Link } from 'react-router-dom';
 
 const GroupCard = ({ group, isMemberPage }) => {
 	const history = useHistory();
 	const [memberStatus, setMemberStatus] = useState('');
 	const user = useSelector(state => state.session.user);
 
-	const handleGroupClick = () => {
+	const handleGroupClick = ({ target }) => {
+		const isActionBtn =
+			target.innerText === 'Update' ||
+			target.innerText === 'Delete' ||
+			target.innerText === 'Unjoin';
+		if (isActionBtn) return;
+
 		history.push(`/groups/${group.id}`);
 	};
 
@@ -27,8 +36,14 @@ const GroupCard = ({ group, isMemberPage }) => {
 		memberStatus === 'host'
 			? (memberBtns = (
 					<div className="card__host-btns">
-						<button className="card__update-btn">Update</button>
-						<button className="card__delete-btn">Delete</button>
+						<Link to={`/groups/${group.id}/edit`} className="card__update-btn">
+							Update
+						</Link>
+						<OpenModalMenuItem
+							className="card__delete-btn"
+							itemText="Delete"
+							modalComponent={<ConfirmDeleteModal />}
+						/>
 					</div>
 			  ))
 			: (memberBtns = (
