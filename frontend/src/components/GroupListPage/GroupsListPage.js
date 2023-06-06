@@ -10,12 +10,19 @@ const GroupsListPage = () => {
 	const allGroups = useSelector(state => state.groups.allGroups);
 	const [currentSelection, setCurrentSelection] = useState('');
 
-	let allGroupsArr;
-	if (allGroups) allGroupsArr = Object.values(allGroups);
-
 	useEffect(() => {
 		dispatch(getAllGroups());
 	}, []);
+
+	if (!allGroups) {
+		return (
+			<div className="groups-view">
+				<h3>Loading...</h3>
+			</div>
+		);
+	}
+
+	const allGroupsArr = Object.values(allGroups);
 
 	return (
 		<div className="groups-view">
