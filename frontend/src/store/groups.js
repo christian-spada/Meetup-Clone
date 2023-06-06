@@ -6,11 +6,19 @@ import { normalizeData } from './storeUtils';
 const GET_ALL_GROUPS = 'groups/getAllGroups';
 const CREATE_GROUP = 'groups/createGroup';
 const ADD_GROUP_IMAGE = 'groups/addGroupImage';
+const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 
 const getAllGroups = groups => {
 	return {
 		type: GET_ALL_GROUPS,
 		payload: groups,
+	};
+};
+
+const getSingleGroup = group => {
+	return {
+		type: GET_SINGLE_GROUP,
+		payload: group,
 	};
 };
 
@@ -81,6 +89,7 @@ const groupsReducer = (state = initialState, action) => {
 				...state,
 				allGroups: normalizeData(action.payload),
 			};
+
 		default:
 			return state;
 	}
