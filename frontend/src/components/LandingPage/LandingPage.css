@@ -42,8 +42,9 @@
 	padding: 0.3rem 0.6rem;
 	background-color: hsl(188, 96%, 28%);
 	color: #fff;
-	border: 1px solid black;
-	box-shadow: 2px 1px 0 0 black;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .main-content__start-group-link-disabled {
