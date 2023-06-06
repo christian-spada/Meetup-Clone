@@ -6,6 +6,7 @@ import { restoreUserThunk as restoreUser } from './store/session';
 import StartGroupPage from './components/StartGroupPage/StartGroupPage';
 import LandingPage from './components/LandingPage/LandingPage';
 import GroupsListPage from './components/GroupListPage/GroupsListPage';
+import EventsListPage from './components/EventsListPage/EventsListPage';
 import GroupDetailsPage from './components/GroupDetailsPage/GroupDetailsPage';
 
 function App() {
@@ -32,6 +33,9 @@ function App() {
 					</Route>
 					<Route path="/groups/:groupId">
 						<GroupDetailsPage />
+					</Route>
+					<Route exact path="/events">
+						<EventsListPage />
 					</Route>
 				</Switch>
 			)}
