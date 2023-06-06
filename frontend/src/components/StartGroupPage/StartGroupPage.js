@@ -25,13 +25,15 @@ const StartGroupPage = () => {
 		if (!name) {
 			validation.name = 'Name is required';
 		}
-		if (desc.length < 30) {
+		if (desc.length < 50) {
 			validation.desc = 'Description must be at least 30 characters long';
 		}
 	});
 
 	const handleGroupSubmit = async e => {
 		const [city, state] = location.split(', ');
+
+		const newImg = { url: imgUrl, preview: true };
 
 		const newGroup = {
 			name,
@@ -42,12 +44,7 @@ const StartGroupPage = () => {
 			state,
 		};
 
-		const newGroupImg = {
-			url: imgUrl,
-			preview: true,
-		};
-
-		const res = await dispatch(createGroup(newGroup, newGroupImg));
+		const res = await dispatch(createGroup(newGroup, newImg));
 
 		if (res.id) {
 			history.push(`/groups/${res.id}`);
