@@ -12,7 +12,7 @@ const GroupsListPage = () => {
 
 	useEffect(() => {
 		dispatch(getAllGroups());
-	}, []);
+	}, [dispatch]);
 
 	if (!allGroups) {
 		return (
