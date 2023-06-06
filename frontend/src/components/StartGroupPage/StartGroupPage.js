@@ -25,13 +25,15 @@ const StartGroupPage = () => {
 		if (!name) {
 			validation.name = 'Name is required';
 		}
-		if (desc.length < 30) {
+		if (desc.length < 50) {
 			validation.desc = 'Description must be at least 30 characters long';
 		}
 	});
 
 	const handleGroupSubmit = async e => {
 		const [city, state] = location.split(', ');
+
+		const newImg = { url: imgUrl, preview: true };
 
 		const newGroup = {
 			name,
@@ -42,12 +44,11 @@ const StartGroupPage = () => {
 			state,
 		};
 
-		const res = await dispatch(createGroup(newGroup));
+		const res = await dispatch(createGroup(newGroup, newImg));
 
 		if (res.id) {
 			history.push(`/groups/${res.id}`);
 		}
-		console.log('response', res);
 	};
 	return (
 		<div className="start-group">
@@ -93,7 +94,7 @@ const StartGroupPage = () => {
 					<li>What will you do at your events?</li>
 				</ol>
 				<textarea
-					placeholder="Please write at least 30 characters"
+					placeholder="Please write at least 50 characters"
 					cols="35"
 					rows="10"
 					value={desc}
