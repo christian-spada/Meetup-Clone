@@ -4,12 +4,12 @@ import './EventsListPage.css';
 export const EventCard = ({ event }) => {
 	const history = useHistory();
 
-	const handleGroupClick = () => {
+	const handleEventClick = () => {
 		history.push(`/events/${event.id}`);
 	};
 
 	return (
-		<div className="card" onClick={handleGroupClick}>
+		<div className="card" onClick={handleEventClick}>
 			<div className="card__img-container">
 				<img
 					className="card__img"
@@ -18,11 +18,12 @@ export const EventCard = ({ event }) => {
 				/>
 			</div>
 			<div className="card__info-container">
+				<span>{event.startDate}</span>
 				<h2 className="card__title">{event.name}</h2>
 				<p className="card__location">
 					{event.city}, {event.state}
 				</p>
-				<p className="card__group-about">{event.about}</p>
+				<p className="card__event-about">{event.about}</p>
 				<div className="card__status-info">
 					<p>## events</p>
 					<span>•</span>
