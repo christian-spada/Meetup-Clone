@@ -1,15 +1,15 @@
 import { useHistory } from 'react-router-dom';
-import './GroupsListPage.css';
+import './EventsListPage.css';
 
-const GroupCard = ({ group }) => {
+export const EventCard = ({ event }) => {
 	const history = useHistory();
 
-	const handleGroupClick = () => {
-		history.push(`/groups/${group.id}`);
+	const handleEventClick = () => {
+		history.push(`/events/${event.id}`);
 	};
 
 	return (
-		<div className="card" onClick={handleGroupClick}>
+		<div className="card" onClick={handleEventClick}>
 			<div className="card__img-container">
 				<img
 					className="card__img"
@@ -18,19 +18,18 @@ const GroupCard = ({ group }) => {
 				/>
 			</div>
 			<div className="card__info-container">
-				<h2 className="card__title">{group.name}</h2>
+				<span>{event.startDate}</span>
+				<h2 className="card__title">{event.name}</h2>
 				<p className="card__location">
-					{group.city}, {group.state}
+					{event.city}, {event.state}
 				</p>
-				<p className="card__group-about">{group.about}</p>
+				<p className="card__event-about">{event.about}</p>
 				<div className="card__status-info">
 					<p>## events</p>
 					<span>•</span>
-					<p>{group.private ? 'Private' : 'Public'}</p>
+					<p>{event.private ? 'Private' : 'Public'}</p>
 				</div>
 			</div>
 		</div>
 	);
 };
-
-export default GroupCard;

@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { normalizeData } from './storeUtils';
 
 // === ACTIONS ===
 
@@ -66,17 +67,9 @@ export const createGroupThunk = (group, image) => async dispatch => {
 
 // === REDUCER ===
 
-const initalState = {};
+const initialState = {};
 
-const normalizeData = data => {
-	const normalized = {};
-	for (const obj of data) {
-		normalized[obj.id] = obj;
-	}
-	return normalized;
-};
-
-const groupsReducer = (state = initalState, action) => {
+const groupsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case CREATE_GROUP:
 			return {

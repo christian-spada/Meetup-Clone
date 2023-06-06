@@ -1,0 +1,40 @@
+.group-details__group-section {
+	display: flex;
+	justify-content: center;
+	margin-top: 3rem;
+	gap: 2rem;
+}
+
+.group-details__group-info-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.group-details__group-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.group-details__group-status-container {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.group-details__breadcrumb {
+	margin-bottom: 1rem;
+}
+
+.group-details__group-image {
+	width: 100%;
+	height: 100%;
+}
+
+.group-details__join-group-btn {
+	background-color: hsl(343, 77%, 51%);
+	color: #fff;
+	padding: 0.3rem 0.3rem;
+	border-radius: 5px;
+	border: none;
+}
