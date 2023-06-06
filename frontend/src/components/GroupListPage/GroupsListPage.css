@@ -36,6 +36,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	flex-grow: 1;
 }
 
 .card__img-container {
@@ -57,8 +58,34 @@
 	font-size: 10px;
 }
 
-.card__status-info {
+.card__btn-row {
+	display: flex;
+	justify-content: space-between;
+}
+
+.card__event-visibility-info {
 	display: flex;
 	gap: 0.5rem;
-	color: rgb(110, 110, 110);
+}
+
+.card__host-btns > button,
+.card__member-btn {
+	padding: 0.3rem 0.6rem;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+	margin-right: 0.5rem;
+}
+
+.card__update-btn {
+	background-color: hsl(188, 96%, 28%);
+}
+
+.card__delete-btn {
+	background-color: hsl(343, 77%, 51%);
+}
+
+.card__member-btn {
+	background-color: hsl(188, 96%, 28%);
 }

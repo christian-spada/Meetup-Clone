@@ -26,14 +26,14 @@ const GroupCard = ({ group, isMemberPage }) => {
 	if (isMemberPage) {
 		memberStatus === 'host'
 			? (memberBtns = (
-					<div>
-						<button>Update</button>
-						<button>Delete</button>
+					<div className="card__host-btns">
+						<button className="card__update-btn">Update</button>
+						<button className="card__delete-btn">Delete</button>
 					</div>
 			  ))
 			: (memberBtns = (
 					<div>
-						<button>Unjoin</button>
+						<button className="card__member-btn">Unjoin</button>
 					</div>
 			  ));
 	}
@@ -53,10 +53,12 @@ const GroupCard = ({ group, isMemberPage }) => {
 					{group.city}, {group.state}
 				</p>
 				<p className="card__group-about">{group.about}</p>
-				<div className="card__status-info">
-					<p>## events</p>
-					<span>•</span>
-					<p>{group.private ? 'Private' : 'Public'}</p>
+				<div className="card__btn-row">
+					<div className="card__event-visibility-info">
+						<span>## events</span>
+						<span>•</span>
+						<span>{group.private ? 'Private' : 'Public'}</span>
+					</div>
 					{memberBtns}
 				</div>
 			</div>
