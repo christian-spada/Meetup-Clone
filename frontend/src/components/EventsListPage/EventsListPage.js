@@ -1,33 +1,33 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllGroupsThunk as getAllGroups } from '../../store/groups';
-import GroupCard from './GroupCard';
-import './GroupsListPage.css';
+import './EventsListPage.css';
+import { getAllEventsThunk as getAllEvents } from '../../store/events';
+import { EventCard } from './EventCard';
 
-const GroupsListPage = () => {
+const EventsListPage = () => {
 	const dispatch = useDispatch();
-	const allGroups = useSelector(state => state.groups.allGroups);
-	const [currentSelection, setCurrentSelection] = useState('Groups');
+	const allEvents = useSelector(state => state.events.allEvents);
+	const [currentSelection, setCurrentSelection] = useState('Events');
 
 	useEffect(() => {
-		dispatch(getAllGroups());
+		dispatch(getAllEvents());
 	}, [dispatch]);
 
-	if (!allGroups) {
+	if (!allEvents) {
 		return (
-			<div className="groups-view">
+			<div className="events-view">
 				<h3>Loading...</h3>
 			</div>
 		);
 	}
 
-	const allGroupsArr = Object.values(allGroups);
+	const allEventsArr = Object.values(allEvents);
 
 	return (
-		<div className="groups-view">
-			<section className="groups-view__group-event-selection-section">
-				<div className="groups-view__title-container">
+		<div className="events-view">
+			<section className="events-view__group-event-selection-section">
+				<div className="events-view__title-container">
 					<NavLink
 						to="/events"
 						className={isActive => (isActive ? 'active' : 'inactive')}
@@ -45,13 +45,13 @@ const GroupsListPage = () => {
 				</div>
 				<p>{currentSelection} in Meetup</p>
 			</section>
-			<section className="groups-view__list">
-				{allGroupsArr?.map(group => (
-					<GroupCard key={group.id} group={group} />
+			<section className="events-view__list">
+				{allEventsArr?.map(event => (
+					<EventCard key={event.id} event={event} />
 				))}
 			</section>
 		</div>
 	);
 };
 
-export default GroupsListPage;
+export default EventsListPage;
