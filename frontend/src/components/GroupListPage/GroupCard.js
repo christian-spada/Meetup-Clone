@@ -1,12 +1,42 @@
 import { useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import './GroupsListPage.css';
+import { csrfFetch } from '../../store/csrf';
 
-const GroupCard = ({ group }) => {
+const GroupCard = ({ group, isMemberPage }) => {
 	const history = useHistory();
+	const [memberStatus, setMemberStatus] = useState('');
+	const user = useSelector(state => state.session.user);
 
 	const handleGroupClick = () => {
 		history.push(`/groups/${group.id}`);
 	};
+
+	useEffect(() => {
+		if (isMemberPage) {
+			csrfFetch(`/api/groups/${group.id}/members`)
+				.then(res => res.json())
+				.then(data => data.Members.filter(member => member.id === user.id)[0])
+				.then(userMemberData => setMemberStatus(userMemberData.Membership.status));
+		}
+	}, []);
+
+	let memberBtns;
+	if (isMemberPage) {
+		memberStatus === 'host'
+			? (memberBtns = (
+					<div>
+						<button>Update</button>
+						<button>Delete</button>
+					</div>
+			  ))
+			: (memberBtns = (
+					<div>
+						<button>Unjoin</button>
+					</div>
+			  ));
+	}
 
 	return (
 		<div className="card" onClick={handleGroupClick}>
@@ -27,6 +57,7 @@ const GroupCard = ({ group }) => {
 					<p>## events</p>
 					<span>•</span>
 					<p>{group.private ? 'Private' : 'Public'}</p>
+					{memberBtns}
 				</div>
 			</div>
 		</div>
