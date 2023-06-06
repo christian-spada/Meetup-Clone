@@ -37,6 +37,8 @@ const ProfileButton = ({ user }) => {
 		history.push('/');
 	};
 
+	const handleYourGroupsClick = e => {};
+
 	const ulClassName = 'profile-dropdown' + (showMenu ? '' : ' hidden');
 	const profileArrowDirection = showMenu ? 'up' : 'down';
 
@@ -49,6 +51,7 @@ const ProfileButton = ({ user }) => {
 			<ul className={ulClassName} ref={menuRef}>
 				<li>Hello, {user.username}</li>
 				<li>{user.email}</li>
+				<li onClick={handleYourGroupsClick}>Your groups</li>
 				<li className="header__dropdown-logout-btn" onClick={handleLogout}>
 					Log Out
 				</li>
