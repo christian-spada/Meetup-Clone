@@ -89,6 +89,10 @@ const groupsReducer = (state = initialState, action) => {
 				...state,
 				allGroups: normalizeData(action.payload),
 			};
+		case GET_SINGLE_GROUP:
+			return {
+				...state,
+			};
 
 		default:
 			return state;
