@@ -38,3 +38,14 @@
 	border-radius: 5px;
 	border: none;
 }
+
+.group-details__more-details-section {
+	margin-top: 2rem;
+	padding: 1rem 5rem;
+	background-color: rgb(221, 221, 221);
+}
+
+.group-details__more-details-container {
+	width: 50%;
+	margin: 0 auto;
+}

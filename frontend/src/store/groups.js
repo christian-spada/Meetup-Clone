@@ -29,6 +29,17 @@ export const getAllGroupsThunk = () => async dispatch => {
 	return data.Groups;
 };
 
+export const getSingleGroupThunk = groupId => async dispatch => {
+	const res = await csrfFetch(`/api/groups/${groupId}`);
+
+	if (res.ok) {
+		const group = await res.json();
+
+		dispatch(getSingleGroup([group]));
+		return group;
+	}
+};
+
 export const createGroupThunk = (group, image) => async dispatch => {
 	const res = await csrfFetch('/api/groups', {
 		method: 'POST',
@@ -61,6 +72,7 @@ const groupsReducer = (state = initialState, action) => {
 		case GET_SINGLE_GROUP:
 			return {
 				...state,
+				singleGroup: normalizeData(action.payload),
 			};
 
 		default:
