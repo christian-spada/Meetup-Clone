@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { useDispatch, useSelector } from 'react-redux';
 import './EventsListPage.css';
 import { getAllEventsThunk as getAllEvents } from '../../store/events';
+import { EventCard } from './EventCard';
 
 const EventsListPage = () => {
 	const dispatch = useDispatch();
@@ -45,7 +46,9 @@ const EventsListPage = () => {
 				<p>{currentSelection} in Meetup</p>
 			</section>
 			<section className="events-view__list">
-				{allEventsArr?.map(group => console.log(group))}
+				{allEventsArr?.map(event => (
+					<EventCard key={event.id} event={event} />
+				))}
 			</section>
 		</div>
 	);
