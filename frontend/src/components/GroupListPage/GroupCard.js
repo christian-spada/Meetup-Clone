@@ -19,10 +19,10 @@ const GroupCard = ({ group }) => {
 			</div>
 			<div className="card__info-container">
 				<h2 className="card__title">{group.name}</h2>
-				<p>
+				<p className="card__location">
 					{group.city}, {group.state}
 				</p>
-				<p>{group.about}</p>
+				<p className="card__group-about">{group.about}</p>
 				<div className="card__status-info">
 					<p>## events</p>
 					<span>•</span>
