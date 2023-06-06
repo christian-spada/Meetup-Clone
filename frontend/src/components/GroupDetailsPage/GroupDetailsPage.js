@@ -16,7 +16,7 @@ const GroupDetailsPage = () => {
 
 	useEffect(() => {
 		dispatch(getAllGroups());
-	}, []);
+	}, [dispatch]);
 
 	if (!groupToDisplay) return <h3>Loading...</h3>;
 
