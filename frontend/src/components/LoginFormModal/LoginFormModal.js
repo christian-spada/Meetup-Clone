@@ -30,6 +30,21 @@ const LoginFormModal = () => {
 			});
 	};
 
+	// useEffect(() => {
+	// 	const validation = {};
+
+	// 	if (credential.length < 4) {
+	// 		validation.username = 'Username must be at least 4 characters';
+	// 	}
+	// 	if (password.length < 6) {
+	// 		validation.password = 'Password must be at least 6 characters';
+	// 	}
+
+	// 	if (Object.keys(validation).length) {
+	// 		setErrors(validation);
+	// 	}
+	// }, [credential.length, password.length]);
+
 	return (
 		<div className="login-modal">
 			<h1 className="login-title">Log In</h1>
@@ -46,6 +61,7 @@ const LoginFormModal = () => {
 						required
 					/>
 				</div>
+				{/* {errors.username && <ErrorView error={errors.username} />} */}
 				<div className="login-input-container">
 					<label htmlFor="password" className="login-input-label">
 						Password
@@ -58,6 +74,7 @@ const LoginFormModal = () => {
 						required
 					/>
 				</div>
+				{/* {errors.password && <ErrorView error={errors.password} />} */}
 				{errors.credential && <ErrorView error={errors.credential} />}
 				<button type="submit" className="login-btn" disabled={Object.keys(errors).length > 0}>
 					Log In
