@@ -56,9 +56,9 @@ export const getSingleEventThunk = eventId => async dispatch => {
 	}
 };
 
-export const createEventThunk = event => async dispatch => {
+export const createEventThunk = (event, groupId) => async dispatch => {
 	try {
-		const res = await csrfFetch('/api/events', {
+		const res = await csrfFetch(`/api/groups/${groupId}/events`, {
 			method: 'POST',
 			body: JSON.stringify(event),
 		});
