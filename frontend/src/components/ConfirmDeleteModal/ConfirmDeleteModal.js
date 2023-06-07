@@ -2,8 +2,7 @@ import { deleteGroupThunk as deleteGroup } from '../../store/groups';
 import './ConfirmDeleteModal.css';
 
 const ConfirmDeleteModal = ({ groupToDelete }) => {
-	const handleDelete = e => {
-		console.log(groupToDelete);
+	const handleDelete = async e => {
 		deleteGroup(groupToDelete);
 	};
 

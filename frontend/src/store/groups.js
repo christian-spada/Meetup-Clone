@@ -6,6 +6,7 @@ import { normalizeData } from './storeUtils';
 const GET_ALL_GROUPS = 'groups/getAllGroups';
 const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 const CREATE_GROUP = 'groups/createGroup';
+const DELETE_GROUP = 'groups/deleteGroup';
 
 const getAllGroups = groups => {
 	return {
@@ -24,6 +25,13 @@ const getSingleGroup = group => {
 const createGroup = group => {
 	return {
 		type: CREATE_GROUP,
+		payload: group,
+	};
+};
+
+const deleteGroup = group => {
+	return {
+		type: DELETE_GROUP,
 		payload: group,
 	};
 };
@@ -73,14 +81,14 @@ export const createGroupThunk = (group, image) => async dispatch => {
 	}
 };
 
-export const deleteGroupThunk = group => async dispatch => {
-	const res = await csrfFetch(`/api/groups/${group.id}`, {
-		method: 'POST',
+export const deleteGroupThunk = groupToDelete => async dispatch => {
+	const res = await csrfFetch(`/api/groups/${groupToDelete.id}`, {
+		method: 'DELETE',
 	});
 
 	if (res.ok) {
 		const message = await res.json();
-		console.log(message);
+		dispatch(deleteGroup(groupToDelete));
 
 		return message;
 	}
@@ -108,7 +116,15 @@ const groupsReducer = (state = initialState, action) => {
 				...state,
 				allGroups: { ...state.allGroups, ...newGroup },
 			};
-
+		case DELETE_GROUP:
+			const newState = {
+				...state,
+				allGroups: { ...state.allGroups },
+				singleGroup: { ...state.singleGroup },
+			};
+			delete newState.allGroups[action.payload.id];
+			delete newState.singleGroup[action.payload.id];
+			return newState;
 		default:
 			return state;
 	}
