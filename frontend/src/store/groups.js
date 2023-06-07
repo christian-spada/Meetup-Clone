@@ -122,7 +122,7 @@ const groupsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				allGroups: { ...state.allGroups, ...updatedGroup },
-				singleGroup: { ...state.singleGroup, ...updateGroup },
+				singleGroup: { ...state.singleGroup, ...updatedGroup },
 			};
 
 		default:
