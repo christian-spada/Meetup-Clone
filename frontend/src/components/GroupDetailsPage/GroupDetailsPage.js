@@ -1,9 +1,11 @@
-import { NavLink, useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { NavLink, useParams } from 'react-router-dom';
 import './GroupDetailsPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getSingleGroupThunk as getSingleGroup } from '../../store/groups';
 import { setMembershipStatus } from '../../utils/fetch-helpers';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
 
 const GroupDetailsPage = () => {
 	const dispatch = useDispatch();
@@ -22,6 +24,23 @@ const GroupDetailsPage = () => {
 	setMembershipStatus(groupId, user, setMemberStatus);
 
 	const { firstName, lastName } = group.Organizer;
+
+	let actionBtns;
+	if (memberStatus === 'host') {
+		actionBtns = (
+			<div className="group-details__action-btns">
+				<NavLink to={`/groups/${groupId}/events`}>Create Event</NavLink>
+				<NavLink to={`/groups/${groupId}/edit`}>Update</NavLink>
+				<OpenModalMenuItem
+					className="card__delete-btn"
+					itemText="Delete"
+					modalComponent={<ConfirmDeleteModal groupToDelete={group} />}
+				/>
+			</div>
+		);
+	} else if (memberStatus === undefined) {
+		actionBtns = <button className="group-details__join-group-btn">Join this group</button>;
+	}
 
 	return (
 		<div className="group-details">
@@ -53,8 +72,8 @@ const GroupDetailsPage = () => {
 						<p>
 							Organized by {firstName} {lastName}
 						</p>
+						{actionBtns}
 					</div>
-					<button className="group-details__join-group-btn">Join this group</button>
 				</div>
 			</section>
 			<section className="group-details__more-details-section">
