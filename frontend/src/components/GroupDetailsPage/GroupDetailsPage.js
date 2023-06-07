@@ -8,7 +8,7 @@ import { setMembershipStatus } from '../../utils/fetch-helpers';
 const GroupDetailsPage = () => {
 	const dispatch = useDispatch();
 	const { groupId } = useParams();
-	const groupData = useSelector(state => state.groups.singleGroup);
+	const group = useSelector(state => state.groups.singleGroup);
 	const [memberStatus, setMemberStatus] = useState('');
 	const user = useSelector(state => state.session.user);
 
@@ -16,9 +16,8 @@ const GroupDetailsPage = () => {
 		dispatch(getSingleGroup(groupId));
 	}, [dispatch]);
 
-	if (!groupData) return <h3>Loading...</h3>;
-
-	const group = Object.values(groupData)[0];
+	console.log(group);
+	if (!Object.values(group).length) return <h3>Loading...</h3>;
 
 	setMembershipStatus(groupId, user, setMemberStatus);
 

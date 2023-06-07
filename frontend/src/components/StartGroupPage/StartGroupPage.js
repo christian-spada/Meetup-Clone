@@ -63,6 +63,8 @@ const StartGroupPage = () => {
 
 		if (res.id) {
 			history.push(`/groups/${res.id}`);
+		} else {
+			setErrors(res.errors);
 		}
 	};
 	return (
