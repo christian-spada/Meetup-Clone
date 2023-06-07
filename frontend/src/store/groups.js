@@ -5,6 +5,7 @@ import { normalizeData } from './storeUtils';
 
 const GET_ALL_GROUPS = 'groups/getAllGroups';
 const GET_SINGLE_GROUP = 'groups/getSingleGroup';
+const CREATE_GROUP = 'groups/createGroup';
 
 const getAllGroups = groups => {
 	return {
@@ -16,6 +17,13 @@ const getAllGroups = groups => {
 const getSingleGroup = group => {
 	return {
 		type: GET_SINGLE_GROUP,
+		payload: group,
+	};
+};
+
+const createGroup = group => {
+	return {
+		type: CREATE_GROUP,
 		payload: group,
 	};
 };
@@ -50,10 +58,16 @@ export const createGroupThunk = (group, image) => async dispatch => {
 	if (res.ok) {
 		const newGroup = await res.json();
 
-		await csrfFetch(`/api/groups/${newGroup.id}/images`, {
+		const imgRes = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
 			method: 'POST',
 			body: JSON.stringify(image),
 		});
+
+		const img = await imgRes.json();
+
+		newGroup.GroupImages = [img];
+
+		dispatch(createGroup([newGroup]));
 
 		return newGroup;
 	}
@@ -87,6 +101,12 @@ const groupsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				singleGroup: normalizeData(action.payload),
+			};
+		case CREATE_GROUP:
+			const newGroup = normalizeData(action.payload);
+			return {
+				...state,
+				allGroups: { ...state.allGroups, ...newGroup },
 			};
 
 		default:
