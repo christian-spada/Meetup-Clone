@@ -41,10 +41,10 @@ const StartGroupPage = () => {
 	}, [desc.length, name, location, imgUrl, groupType, groupStatus, validation]);
 
 	const handleGroupSubmit = async e => {
-		// if (Object.keys(validation).length) {
-		// 	setErrors(validation);
-		// 	// return;
-		// }
+		if (Object.keys(validation).length) {
+			setErrors(validation);
+			return;
+		}
 
 		const [city, state] = location.split(', ');
 
@@ -119,7 +119,7 @@ const StartGroupPage = () => {
 					value={desc}
 					onChange={e => setDesc(e.target.value)}
 				></textarea>
-				{errors.about && <ErrorView error={errors.about} />}
+				{errors.desc && <ErrorView error={errors.desc} />}
 			</section>
 			<section className="start-group__final-steps-section">
 				<h3>Final steps...</h3>

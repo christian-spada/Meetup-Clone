@@ -16,8 +16,6 @@ const GroupDetailsPage = () => {
 	console.log(group);
 	if (!Object.values(group).length) return <h3>Loading...</h3>;
 
-	// const group = Object.values(groupData)[0];
-
 	const { firstName, lastName } = group.Organizer;
 
 	return (
