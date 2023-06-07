@@ -7,6 +7,7 @@ const GET_ALL_GROUPS = 'groups/getAllGroups';
 const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 const CREATE_GROUP = 'groups/createGroup';
 const DELETE_GROUP = 'groups/deleteGroup';
+const UPDATE_GROUP = 'groups/updateGroup';
 
 const getAllGroups = groups => {
 	return {
@@ -36,6 +37,12 @@ const deleteGroup = group => {
 	};
 };
 
+const updateGroup = group => {
+	return {
+		type: UPDATE_GROUP,
+		payload: group,
+	};
+};
 // === THUNKS ===
 
 export const getAllGroupsThunk = () => async dispatch => {
@@ -52,18 +59,18 @@ export const getSingleGroupThunk = groupId => async dispatch => {
 	if (res.ok) {
 		const group = await res.json();
 
-		dispatch(getSingleGroup([group]));
+		dispatch(getSingleGroup(group));
 		return group;
 	}
 };
 
 export const createGroupThunk = (group, image) => async dispatch => {
-	const res = await csrfFetch('/api/groups', {
-		method: 'POST',
-		body: JSON.stringify(group),
-	});
+	try {
+		const res = await csrfFetch('/api/groups', {
+			method: 'POST',
+			body: JSON.stringify(group),
+		});
 
-	if (res.ok) {
 		const newGroup = await res.json();
 
 		const imgRes = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
@@ -78,6 +85,23 @@ export const createGroupThunk = (group, image) => async dispatch => {
 		dispatch(createGroup([newGroup]));
 
 		return newGroup;
+	} catch (err) {
+		const errors = await err.json();
+		return errors;
+	}
+};
+
+export const updateGroupThunk = (newGroup, groupId) => async dispatch => {
+	const res = await csrfFetch(`/api/groups/${groupId}`, {
+		method: 'PUT',
+		body: JSON.stringify(newGroup),
+	});
+
+	if (res.ok) {
+		const updatedGroup = await res.json();
+		dispatch(updateGroup(updatedGroup));
+
+		return updatedGroup;
 	}
 };
 
@@ -99,7 +123,7 @@ export const deleteGroupThunk = groupToDelete => async dispatch => {
 
 // === REDUCER ===
 
-const initialState = {};
+const initialState = { allGroups: {}, singleGroup: {} };
 
 const groupsReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -111,7 +135,7 @@ const groupsReducer = (state = initialState, action) => {
 		case GET_SINGLE_GROUP:
 			return {
 				...state,
-				singleGroup: normalizeData(action.payload),
+				singleGroup: action.payload,
 			};
 		case CREATE_GROUP:
 			const newGroup = normalizeData(action.payload);
@@ -128,6 +152,16 @@ const groupsReducer = (state = initialState, action) => {
 			console.log(newState);
 			delete newState.allGroups[action.payload.id];
 			return newState;
+		case UPDATE_GROUP:
+			return {
+				...state,
+				allGroups: {
+					...state.allGroups,
+					[action.payload.id]: { ...state.allGroups[action.payload.id], ...action.payload },
+				},
+				singleGroup: { ...state.singleGroup, ...action.payload },
+			};
+
 		default:
 			return state;
 	}
