@@ -85,7 +85,10 @@ const eventsReducer = (state = initialState, action) => {
 				allEvents: normalizeData(action.payload.Events),
 			};
 		case GET_SINGLE_EVENT:
-			return {};
+			return {
+				...state,
+				singleEvent: action.payload,
+			};
 		case CREATE_EVENT:
 			const newEvent = normalizeData(action.payload);
 			return {
