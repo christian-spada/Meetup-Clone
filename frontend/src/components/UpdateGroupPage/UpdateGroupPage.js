@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ErrorView } from '../UtilComponents/ErrorView';
 import './UpdateGroupPage.css';
-import { updateGroupThunk as updateGroup } from '../../store/groups';
+import {
+	updateGroupThunk as updateGroup,
+	getSingleGroupThunk as getSingleGroup,
+} from '../../store/groups';
 import { useParams } from 'react-router-dom';
 
 const UpdateGroupPage = () => {
@@ -18,6 +21,10 @@ const UpdateGroupPage = () => {
 	const [groupStatus, setGroupStatus] = useState('');
 	const [errors, setErrors] = useState({});
 	const validation = {};
+
+	useEffect(() => {
+		dispatch(getSingleGroup(groupId));
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (user === null) {

@@ -41,10 +41,10 @@ const StartGroupPage = () => {
 	}, [desc.length, name, location, imgUrl, groupType, groupStatus, validation]);
 
 	const handleGroupSubmit = async e => {
-		if (Object.keys(validation).length) {
-			setErrors(validation);
-			return;
-		}
+		// if (Object.keys(validation).length) {
+		// 	setErrors(validation);
+		// 	// return;
+		// }
 
 		const [city, state] = location.split(', ');
 
@@ -63,6 +63,8 @@ const StartGroupPage = () => {
 
 		if (res.id) {
 			history.push(`/groups/${res.id}`);
+		} else {
+			setErrors(res.errors);
 		}
 	};
 	return (
@@ -117,7 +119,7 @@ const StartGroupPage = () => {
 					value={desc}
 					onChange={e => setDesc(e.target.value)}
 				></textarea>
-				{errors.desc && <ErrorView error={errors.desc} />}
+				{errors.about && <ErrorView error={errors.about} />}
 			</section>
 			<section className="start-group__final-steps-section">
 				<h3>Final steps...</h3>

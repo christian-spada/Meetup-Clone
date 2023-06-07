@@ -7,15 +7,16 @@ import { getSingleGroupThunk as getSingleGroup } from '../../store/groups';
 const GroupDetailsPage = () => {
 	const dispatch = useDispatch();
 	const { groupId } = useParams();
-	const groupData = useSelector(state => state.groups.singleGroup);
+	const group = useSelector(state => state.groups.singleGroup);
 
 	useEffect(() => {
 		dispatch(getSingleGroup(groupId));
 	}, [dispatch]);
 
-	if (!groupData) return <h3>Loading...</h3>;
+	console.log(group);
+	if (!Object.values(group).length) return <h3>Loading...</h3>;
 
-	const group = Object.values(groupData)[0];
+	// const group = Object.values(groupData)[0];
 
 	const { firstName, lastName } = group.Organizer;
 
