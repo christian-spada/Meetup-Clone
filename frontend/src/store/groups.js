@@ -8,7 +8,6 @@ const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 const CREATE_GROUP = 'groups/createGroup';
 const DELETE_GROUP = 'groups/deleteGroup';
 const UPDATE_GROUP = 'groups/updateGroup';
-const UPDATE_GROUP = 'groups/updateGroup';
 
 const getAllGroups = groups => {
 	return {
@@ -72,11 +71,6 @@ export const createGroupThunk = (group, image) => async dispatch => {
 			method: 'POST',
 			body: JSON.stringify(group),
 		});
-	try {
-		const res = await csrfFetch('/api/groups', {
-			method: 'POST',
-			body: JSON.stringify(group),
-		});
 
 		const newGroup = await res.json();
 
@@ -130,7 +124,6 @@ export const deleteGroupThunk = groupToDelete => async dispatch => {
 
 // === REDUCER ===
 
-const initialState = { allGroups: {}, singleGroup: {} };
 const initialState = { allGroups: {}, singleGroup: {} };
 
 const groupsReducer = (state = initialState, action) => {
