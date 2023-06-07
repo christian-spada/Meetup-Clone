@@ -1,13 +1,16 @@
 import { NavLink, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import './GroupDetailsPage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getSingleGroupThunk as getSingleGroup } from '../../store/groups';
+import { setMembershipStatus } from '../../utils/fetch-helpers';
 
 const GroupDetailsPage = () => {
 	const dispatch = useDispatch();
 	const { groupId } = useParams();
 	const groupData = useSelector(state => state.groups.singleGroup);
+	const [memberStatus, setMemberStatus] = useState('');
+	const user = useSelector(state => state.session.user);
 
 	useEffect(() => {
 		dispatch(getSingleGroup(groupId));
@@ -16,6 +19,8 @@ const GroupDetailsPage = () => {
 	if (!groupData) return <h3>Loading...</h3>;
 
 	const group = Object.values(groupData)[0];
+
+	setMembershipStatus(groupId, user, setMemberStatus);
 
 	const { firstName, lastName } = group.Organizer;
 
