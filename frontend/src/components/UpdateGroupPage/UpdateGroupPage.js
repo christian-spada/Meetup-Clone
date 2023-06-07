@@ -100,10 +100,7 @@ const UpdateGroupPage = () => {
 			</section>
 			<section className="update-group__group-desc-input-section">
 				<h3>Now describe what your group will be about</h3>
-				<p>
-					People will see this when we promote your group, but you'll be able to add to it later,
-					too.
-				</p>
+				<p>People will see this when we promote your group.</p>
 				<ol className="update-group__group-desc-prompts">
 					<li>What's the purpose of the group?</li>
 					<li> Who should join?</li>
