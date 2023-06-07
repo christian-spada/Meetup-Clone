@@ -49,6 +49,8 @@ const CreateEventPage = () => {
 			setErrors(validation);
 			return;
 		}
+
+		const newEvent = {};
 	};
 	return (
 		<div className="create-event">
