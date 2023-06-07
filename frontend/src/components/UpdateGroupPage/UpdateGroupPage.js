@@ -12,7 +12,6 @@ const UpdateGroupPage = () => {
 	const [desc, setDesc] = useState('');
 	const [groupType, setGroupType] = useState('');
 	const [groupStatus, setGroupStatus] = useState('');
-	const [imgUrl, setImgUrl] = useState('');
 	const [errors, setErrors] = useState({});
 	const validation = {};
 
@@ -26,18 +25,13 @@ const UpdateGroupPage = () => {
 		if (desc.length < 50) {
 			validation.desc = 'Description must be at least 50 characters long';
 		}
-		const isValidImgUrl =
-			imgUrl.endsWith('.jpg') || imgUrl.endsWith('.png') || imgUrl.endsWith('.jpeg');
-		if (!isValidImgUrl) {
-			validation.imgUrl = 'Image Url must end in .png, .jpg, or .jpeg';
-		}
 		if (!groupType) {
 			validation.groupType = 'Group Type is required';
 		}
 		if (!groupStatus) {
 			validation.groupStatus = 'Visibility Type is required';
 		}
-	}, [desc.length, name, location, imgUrl, groupType, groupStatus, validation]);
+	}, [desc.length, name, location, groupType, groupStatus, validation]);
 
 	const handleGroupSubmit = async e => {
 		if (Object.keys(validation).length) {
@@ -46,8 +40,6 @@ const UpdateGroupPage = () => {
 		}
 
 		const [city, state] = location.split(', ');
-
-		const newImg = { url: imgUrl, preview: true };
 
 		const newGroup = {
 			name,
@@ -58,7 +50,7 @@ const UpdateGroupPage = () => {
 			state,
 		};
 
-		// // const res = await dispatch(createGroup(newGroup, newImg));
+		// // const res = await dispatch(createGroup(newGroup));
 
 		// if (res.id) {
 		// 	history.push(`/groups/${res.id}`);
