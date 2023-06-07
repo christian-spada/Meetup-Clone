@@ -9,6 +9,7 @@ import GroupsListPage from './components/GroupListPage/GroupsListPage';
 import EventsListPage from './components/EventsListPage/EventsListPage';
 import GroupDetailsPage from './components/GroupDetailsPage/GroupDetailsPage';
 import ManageGroupsPage from './components/ManageGroupsPage/ManageGroupsPage';
+import UpdateGroupPage from './components/UpdateGroupPage/UpdateGroupPage';
 
 function App() {
 	const dispatch = useDispatch();
@@ -37,6 +38,9 @@ function App() {
 					</Route>
 					<Route exact path="/groups/:groupId">
 						<GroupDetailsPage />
+					</Route>
+					<Route exact path="/groups/:groupId/edit">
+						<UpdateGroupPage />
 					</Route>
 					<Route exact path="/events">
 						<EventsListPage />

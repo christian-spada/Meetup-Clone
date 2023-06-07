@@ -1,10 +1,10 @@
-.start-group {
+.update-group {
 	width: 75%;
 	margin: 0 auto;
 	text-align: left;
 }
 
-.start-group > section:not(:last-child) {
+.update-group > section:not(:last-child) {
 	border-bottom: 1px solid black;
 	padding: 1rem;
 	display: flex;
@@ -12,11 +12,11 @@
 	gap: 0.8rem;
 }
 
-.start-group > :last-child {
+.update-group > :last-child {
 	padding: 1rem;
 }
 
-.start-group__submit-btn {
+.update-group__submit-btn {
 	background-color: hsl(343, 77%, 51%);
 	color: #fff;
 	border: none;
@@ -25,11 +25,11 @@
 	box-shadow: 1px 1px 3px hsla(0, 0%, 0%, 0.3);
 }
 
-.start-group__group-desc-prompts {
+.update-group__group-desc-prompts {
 	margin-left: 1rem;
 }
 
-.start-group input,
+.update-group input,
 textarea {
 	width: 372px;
 	border: 1px solid black;
@@ -37,13 +37,12 @@ textarea {
 	box-shadow: 1px 0px 2px hsla(0, 0%, 0%, 0.3);
 	padding: 0.2rem 0.3rem;
 }
-
-.start-group__group-type-container :first-child,
-.start-group__group-status-container :first-child {
+.update-group__group-type-container :first-child,
+.update-group__group-status-container :first-child {
 	margin-bottom: 0.2rem;
 }
 
-.start-group__heading > h3 {
+.update-group__heading > h3 {
 	font-size: 10px;
 	color: rgb(122, 122, 122);
 }
