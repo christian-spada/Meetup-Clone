@@ -59,6 +59,19 @@ export const createGroupThunk = (group, image) => async dispatch => {
 	}
 };
 
+export const deleteGroupThunk = group => async dispatch => {
+	const res = await csrfFetch(`/api/groups/${group.id}`, {
+		method: 'POST',
+	});
+
+	if (res.ok) {
+		const message = await res.json();
+		console.log(message);
+
+		return message;
+	}
+};
+
 // === REDUCER ===
 
 const initialState = {};

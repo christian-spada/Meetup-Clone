@@ -42,7 +42,7 @@ const GroupCard = ({ group, isMemberPage }) => {
 						<OpenModalMenuItem
 							className="card__delete-btn"
 							itemText="Delete"
-							modalComponent={<ConfirmDeleteModal />}
+							modalComponent={<ConfirmDeleteModal groupToDelete={group} />}
 						/>
 					</div>
 			  ))
