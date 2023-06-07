@@ -1,14 +1,20 @@
-import { deleteGroupThunk as deleteGroup } from '../../store/groups';
+import { useModal } from '../../context/Modal';
+import { deleteGroupThunk } from '../../store/groups';
 import './ConfirmDeleteModal.css';
 
 const ConfirmDeleteModal = ({ groupToDelete }) => {
-	console.log(groupToDelete);
-	const handleDelete = e => {
+	const { closeModal } = useModal();
+	const handleDelete = async e => {
 		console.log('click handler', groupToDelete);
-		deleteGroup(groupToDelete);
+		const res = await deleteGroupThunk(groupToDelete);
+		console.log(res);
+		closeModal();
 	};
 
-	const handleKeep = e => {};
+	const handleKeep = e => {
+		closeModal();
+	};
+
 	return (
 		<div className="delete-group-modal">
 			<h2>Confirm Delete</h2>

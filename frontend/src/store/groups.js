@@ -82,17 +82,18 @@ export const createGroupThunk = (group, image) => async dispatch => {
 };
 
 export const deleteGroupThunk = groupToDelete => async dispatch => {
-	const res = await csrfFetch(`/api/groups/${groupToDelete.id}`, {
-		method: 'DELETE',
-	});
+	try {
+		const res = await csrfFetch(`/api/groups/${groupToDelete.id}`, {
+			method: 'DELETE',
+		});
 
-	console.log('thunk', groupToDelete);
-
-	if (res.ok) {
 		const message = await res.json();
 		dispatch(deleteGroup(groupToDelete));
 
 		return message;
+	} catch (err) {
+		const error = await err.json();
+		return error;
 	}
 };
 
@@ -124,8 +125,8 @@ const groupsReducer = (state = initialState, action) => {
 				allGroups: { ...state.allGroups },
 				singleGroup: { ...state.singleGroup },
 			};
+			console.log(newState);
 			delete newState.allGroups[action.payload.id];
-			delete newState.singleGroup[action.payload.id];
 			return newState;
 		default:
 			return state;
