@@ -1,10 +1,15 @@
 import { useHistory } from 'react-router-dom';
 import './EventsListPage.css';
+import { useDispatch } from 'react-redux';
+import { getSingleEventThunk as getSingleEvent } from '../../store/events';
 
 export const EventCard = ({ event }) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const handleEventClick = () => {
+		dispatch(getSingleEvent(event.id));
+
 		history.push(`/events/${event.id}`);
 	};
 
