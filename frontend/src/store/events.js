@@ -32,10 +32,10 @@ export const getAllEventsThunk = () => async dispatch => {
 	try {
 		const res = await csrfFetch('/api/events');
 
-		const events = await res.json();
-		dispatch(getAllEvents(events));
+		const eventsData = await res.json();
+		dispatch(getAllEvents(eventsData.Events));
 
-		return events;
+		return eventsData.Events;
 	} catch (err) {
 		const error = await err.json();
 		return error;
@@ -82,7 +82,7 @@ const eventsReducer = (state = initialState, action) => {
 		case GET_ALL_EVENTS:
 			return {
 				...state,
-				allEvents: normalizeData(action.payload.Events),
+				allEvents: normalizeData(action.payload),
 			};
 		case GET_SINGLE_EVENT:
 			return {
