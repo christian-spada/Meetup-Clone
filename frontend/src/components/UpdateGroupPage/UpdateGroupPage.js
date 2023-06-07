@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ErrorView } from '../UtilComponents/ErrorView';
 import './UpdateGroupPage.css';
+import { updateGroupThunk as updateGroup } from '../../store/groups';
+import { useParams } from 'react-router-dom';
 
 const UpdateGroupPage = () => {
+	const { groupId } = useParams();
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const user = useSelector(state => state.session.user);
 	const [location, setLocation] = useState('');
 	const [name, setName] = useState('');
 	const [desc, setDesc] = useState('');
@@ -14,6 +18,12 @@ const UpdateGroupPage = () => {
 	const [groupStatus, setGroupStatus] = useState('');
 	const [errors, setErrors] = useState({});
 	const validation = {};
+
+	useEffect(() => {
+		if (user === null) {
+			history.push('/');
+		}
+	}, [user, history]);
 
 	useEffect(() => {
 		if (!location) {
@@ -25,10 +35,10 @@ const UpdateGroupPage = () => {
 		if (desc.length < 50) {
 			validation.desc = 'Description must be at least 50 characters long';
 		}
-		if (!groupType) {
+		if (!groupType || groupType === '(select one)') {
 			validation.groupType = 'Group Type is required';
 		}
-		if (!groupStatus) {
+		if (!groupStatus || groupStatus === '(select one)') {
 			validation.groupStatus = 'Visibility Type is required';
 		}
 	}, [desc.length, name, location, groupType, groupStatus, validation]);
@@ -41,7 +51,7 @@ const UpdateGroupPage = () => {
 
 		const [city, state] = location.split(', ');
 
-		const newGroup = {
+		const updatedGroup = {
 			name,
 			about: desc,
 			type: groupType,
@@ -50,11 +60,11 @@ const UpdateGroupPage = () => {
 			state,
 		};
 
-		// // const res = await dispatch(createGroup(newGroup));
+		const res = await dispatch(updateGroup(updatedGroup, groupId));
 
-		// if (res.id) {
-		// 	history.push(`/groups/${res.id}`);
-		// }
+		if (res.id) {
+			history.push(`/groups/${res.id}`);
+		}
 	};
 	return (
 		<div className="update-group">

@@ -6,6 +6,7 @@ import { normalizeData } from './storeUtils';
 const GET_ALL_GROUPS = 'groups/getAllGroups';
 const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 const CREATE_GROUP = 'groups/createGroup';
+const UPDATE_GROUP = 'groups/updateGroup';
 
 const getAllGroups = groups => {
 	return {
@@ -24,6 +25,13 @@ const getSingleGroup = group => {
 const createGroup = group => {
 	return {
 		type: CREATE_GROUP,
+		payload: group,
+	};
+};
+
+const updateGroup = group => {
+	return {
+		type: UPDATE_GROUP,
 		payload: group,
 	};
 };
@@ -73,6 +81,20 @@ export const createGroupThunk = (group, image) => async dispatch => {
 	}
 };
 
+export const updateGroupThunk = (newGroup, groupId) => async dispatch => {
+	const res = await csrfFetch(`/api/groups/${groupId}`, {
+		method: 'PUT',
+		body: JSON.stringify(newGroup),
+	});
+
+	if (res.ok) {
+		const updatedGroup = await res.json();
+		dispatch(updateGroup([updatedGroup]));
+
+		return updatedGroup;
+	}
+};
+
 // === REDUCER ===
 
 const initialState = {};
@@ -94,6 +116,13 @@ const groupsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				allGroups: { ...state.allGroups, ...newGroup },
+			};
+		case UPDATE_GROUP:
+			const updatedGroup = normalizeData(action.payload);
+			return {
+				...state,
+				allGroups: { ...state.allGroups, ...updatedGroup },
+				singleGroup: { ...state.singleGroup, ...updateGroup },
 			};
 
 		default:
