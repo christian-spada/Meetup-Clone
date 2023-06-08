@@ -90,7 +90,7 @@ const CreateEventPage = () => {
 			<section className="create-event__date-section">
 				<div className="create-event__start-date-container">
 					<p>When does your event start?</p>
-					<input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+					<input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
 					{errors.eventStart && <ErrorView error={errors.eventStart} />}
 				</div>
 				<div className="create-event__end-date-container">
