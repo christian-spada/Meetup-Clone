@@ -24,7 +24,7 @@ const ManageGroupsPage = () => {
 				</div>
 			</section>
 			<section className="manage-groups-view__list">
-				{userGroups.map((group, idx, arr) => (
+				{userGroups.map(group => (
 					<GroupCard key={group.id} group={group} isMemberPage={true} />
 				))}
 			</section>

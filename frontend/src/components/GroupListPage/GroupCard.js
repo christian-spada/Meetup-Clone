@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './GroupsListPage.css';
-import { csrfFetch } from '../../store/csrf';
+import { setMembershipStatus } from '../../utils/fetch-helpers.js';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
 import { Link } from 'react-router-dom';
@@ -24,10 +24,7 @@ const GroupCard = ({ group, isMemberPage }) => {
 
 	useEffect(() => {
 		if (isMemberPage) {
-			csrfFetch(`/api/groups/${group.id}/members`)
-				.then(res => res.json())
-				.then(data => data.Members.filter(member => member.id === user.id)[0])
-				.then(userMemberData => setMemberStatus(userMemberData.Membership.status));
+			setMembershipStatus(group.id, user, setMemberStatus);
 		}
 	}, []);
 
@@ -42,7 +39,7 @@ const GroupCard = ({ group, isMemberPage }) => {
 						<OpenModalMenuItem
 							className="card__delete-btn"
 							itemText="Delete"
-							modalComponent={<ConfirmDeleteModal />}
+							modalComponent={<ConfirmDeleteModal groupToDelete={group} />}
 						/>
 					</div>
 			  ))
