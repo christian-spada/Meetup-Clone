@@ -24,6 +24,8 @@
 
 .group-details__breadcrumb {
 	margin-bottom: 1rem;
+	display: flex;
+	gap: 0.3rem;
 }
 
 .group-details__group-image {
@@ -34,7 +36,7 @@
 .group-details__join-group-btn {
 	background-color: hsl(343, 77%, 51%);
 	color: #fff;
-	padding: 0.3rem 0.3rem;
+	padding: 0.3rem 0.6rem;
 	border-radius: 5px;
 	border: none;
 }
@@ -48,4 +50,28 @@
 .group-details__more-details-container {
 	width: 50%;
 	margin: 0 auto;
+}
+
+.group-details__action-btns {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.group-details__action-btns > * {
+	color: #fff;
+	padding: 0.3rem 0.6rem;
+	border-radius: 5px;
+	border: none;
+}
+
+.group-details__delete-btn {
+	background-color: hsl(343, 77%, 51%);
+}
+
+.group-details__create-event-btn {
+	background-color: hsl(188, 96%, 28%);
+}
+
+.group-details__update-group-btn {
+	background-color: hsl(188, 96%, 28%);
 }

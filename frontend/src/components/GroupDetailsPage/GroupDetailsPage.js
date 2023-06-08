@@ -30,10 +30,14 @@ const GroupDetailsPage = () => {
 	if (memberStatus === 'host') {
 		actionBtns = (
 			<div className="group-details__action-btns">
-				<NavLink to={`/groups/${groupId}/events/new`}>Create Event</NavLink>
-				<NavLink to={`/groups/${groupId}/edit`}>Update</NavLink>
+				<NavLink className="group-details__create-event-btn" to={`/groups/${groupId}/events/new`}>
+					Create Event
+				</NavLink>
+				<NavLink className="group-details__update-group-btn" to={`/groups/${groupId}/edit`}>
+					Update
+				</NavLink>
 				<OpenModalMenuItem
-					className="card__delete-btn"
+					className="group-details__delete-btn"
 					itemText="Delete"
 					modalComponent={<ConfirmDeleteModal groupToDelete={group} />}
 				/>
@@ -41,12 +45,14 @@ const GroupDetailsPage = () => {
 		);
 	} else {
 		actionBtns = (
-			<button
-				className="group-details__join-group-btn"
-				onClick={() => alert('Feature coming soon')}
-			>
-				Join this group
-			</button>
+			<div className="group-details__join-btn-container">
+				<button
+					className="group-details__join-group-btn"
+					onClick={() => alert('Feature coming soon')}
+				>
+					Join this group
+				</button>
+			</div>
 		);
 	}
 
@@ -80,8 +86,8 @@ const GroupDetailsPage = () => {
 						<p>
 							Organized by {firstName} {lastName}
 						</p>
-						{user && actionBtns}
 					</div>
+					<div className="group-details__action-btns-container">{user && actionBtns}</div>
 				</div>
 			</section>
 			<section className="group-details__more-details-section">
