@@ -40,7 +40,14 @@ const GroupDetailsPage = () => {
 			</div>
 		);
 	} else {
-		actionBtns = <button className="group-details__join-group-btn">Join this group</button>;
+		actionBtns = (
+			<button
+				className="group-details__join-group-btn"
+				onClick={() => alert('Feature coming soon')}
+			>
+				Join this group
+			</button>
+		);
 	}
 
 	return (
@@ -73,7 +80,7 @@ const GroupDetailsPage = () => {
 						<p>
 							Organized by {firstName} {lastName}
 						</p>
-						{actionBtns}
+						{user && actionBtns}
 					</div>
 				</div>
 			</section>
