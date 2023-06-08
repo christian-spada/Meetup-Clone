@@ -29,7 +29,7 @@ const GroupDetailsPage = () => {
 	if (memberStatus === 'host') {
 		actionBtns = (
 			<div className="group-details__action-btns">
-				<NavLink to={`/groups/${groupId}/events`}>Create Event</NavLink>
+				<NavLink to={`/groups/${groupId}/events/new`}>Create Event</NavLink>
 				<NavLink to={`/groups/${groupId}/edit`}>Update</NavLink>
 				<OpenModalMenuItem
 					className="card__delete-btn"
