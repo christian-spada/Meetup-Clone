@@ -3,14 +3,28 @@
 	grid-template-columns: 1fr 1fr;
 	margin: 3rem auto;
 	width: 50%;
-	gap: 2rem;
-	font-size: smaller;
+	gap: 4rem 2rem;
+}
+
+.main-content__title-section {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.main-content__title-section > h1 {
+	font-size: xx-large;
 }
 
 .main-content__meetup-works-section {
 	margin-top: 1rem;
 	grid-column: span 2;
 	text-align: center;
+}
+
+.main-content__meetup-works-section > p {
+	width: 50%;
+	margin: 0 auto;
 }
 
 .main-content__cards-section {
@@ -21,6 +35,11 @@
 	display: flex;
 	justify-content: center;
 	gap: 1rem;
+	text-align: center;
+}
+
+.main-content__cards-container img {
+	height: 152px;
 }
 
 .main-content__cards-container > div {
