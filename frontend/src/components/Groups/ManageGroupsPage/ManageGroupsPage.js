@@ -2,7 +2,7 @@ import GroupCard from '../GroupListPage/GroupCard';
 import { useEffect } from 'react';
 import './ManageGroupsPage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserGroupsThunk as getUserGroups } from '../../store/groups';
+import { getUserGroupsThunk as getUserGroups } from '../../../store/groups';
 
 const ManageGroupsPage = () => {
 	const dispatch = useDispatch();

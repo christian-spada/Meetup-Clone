@@ -37,8 +37,8 @@ export const getAllEventsThunk = () => async dispatch => {
 
 		return eventsData.Events;
 	} catch (err) {
-		const error = await err.json();
-		return error;
+		console.log(err);
+		return err;
 	}
 };
 
@@ -51,8 +51,8 @@ export const getSingleEventThunk = eventId => async dispatch => {
 
 		return event;
 	} catch (err) {
-		const error = await err.json();
-		return error;
+		console.log(err);
+		return err;
 	}
 };
 
@@ -68,8 +68,8 @@ export const createEventThunk = (event, groupId) => async dispatch => {
 
 		return newEvent;
 	} catch (err) {
-		const error = await err.json();
-		return error;
+		console.log(err);
+		return err;
 	}
 };
 

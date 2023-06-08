@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createGroupThunk as createGroup } from '../../store/groups';
-import { ErrorView } from '../UtilComponents/ErrorView';
+import { createGroupThunk as createGroup } from '../../../store/groups';
+import { ErrorView } from '../../UtilComponents/ErrorView';
 import './StartGroupPage.css';
 
 const StartGroupPage = () => {

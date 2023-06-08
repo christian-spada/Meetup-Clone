@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { ErrorView } from '../UtilComponents/ErrorView';
+import { ErrorView } from '../../UtilComponents/ErrorView';
 import './UpdateGroupPage.css';
 import {
 	updateGroupThunk as updateGroup,
 	getSingleGroupThunk as getSingleGroup,
-} from '../../store/groups';
+} from '../../../store/groups';
 import { useParams } from 'react-router-dom';
 
 const UpdateGroupPage = () => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { useDispatch, useSelector } from 'react-redux';
 import './EventsListPage.css';
-import { getAllEventsThunk as getAllEvents } from '../../store/events';
+import { getAllEventsThunk as getAllEvents } from '../../../store/events';
 import { EventCard } from './EventCard';
 
 const EventsListPage = () => {
@@ -23,13 +23,13 @@ const EventsListPage = () => {
 	}
 
 	const allEventsArr = Object.values(allEvents);
-	const pastEvents = [];
-	allEventsArr.forEach(event => {
-		const eventEndDate = new Date(event.endDate);
-		if (eventEndDate.getTime() < Date.now()) {
-			pastEvents.push(event);
-		}
-	});
+	// const pastEvents = [];
+	// allEventsArr.forEach(event => {
+	// 	const eventEndDate = new Date(event.endDate);
+	// 	if (eventEndDate.getTime() < Date.now()) {
+	// 		pastEvents.push(event);
+	// 	}
+	// });
 
 	return (
 		<div className="events-view">

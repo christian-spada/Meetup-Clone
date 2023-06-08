@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ErrorView } from '../UtilComponents/ErrorView';
+import { ErrorView } from '../../UtilComponents/ErrorView';
 import './CreateEventPage.css';
 
 const CreateEventPage = () => {

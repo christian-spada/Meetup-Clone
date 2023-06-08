@@ -2,10 +2,10 @@ import { NavLink, useParams } from 'react-router-dom';
 import './GroupDetailsPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getSingleGroupThunk as getSingleGroup } from '../../store/groups';
-import { setMembershipStatus } from '../../utils/fetch-helpers';
-import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
-import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
+import { getSingleGroupThunk as getSingleGroup } from '../../../store/groups';
+import { setMembershipStatus } from '../../../utils/fetch-helpers';
+import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
+import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
 import { useHistory } from 'react-router-dom';
 
 const GroupDetailsPage = () => {

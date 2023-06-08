@@ -1,7 +1,27 @@
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import './EventDetailsPage.css';
+import { getSingleEventThunk as getSingleEvent } from '../../../store/events';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { formatDateAndTime } from '../../../utils/helpers';
 
 const EventDetailsPage = () => {
+	const { eventId } = useParams();
+	const dispatch = useDispatch();
+	const event = useSelector(state => state.events.singleEvent);
+
+	useEffect(() => {
+		dispatch(getSingleEvent(eventId));
+	}, []);
+
+	if (!Object.values(event).length) {
+		return <h3>Loading...</h3>;
+	}
+
+	const { formattedDate: startDate, formattedTime: startTime } = formatDateAndTime(event.startDate);
+	const { formattedDate: endDate, formattedTime: endTime } = formatDateAndTime(event.endDate);
+
 	return (
 		<div className="event-details">
 			<section className="event-details__heading-section">
@@ -13,7 +33,7 @@ const EventDetailsPage = () => {
 						<NavLink to="/events">Events</NavLink>
 					</div>
 					<div className="event-details__event-info-container">
-						<h2>Event Name</h2>
+						<h2>{event.name}</h2>
 						<p>host by firstname lastname</p>
 					</div>
 				</div>
@@ -42,15 +62,15 @@ const EventDetailsPage = () => {
 							<div className="event-details__dates">
 								<div>
 									<span>START</span>
-									<span>YYYY-MM-DD</span>
+									<span>{startDate}</span>
 									<span>•</span>
-									<span>Time</span>
+									<span>{startTime}</span>
 								</div>
 								<div>
 									<span>END</span>
-									<span>YYYY-MM-DD</span>
+									<span>{endDate}</span>
 									<span>•</span>
-									<span>Time</span>
+									<span>{endTime}</span>
 								</div>
 							</div>
 						</div>
