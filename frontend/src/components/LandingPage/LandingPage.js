@@ -58,9 +58,11 @@ const LandingPage = () => {
 					</div>
 				</div>
 			</section>
-			<section className="main-content__join-meetup-section">
-				<button className="main-content__join-meetup-btn">Join Meetup</button>
-			</section>
+			{!userSession && (
+				<section className="main-content__join-meetup-section">
+					<button className="main-content__join-meetup-btn">Join Meetup</button>
+				</section>
+			)}
 		</div>
 	);
 };

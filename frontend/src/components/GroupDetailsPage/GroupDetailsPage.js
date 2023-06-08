@@ -93,7 +93,7 @@ const GroupDetailsPage = () => {
 			<section className="group-details__more-details-section">
 				<div className="group-details__more-details-container">
 					<div className="group-details__organizer-info">
-						<h2>Organizer</h2>
+						<h3>Organizer</h3>
 						<p>
 							{firstName} {lastName}
 						</p>
@@ -101,6 +101,9 @@ const GroupDetailsPage = () => {
 					<div className="group-details__about-info">
 						<h2>What we're about</h2>
 						<p>{group.about}</p>
+					</div>
+					<div className="group-details__events-container">
+						<h3>Upcoming Events (#)</h3>
 					</div>
 				</div>
 			</section>

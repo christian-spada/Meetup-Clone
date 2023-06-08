@@ -70,6 +70,7 @@ const StartGroupPage = () => {
 	return (
 		<div className="start-group">
 			<section className="start-group__heading">
+				<h2>Start a New Group</h2>
 				<h3>BECOME AN ORGANIZER</h3>
 				<p>We'll walk you through a few steps to build your local community</p>
 			</section>
