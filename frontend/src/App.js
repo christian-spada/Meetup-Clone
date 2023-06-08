@@ -3,15 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import { restoreUserThunk as restoreUser } from './store/session';
-import StartGroupPage from './components/Groups/StartGroupPage/StartGroupPage';
-import LandingPage from './components/LandingPage/LandingPage';
-import GroupsListPage from './components/Groups/GroupListPage/GroupsListPage';
-import EventsListPage from './components/Events/EventsListPage/EventsListPage';
-import GroupDetailsPage from './components/Groups/GroupDetailsPage/GroupDetailsPage';
-import ManageGroupsPage from './components/Groups/ManageGroupsPage/ManageGroupsPage';
-import UpdateGroupPage from './components/Groups/UpdateGroupPage/UpdateGroupPage';
-import CreateEventPage from './components/Events/CreateEventPage/CreateEventPage';
-import EventDetailsPage from './components/Events/EventDetailsPage/EventDetailsPage';
+import LandingPage from './components/LandingPage';
+import StartGroupPage from './components/Groups/StartGroupPage';
+import GroupsListPage from './components/Groups/GroupListPage';
+import EventsListPage from './components/Events/EventsListPage';
+import GroupDetailsPage from './components/Groups/GroupDetailsPage';
+import ManageGroupsPage from './components/Groups/ManageGroupsPage';
+import UpdateGroupPage from './components/Groups/UpdateGroupPage';
+import CreateEventPage from './components/Events/CreateEventPage';
+import EventDetailsPage from './components/Events/EventDetailsPage';
 
 function App() {
 	const dispatch = useDispatch();
