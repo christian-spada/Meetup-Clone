@@ -1,14 +1,22 @@
+import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import { deleteGroupThunk } from '../../store/groups';
+import { deleteGroupThunk as deleteGroup } from '../../store/groups';
 import './ConfirmDeleteModal.css';
+import { useHistory } from 'react-router-dom';
 
-const ConfirmDeleteModal = ({ groupToDelete }) => {
+const ConfirmDeleteModal = ({ groupToDelete, setIsDeletingGroup }) => {
 	const { closeModal } = useModal();
+	const dispatch = useDispatch();
+	const history = useHistory();
+
 	const handleDelete = async e => {
-		console.log('click handler', groupToDelete);
-		const res = await deleteGroupThunk(groupToDelete);
-		console.log(res);
+		if (setIsDeletingGroup) {
+			setIsDeletingGroup(true);
+		}
+
+		const res = await dispatch(deleteGroup(groupToDelete));
 		closeModal();
+		history.push('/groups');
 	};
 
 	const handleKeep = e => {

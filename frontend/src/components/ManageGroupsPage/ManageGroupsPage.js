@@ -1,20 +1,20 @@
 import GroupCard from '../GroupListPage/GroupCard';
-import { useEffect, useState } from 'react';
-import { csrfFetch } from '../../store/csrf';
+import { useEffect } from 'react';
 import './ManageGroupsPage.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserGroupsThunk as getUserGroups } from '../../store/groups';
 
 const ManageGroupsPage = () => {
-	const [userGroups, setUserGroups] = useState([]);
-	const [errors, setErrors] = useState({});
+	const dispatch = useDispatch();
+	const userGroupData = useSelector(state => state.groups.allGroups);
 
 	useEffect(() => {
-		csrfFetch('/api/groups/current')
-			.then(res => res.json())
-			.then(data => setUserGroups(data.Groups))
-			.catch(err => setErrors(err));
+		dispatch(getUserGroups());
 	}, []);
 
-	if (!userGroups) return <h3>Loading...</h3>;
+	const userGroups = Object.values(userGroupData);
+
+	if (!userGroups.length) return <h3>You are not a member of any groups yet!</h3>;
 
 	return (
 		<div className="manage-groups-view">

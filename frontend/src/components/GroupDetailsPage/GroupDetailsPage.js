@@ -6,12 +6,15 @@ import { getSingleGroupThunk as getSingleGroup } from '../../store/groups';
 import { setMembershipStatus } from '../../utils/fetch-helpers';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
+import { useHistory } from 'react-router-dom';
 
 const GroupDetailsPage = () => {
+	const history = useHistory();
 	const dispatch = useDispatch();
 	const { groupId } = useParams();
 	const group = useSelector(state => state.groups.singleGroup);
 	const [memberStatus, setMemberStatus] = useState('');
+	const [isDeletingGroup, setIsDeletingGroup] = useState(false);
 	const user = useSelector(state => state.session.user);
 
 	useEffect(() => {
@@ -20,7 +23,7 @@ const GroupDetailsPage = () => {
 
 	if (!Object.values(group).length) return <h3>Loading...</h3>;
 
-	if (user) {
+	if (user && !isDeletingGroup) {
 		setMembershipStatus(groupId, user, setMemberStatus);
 	}
 
@@ -39,7 +42,9 @@ const GroupDetailsPage = () => {
 				<OpenModalMenuItem
 					className="group-details__delete-btn"
 					itemText="Delete"
-					modalComponent={<ConfirmDeleteModal groupToDelete={group} />}
+					modalComponent={
+						<ConfirmDeleteModal groupToDelete={group} setIsDeletingGroup={setIsDeletingGroup} />
+					}
 				/>
 			</div>
 		);
