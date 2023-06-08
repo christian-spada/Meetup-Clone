@@ -18,10 +18,11 @@ const GroupDetailsPage = () => {
 		dispatch(getSingleGroup(groupId));
 	}, [dispatch]);
 
-	console.log(group);
 	if (!Object.values(group).length) return <h3>Loading...</h3>;
 
-	setMembershipStatus(groupId, user, setMemberStatus);
+	if (user) {
+		setMembershipStatus(groupId, user, setMemberStatus);
+	}
 
 	const { firstName, lastName } = group.Organizer;
 
@@ -38,7 +39,7 @@ const GroupDetailsPage = () => {
 				/>
 			</div>
 		);
-	} else if (memberStatus === undefined) {
+	} else {
 		actionBtns = <button className="group-details__join-group-btn">Join this group</button>;
 	}
 
