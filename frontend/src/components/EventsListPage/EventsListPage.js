@@ -22,7 +22,7 @@ const EventsListPage = () => {
 		);
 	}
 
-	// const allEventsArr = Object.values(allEvents);
+	const allEventsArr = Object.values(allEvents);
 	// const pastEvents = [];
 	// allEventsArr.forEach(event => {
 	// 	const eventEndDate = new Date(event.endDate);
