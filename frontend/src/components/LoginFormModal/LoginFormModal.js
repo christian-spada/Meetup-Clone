@@ -12,6 +12,7 @@ const LoginFormModal = () => {
 	const [credential, setCredential] = useState('');
 	const [password, setPassword] = useState('');
 	const [errors, setErrors] = useState({});
+	const [isDisabled, setIsDisabled] = useState(false);
 	const { closeModal } = useModal();
 
 	const handleSubmit = e => {
@@ -30,20 +31,20 @@ const LoginFormModal = () => {
 			});
 	};
 
-	// useEffect(() => {
-	// 	const validation = {};
+	const handleDemoUser = () => {
+		dispatch(login({ credential: 'Demo-lition', password: 'password' })).then(() => {
+			closeModal();
+			history.push('/');
+		});
+	};
 
-	// 	if (credential.length < 4) {
-	// 		validation.username = 'Username must be at least 4 characters';
-	// 	}
-	// 	if (password.length < 6) {
-	// 		validation.password = 'Password must be at least 6 characters';
-	// 	}
-
-	// 	if (Object.keys(validation).length) {
-	// 		setErrors(validation);
-	// 	}
-	// }, [credential.length, password.length]);
+	useEffect(() => {
+		if (credential.length < 4 || password.length < 6) {
+			setIsDisabled(true);
+		} else {
+			setIsDisabled(false);
+		}
+	}, [credential.length, password.length]);
 
 	return (
 		<div className="login-modal">
@@ -61,7 +62,6 @@ const LoginFormModal = () => {
 						required
 					/>
 				</div>
-				{/* {errors.username && <ErrorView error={errors.username} />} */}
 				<div className="login-input-container">
 					<label htmlFor="password" className="login-input-label">
 						Password
@@ -74,10 +74,12 @@ const LoginFormModal = () => {
 						required
 					/>
 				</div>
-				{/* {errors.password && <ErrorView error={errors.password} />} */}
 				{errors.credential && <ErrorView error={errors.credential} />}
-				<button type="submit" className="login-btn" disabled={Object.keys(errors).length > 0}>
+				<button type="submit" className="login-btn" disabled={isDisabled}>
 					Log In
+				</button>
+				<button className="demo-user-btn" onClick={handleDemoUser}>
+					Log in as Demo User
 				</button>
 			</form>
 		</div>

@@ -60,7 +60,6 @@ export const getSingleGroupThunk = groupId => async dispatch => {
 		const group = await res.json();
 
 		dispatch(getSingleGroup(group));
-		dispatch(getSingleGroup(group));
 		return group;
 	}
 };

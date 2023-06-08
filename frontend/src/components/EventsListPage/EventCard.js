@@ -1,12 +1,19 @@
 import { useHistory } from 'react-router-dom';
 import './EventsListPage.css';
+import { useDispatch } from 'react-redux';
+import { getSingleEventThunk as getSingleEvent } from '../../store/events';
 
 export const EventCard = ({ event }) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const handleEventClick = () => {
+		dispatch(getSingleEvent(event.id));
+
 		history.push(`/events/${event.id}`);
 	};
+
+	console.log(event.name, event.startDate, event.endDate);
 
 	return (
 		<div className="card" onClick={handleEventClick}>
@@ -21,7 +28,7 @@ export const EventCard = ({ event }) => {
 				<span>{event.startDate}</span>
 				<h2 className="card__title">{event.name}</h2>
 				<p className="card__location">
-					{event.city}, {event.state}
+					{event.Venue.city}, {event.Venue.state}
 				</p>
 				<p className="card__event-about">{event.about}</p>
 				<div className="card__status-info">
