@@ -17,7 +17,7 @@ const CreateEventPage = () => {
 	const [startDate, setStartDate] = useState('');
 	const [endDate, setEndDate] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
-	const [desc, setDesc] = useState('');
+	const [description, setDescription] = useState('');
 	const [errors, setErrors] = useState({});
 
 	const handleSubmit = async e => {
@@ -39,8 +39,8 @@ const CreateEventPage = () => {
 		if (!isValidImgUrl) {
 			validation.imgUrl = 'Image Url must end in .png, .jpg, or .jpeg';
 		}
-		if (desc.length < 30) {
-			validation.desc = 'Description must be at least 30 characters long';
+		if (description.length < 30) {
+			validation.description = 'Description must be at least 30 characters long';
 		}
 		if (Object.values(validation).length > 0) {
 			setErrors(validation);
@@ -53,7 +53,7 @@ const CreateEventPage = () => {
 			type,
 			price: parseInt(price),
 			capacity: 20,
-			description: desc,
+			description,
 			startDate,
 			endDate,
 		};
@@ -129,11 +129,11 @@ const CreateEventPage = () => {
 				<div className="create-event__desc-input-container">
 					<p>Please describe your event:</p>
 					<textarea
-						value={desc}
-						onChange={e => setDesc(e.target.value)}
+						value={description}
+						onChange={e => setDescription(e.target.value)}
 						placeholder="Please include at least 30 characters"
 					/>
-					{errors.desc && <ErrorView error={errors.desc} />}
+					{errors.description && <ErrorView error={errors.description} />}
 				</div>
 			</section>
 			<button onClick={handleSubmit} className="create-event__create-event-btn">
