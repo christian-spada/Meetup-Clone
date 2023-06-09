@@ -51,7 +51,7 @@ const CreateEventPage = () => {
 			venueId: group.Venues[0].id,
 			name,
 			type,
-			price,
+			price: parseInt(price),
 			capacity: 20,
 			description: desc,
 			startDate,
@@ -63,10 +63,13 @@ const CreateEventPage = () => {
 			preview: true,
 		};
 
-		try {
-			const event = await dispatch(createEvent(newEvent, groupId, newImage));
-			history.push(`/events/${event.id}`);
-		} catch (err) {}
+		const res = await dispatch(createEvent(newEvent, groupId, newImage));
+
+		if (res.id) {
+			history.push(`/events/${res.id}`);
+		} else {
+			setErrors(res.errors);
+		}
 	};
 
 	useEffect(() => {

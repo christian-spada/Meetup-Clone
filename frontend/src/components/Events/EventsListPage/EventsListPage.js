@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './EventsListPage.css';
 import { getAllEventsThunk as getAllEvents } from '../../../store/events';
 import { EventCard } from './EventCard';
+import { formatDateAndTime } from '../../../utils/helpers';
 
 const EventsListPage = () => {
 	const dispatch = useDispatch();
@@ -23,13 +24,9 @@ const EventsListPage = () => {
 	}
 
 	const allEventsArr = Object.values(allEvents);
-	// const pastEvents = [];
-	// allEventsArr.forEach(event => {
-	// 	const eventEndDate = new Date(event.endDate);
-	// 	if (eventEndDate.getTime() < Date.now()) {
-	// 		pastEvents.push(event);
-	// 	}
-	// });
+	allEventsArr.sort((event1, event2) => {
+		return new Date(event1.startDate) - new Date(event2.startDate);
+	});
 
 	return (
 		<div className="events-view">

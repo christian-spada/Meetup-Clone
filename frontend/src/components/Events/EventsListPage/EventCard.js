@@ -42,11 +42,6 @@ export const EventCard = ({ event }) => {
 				<p className="card__location">
 					{event.Venue?.city || group?.city}, {event.Venue?.state || group?.state}
 				</p>
-				<div className="card__status-info">
-					<p>## events</p>
-					<span>•</span>
-					<p>{event.private ? 'Private' : 'Public'}</p>
-				</div>
 			</div>
 		</div>
 	);

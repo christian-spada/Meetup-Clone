@@ -5,6 +5,7 @@ import { normalizeData } from './storeUtils';
 
 const GET_ALL_GROUPS = 'groups/getAllGroups';
 const GET_USER_GROUPS = 'groups/getUserGroups';
+const GET_GROUP_EVENTS = 'groups/getGroupEvents';
 const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 const CREATE_GROUP = 'groups/createGroup';
 const DELETE_GROUP = 'groups/deleteGroup';
@@ -21,6 +22,13 @@ const getUserGroups = groups => {
 	return {
 		type: GET_USER_GROUPS,
 		payload: groups,
+	};
+};
+
+const getGroupEvents = events => {
+	return {
+		type: GET_GROUP_EVENTS,
+		payload: events,
 	};
 };
 
@@ -69,6 +77,19 @@ export const getUserGroupsThunk = () => async dispatch => {
 		return groupData.Groups;
 	} catch (err) {
 		console.log(err);
+		return err;
+	}
+};
+
+export const getGroupEventsThunk = groupId => async dispatch => {
+	try {
+		const res = await csrfFetch(`/api/groups/${groupId}/events`);
+
+		const eventData = await res.json();
+		dispatch(getGroupEvents(eventData.Events));
+		return eventData.Events;
+	} catch (err) {
+		console.log('thunk err', err);
 		return err;
 	}
 };
@@ -142,7 +163,7 @@ export const deleteGroupThunk = groupToDelete => async dispatch => {
 
 // === REDUCER ===
 
-const initialState = { allGroups: {}, singleGroup: {} };
+const initialState = { allGroups: {}, singleGroup: {}, allGroupEvents: {} };
 
 const groupsReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -160,6 +181,12 @@ const groupsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				allGroups: normalizeData(action.payload),
+			};
+		case GET_GROUP_EVENTS:
+			console.log(action.payload);
+			return {
+				...state,
+				allGroupEvents: normalizeData(action.payload),
 			};
 		case CREATE_GROUP:
 			const newGroup = normalizeData(action.payload);

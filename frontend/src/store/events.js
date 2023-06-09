@@ -94,11 +94,10 @@ export const createEventThunk = (event, groupId, image) => async dispatch => {
 		// === SHOULD I DISPATCH IMAGE?? ===
 		// dispatch(addImageToEventThunk(addImageToEvent(image)));
 
-		console.log('thunk resolved event', newEvent);
 		return newEvent;
 	} catch (err) {
-		console.log('thunk error', err);
-		return err;
+		const error = await err.json();
+		return error;
 	}
 };
 
@@ -146,6 +145,7 @@ const eventsReducer = (state = initialState, action) => {
 				singleEvent: {},
 			};
 			delete newState.allEvents[action.payload.id];
+			return newState;
 		// case ADD_IMAGE_TO_EVENT:
 		//   return {
 		//     ...state,

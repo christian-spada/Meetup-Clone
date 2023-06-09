@@ -2,17 +2,22 @@ import { NavLink, useParams } from 'react-router-dom';
 import './GroupDetailsPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getSingleGroupThunk as getSingleGroup } from '../../../store/groups';
+import {
+	getGroupEventsThunk as getGroupEvents,
+	getSingleGroupThunk as getSingleGroup,
+} from '../../../store/groups';
 import { setMembershipStatus } from '../../../utils/fetch-helpers';
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
 import { useHistory } from 'react-router-dom';
+import { EventCard } from '../../Events/EventsListPage/EventCard';
 
 const GroupDetailsPage = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const { groupId } = useParams();
 	const group = useSelector(state => state.groups.singleGroup);
+	const events = useSelector(state => state.groups.allGroupEvents);
 	const [memberStatus, setMemberStatus] = useState('');
 	const [isDeletingGroup, setIsDeletingGroup] = useState(false);
 	const user = useSelector(state => state.session.user);
@@ -21,11 +26,23 @@ const GroupDetailsPage = () => {
 		dispatch(getSingleGroup(groupId));
 	}, [dispatch]);
 
+	useEffect(() => {
+		dispatch(getGroupEvents(groupId));
+	}, [dispatch]);
+
+	const eventsArr = Object.values(events);
+
 	if (!Object.values(group).length) return <h3>Loading...</h3>;
+
+	if (!eventsArr.length) return <h3>Loading...</h3>;
 
 	if (user && !isDeletingGroup) {
 		setMembershipStatus(groupId, user, setMemberStatus);
 	}
+
+	eventsArr.sort((event1, event2) => {
+		return new Date(event1.startDate) - new Date(event2.startDate);
+	});
 
 	const { firstName, lastName } = group.Organizer;
 
@@ -108,7 +125,12 @@ const GroupDetailsPage = () => {
 						<p>{group.about}</p>
 					</div>
 					<div className="group-details__events-container">
-						<h3>Upcoming Events (#)</h3>
+						<h3>Upcoming Events (#{eventsArr.length})</h3>
+						<div className="group-details__event-cards">
+							{eventsArr.map(event => (
+								<EventCard key={event.id} event={event} />
+							))}
+						</div>
 					</div>
 				</div>
 			</section>
