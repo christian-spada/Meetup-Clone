@@ -71,9 +71,9 @@ const validateEvent = (req, res, next) => {
 	const startDateObj = new Date(startDateStr);
 	const endDateObj = new Date(endDateStr);
 
-	// if (!venueId) {
-	// 	errorResult.errors.venueId = 'Venue does not exist';
-	// }
+	if (!venueId) {
+		errorResult.errors.venueId = 'Venue does not exist';
+	}
 	if (name?.length < 5) {
 		errorResult.errors.name = 'Name must be at least 5 characters';
 	}
