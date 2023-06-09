@@ -64,8 +64,7 @@ const CreateEventPage = () => {
 		};
 
 		try {
-			const res = await dispatch(createEvent(newEvent, groupId, newImage));
-			const event = await res.json();
+			const event = await dispatch(createEvent(newEvent, groupId, newImage));
 			console.log('resolved event', event);
 			history.push(`/events/${event.id}`);
 		} catch (err) {
