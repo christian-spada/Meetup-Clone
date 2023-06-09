@@ -1,32 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ErrorView } from '../../UtilComponents/ErrorView';
 import './CreateEventPage.css';
+import { getSingleGroupThunk as getSingleGroup } from '../../../store/groups';
+import { useParams, useHistory } from 'react-router-dom';
+import { createEventThunk as createEvent } from '../../../store/events';
 
 const CreateEventPage = () => {
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const group = useSelector(state => state.groups.singleGroup);
+	const { groupId } = useParams();
 	const [name, setName] = useState('');
 	const [type, setType] = useState('');
-	const [visibility, setVisibility] = useState('');
 	const [price, setPrice] = useState(0);
 	const [startDate, setStartDate] = useState('');
 	const [endDate, setEndDate] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
 	const [desc, setDesc] = useState('');
 	const [errors, setErrors] = useState({});
-	const validation = {};
 
-	useEffect(() => {
+	const handleSubmit = async e => {
+		const validation = {};
 		if (!name) {
 			validation.name = 'Name is required';
 		}
 		if (!type || type === '(select one)') {
 			validation.type = 'Event type is required';
-		}
-		if (!visibility || visibility === '(select one)') {
-			validation.visibility = 'Visibility is required';
-		}
-		if (!price) {
-			validation.price = 'Price is required';
 		}
 		if (!startDate) {
 			validation.eventStart = 'Event start is required';
@@ -42,20 +42,45 @@ const CreateEventPage = () => {
 		if (desc.length < 30) {
 			validation.desc = 'Description must be at least 30 characters long';
 		}
-	}, [name, type, visibility, price, startDate, endDate, imgUrl, desc.length]);
-
-	const handleSubmit = e => {
 		if (Object.values(validation).length > 0) {
 			setErrors(validation);
 			return;
 		}
 
-		const newEvent = {};
+		const newEvent = {
+			venueId: null,
+			name,
+			type,
+			price,
+			capacity: 20,
+			description: desc,
+			startDate,
+			endDate,
+		};
+
+		const newImage = {
+			url: imgUrl,
+			preview: true,
+		};
+
+		try {
+			const res = await dispatch(createEvent(newEvent, groupId, newImage));
+			const event = await res.json();
+			console.log('resolved event', event);
+			history.push(`/events/${event.id}`);
+		} catch (err) {
+			console.log(err);
+		}
 	};
+
+	useEffect(() => {
+		dispatch(getSingleGroup(groupId));
+	}, [dispatch, groupId]);
+
 	return (
 		<div className="create-event">
 			<section className="create-event__heading-section">
-				<h3>Create an event for 'group name'</h3>
+				<h3>Create an event for {group.name}</h3>
 				<div className="create-event__name-input-container">
 					<p>What is the name of your event?</p>
 					<input value={name} onChange={e => setName(e.target.value)} placeholder="Event Name" />
@@ -72,30 +97,25 @@ const CreateEventPage = () => {
 					</select>
 					{errors.type && <ErrorView error={errors.type} />}
 				</div>
-				<div className="create-event__visibility-input-container">
-					<p>Is this event private or public?</p>
-					<select value={visibility} onChange={e => setVisibility(e.target.value)}>
-						<option value="(select one)">(select one)</option>
-						<option value="Private">Private</option>
-						<option value="Public">Public</option>
-					</select>
-					{errors.visibility && <ErrorView error={errors.visibility} />}
-				</div>
 				<div className="create-event__price-input-container">
 					<p>What is the price for your event?</p>
-					<input value={price} onChange={e => setPrice(e.target.value)} type="number" />
+					<input value={price} onChange={e => setPrice(e.target.value)} type="number" min={0} />
 					{errors.price && <ErrorView error={errors.price} />}
 				</div>
 			</section>
 			<section className="create-event__date-section">
 				<div className="create-event__start-date-container">
 					<p>When does your event start?</p>
-					<input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+					<input
+						type="datetime-local"
+						value={startDate}
+						onChange={e => setStartDate(e.target.value)}
+					/>
 					{errors.eventStart && <ErrorView error={errors.eventStart} />}
 				</div>
 				<div className="create-event__end-date-container">
 					<p>When does your event end?</p>
-					<input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+					<input type="datetime-local" value={endDate} onChange={e => setEndDate(e.target.value)} />
 					{errors.eventEnd && <ErrorView error={errors.eventEnd} />}
 				</div>
 			</section>

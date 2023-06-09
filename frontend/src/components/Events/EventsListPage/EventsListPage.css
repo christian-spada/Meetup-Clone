@@ -38,6 +38,11 @@
 	gap: 1rem;
 }
 
+.card__date-info {
+	display: flex;
+	gap: 0.6rem;
+}
+
 .card__img-container {
 	display: flex;
 	align-items: center;
