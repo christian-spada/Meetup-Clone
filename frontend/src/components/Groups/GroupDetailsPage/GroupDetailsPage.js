@@ -24,23 +24,21 @@ const GroupDetailsPage = () => {
 
 	useEffect(() => {
 		dispatch(getSingleGroup(groupId));
-	}, [dispatch]);
+	}, [dispatch, groupId]);
 
 	useEffect(() => {
 		dispatch(getGroupEvents(groupId));
-	}, [dispatch]);
+	}, [dispatch, groupId]);
 
 	const eventsArr = Object.values(events);
 
 	if (!Object.values(group).length) return <h3>Loading...</h3>;
 
-	if (!eventsArr.length) return <h3>Loading...</h3>;
-
 	if (user && !isDeletingGroup) {
 		setMembershipStatus(groupId, user, setMemberStatus);
 	}
 
-	eventsArr.sort((event1, event2) => {
+	eventsArr?.sort((event1, event2) => {
 		return new Date(event1.startDate) - new Date(event2.startDate);
 	});
 
@@ -125,9 +123,9 @@ const GroupDetailsPage = () => {
 						<p>{group.about}</p>
 					</div>
 					<div className="group-details__events-container">
-						<h3>Upcoming Events (#{eventsArr.length})</h3>
+						<h3>Upcoming Events (#{eventsArr?.length})</h3>
 						<div className="group-details__event-cards">
-							{eventsArr.map(event => (
+							{eventsArr?.map(event => (
 								<EventCard key={event.id} event={event} />
 							))}
 						</div>

@@ -108,7 +108,7 @@ const EventDetailsPage = () => {
 								<span className="event-details__margin-left">{event.type}</span>
 							</div>
 							<div>
-								{user.id === groupOrganizer?.id && (
+								{user?.id === groupOrganizer?.id && (
 									<OpenModalMenuItem
 										className="event-details__delete-event-btn"
 										itemText="Delete"
@@ -122,11 +122,7 @@ const EventDetailsPage = () => {
 					</div>
 					<div className="event-details__details-desc">
 						<h3>Details</h3>
-						<p>
-							filler text filler text filler text filler text filler text filler text filler text
-							filler text filler text filler text filler text filler text filler text filler text
-							filler text filler text filler text filler text filler text filler text
-						</p>
+						<p>{event.description}</p>
 					</div>
 				</div>
 			</section>
