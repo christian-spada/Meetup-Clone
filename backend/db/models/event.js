@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			venueId: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
 			},
 			groupId: {
 				type: DataTypes.INTEGER,
