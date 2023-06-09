@@ -5,6 +5,7 @@ import { normalizeData } from './storeUtils';
 const GET_ALL_EVENTS = 'events/getAllEvents';
 const CREATE_EVENT = 'events/createEvent';
 const GET_SINGLE_EVENT = 'events/getSingleEvent';
+const DELETE_EVENT = 'events/deleteEvent';
 const ADD_IMAGE_TO_EVENT = 'events/addImageToEvent';
 
 const getAllEvents = events => {
@@ -25,6 +26,13 @@ const createEvent = event => {
 	return {
 		type: CREATE_EVENT,
 		payload: event,
+	};
+};
+
+const deleteEvent = eventToDelete => {
+	return {
+		type: DELETE_EVENT,
+		payload: eventToDelete,
 	};
 };
 
@@ -86,7 +94,24 @@ export const createEventThunk = (event, groupId, image) => async dispatch => {
 		// === SHOULD I DISPATCH IMAGE?? ===
 		// dispatch(addImageToEventThunk(addImageToEvent(image)));
 
+		console.log('thunk resolved event', newEvent);
 		return newEvent;
+	} catch (err) {
+		console.log('thunk error', err);
+		return err;
+	}
+};
+
+export const deleteEventThunk = eventToDelete => async dispatch => {
+	try {
+		const res = await csrfFetch(`/api/events/${eventToDelete.id}`, {
+			method: 'DELETE',
+		});
+
+		const message = await res.json();
+		dispatch(deleteEvent(eventToDelete));
+		console.log(message);
+		return message;
 	} catch (err) {
 		console.log(err);
 		return err;
@@ -114,6 +139,13 @@ const eventsReducer = (state = initialState, action) => {
 				...state,
 				allEvents: { ...state.allEvents, [action.payload.id]: action.payload },
 			};
+		case DELETE_EVENT:
+			const newState = {
+				...state,
+				allEvents: { ...state.allEvents },
+				singleEvent: {},
+			};
+			delete newState.allEvents[action.payload.id];
 		// case ADD_IMAGE_TO_EVENT:
 		//   return {
 		//     ...state,

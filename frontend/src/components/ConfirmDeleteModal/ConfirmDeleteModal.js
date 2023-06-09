@@ -3,13 +3,14 @@ import { useModal } from '../../context/Modal';
 import { deleteGroupThunk as deleteGroup } from '../../store/groups';
 import './ConfirmDeleteModal.css';
 import { useHistory } from 'react-router-dom';
+import { deleteEventThunk as deleteEvent } from '../../store/events';
 
-const ConfirmDeleteModal = ({ groupToDelete, setIsDeletingGroup }) => {
+const ConfirmDeleteModal = ({ groupToDelete, setIsDeletingGroup, eventToDelete, eventGroupId }) => {
 	const { closeModal } = useModal();
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	const handleDelete = async e => {
+	const handleGroupDelete = async e => {
 		if (setIsDeletingGroup) {
 			setIsDeletingGroup(true);
 		}
@@ -19,22 +20,50 @@ const ConfirmDeleteModal = ({ groupToDelete, setIsDeletingGroup }) => {
 		history.push('/groups');
 	};
 
+	const handleEventDelete = async e => {
+		try {
+			const res = await dispatch(deleteEvent(eventToDelete));
+
+			closeModal();
+			history.push(`/groups/${eventGroupId}`);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const handleKeep = e => {
 		closeModal();
 	};
 
-	return (
-		<div className="delete-group-modal">
-			<h2>Confirm Delete</h2>
-			<p>Are you sure you want to remove this group</p>
-			<button onClick={handleDelete} className="delete-group-modal__delete-btn">
-				Yes (Delete Group)
-			</button>
-			<button onClick={handleKeep} className="delete-group-modal__keep-btn">
-				No (Keep Group)
-			</button>
-		</div>
-	);
+	if (groupToDelete) {
+		return (
+			<div className="delete-modal">
+				<h2>Confirm Delete</h2>
+				<p>Are you sure you want to remove this group</p>
+				<button onClick={handleGroupDelete} className="delete-modal__delete-btn">
+					Yes (Delete Group)
+				</button>
+				<button onClick={handleKeep} className="delete-modal__keep-btn">
+					No (Keep Group)
+				</button>
+			</div>
+		);
+	}
+
+	if (eventToDelete) {
+		return (
+			<div className="delete-modal">
+				<h2>Confirm Delete</h2>
+				<p>Are you sure you want to remove this event</p>
+				<button onClick={handleEventDelete} className="delete-modal__delete-btn">
+					Yes (Delete Event)
+				</button>
+				<button onClick={handleKeep} className="delete-modal__keep-btn">
+					No (Keep Event)
+				</button>
+			</div>
+		);
+	}
 };
 
 export default ConfirmDeleteModal;

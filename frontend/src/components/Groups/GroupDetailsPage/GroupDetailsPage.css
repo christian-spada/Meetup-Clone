@@ -66,6 +66,7 @@
 
 .group-details__delete-btn {
 	background-color: hsl(343, 77%, 51%);
+	cursor: pointer;
 }
 
 .group-details__create-event-btn {
