@@ -48,7 +48,7 @@ const CreateEventPage = () => {
 		}
 
 		const newEvent = {
-			venueId: null,
+			venueId: group.Venues[0].id,
 			name,
 			type,
 			price,
@@ -65,11 +65,8 @@ const CreateEventPage = () => {
 
 		try {
 			const event = await dispatch(createEvent(newEvent, groupId, newImage));
-			console.log('resolved event', event);
 			history.push(`/events/${event.id}`);
-		} catch (err) {
-			console.log(err);
-		}
+		} catch (err) {}
 	};
 
 	useEffect(() => {

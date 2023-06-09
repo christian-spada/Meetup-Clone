@@ -1,12 +1,19 @@
 import { useHistory } from 'react-router-dom';
 import './EventsListPage.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getSingleEventThunk as getSingleEvent } from '../../../store/events';
 import { formatDateAndTime } from '../../../utils/helpers';
+import { useEffect } from 'react';
+import { getSingleGroupThunk as getSingleGroup } from '../../../store/groups';
 
 export const EventCard = ({ event }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const group = useSelector(state => state.groups.singleGroup);
+
+	useEffect(() => {
+		dispatch(getSingleGroup(event.groupId));
+	}, [dispatch, event]);
 
 	const handleEventClick = () => {
 		dispatch(getSingleEvent(event.id));
@@ -33,9 +40,8 @@ export const EventCard = ({ event }) => {
 				</div>
 				<h2 className="card__title">{event.name}</h2>
 				<p className="card__location">
-					{event.Venue.city}, {event.Venue.state}
+					{event.Venue?.city || group?.city}, {event.Venue?.state || group?.state}
 				</p>
-				<p className="card__event-about">{event.about}</p>
 				<div className="card__status-info">
 					<p>## events</p>
 					<span>•</span>

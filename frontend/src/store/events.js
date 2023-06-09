@@ -94,9 +94,10 @@ export const createEventThunk = (event, groupId, image) => async dispatch => {
 		// === SHOULD I DISPATCH IMAGE?? ===
 		// dispatch(addImageToEventThunk(addImageToEvent(image)));
 
+		console.log('thunk resolved event', newEvent);
 		return newEvent;
 	} catch (err) {
-		console.log(err);
+		console.log('thunk error', err);
 		return err;
 	}
 };
