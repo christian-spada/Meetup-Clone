@@ -63,7 +63,7 @@ const CreateEventPage = () => {
 			preview: true,
 		};
 
-		const res = await dispatch(createEvent(newEvent, groupId, newImage));
+		const res = await dispatch(createEvent(newEvent, groupId, newImage, group.Venues[0]));
 
 		if (res.id) {
 			history.push(`/events/${res.id}`);

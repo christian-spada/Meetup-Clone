@@ -74,14 +74,13 @@ export const getSingleEventThunk = eventId => async dispatch => {
 
 export const addImageToEventThunk = (image, eventId) => async dispatch => {
 	try {
-		const res = await csrfFetch(`/api/events/${eventId}/images`);
 	} catch (err) {
 		console.log(err);
 		return err;
 	}
 };
 
-export const createEventThunk = (event, groupId, image) => async dispatch => {
+export const createEventThunk = (event, groupId, image, venue) => async dispatch => {
 	try {
 		const res = await csrfFetch(`/api/groups/${groupId}/events`, {
 			method: 'POST',
@@ -89,10 +88,15 @@ export const createEventThunk = (event, groupId, image) => async dispatch => {
 		});
 
 		const newEvent = await res.json();
-		dispatch(createEvent(newEvent));
+		newEvent.previewImage = image.url;
+		newEvent.Venue = { id: venue.id, city: venue.city, state: venue.state };
 
-		// === SHOULD I DISPATCH IMAGE?? ===
-		// dispatch(addImageToEventThunk(addImageToEvent(image)));
+		csrfFetch(`/api/events/${newEvent.id}/images`, {
+			method: 'POST',
+			body: JSON.stringify(image),
+		});
+
+		dispatch(createEvent(newEvent));
 
 		return newEvent;
 	} catch (err) {

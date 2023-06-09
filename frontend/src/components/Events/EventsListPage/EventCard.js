@@ -9,28 +9,18 @@ import { getSingleGroupThunk as getSingleGroup } from '../../../store/groups';
 export const EventCard = ({ event }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const group = useSelector(state => state.groups.singleGroup);
-
-	useEffect(() => {
-		dispatch(getSingleGroup(event.groupId));
-	}, [dispatch, event]);
 
 	const handleEventClick = () => {
-		dispatch(getSingleEvent(event.id));
-
 		history.push(`/events/${event.id}`);
 	};
 
+	console.log(event);
 	const { formattedDate, formattedTime } = formatDateAndTime(event.startDate);
 
 	return (
 		<div className="card" onClick={handleEventClick}>
 			<div className="card__img-container">
-				<img
-					className="card__img"
-					src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
-					alt="img"
-				/>
+				<img className="card__img" src={event.previewImage} alt="img" />
 			</div>
 			<div className="card__info-container">
 				<div className="card__date-info">
@@ -40,7 +30,7 @@ export const EventCard = ({ event }) => {
 				</div>
 				<h2 className="card__title">{event.name}</h2>
 				<p className="card__location">
-					{event.Venue?.city || group?.city}, {event.Venue?.state || group?.state}
+					{event.Venue.city}, {event.Venue.state}
 				</p>
 			</div>
 		</div>
