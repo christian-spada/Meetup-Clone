@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createGroupThunk as createGroup } from '../../store/groups';
-import { ErrorView } from '../UtilComponents/ErrorView';
+import { createGroupThunk as createGroup } from '../../../store/groups';
+import { ErrorView } from '../../UtilComponents/ErrorView';
 import './StartGroupPage.css';
 
 const StartGroupPage = () => {
@@ -70,6 +70,7 @@ const StartGroupPage = () => {
 	return (
 		<div className="start-group">
 			<section className="start-group__heading">
+				<h2>Start a New Group</h2>
 				<h3>BECOME AN ORGANIZER</h3>
 				<p>We'll walk you through a few steps to build your local community</p>
 			</section>

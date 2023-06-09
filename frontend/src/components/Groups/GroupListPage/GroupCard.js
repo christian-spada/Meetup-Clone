@@ -2,9 +2,9 @@ import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './GroupsListPage.css';
-import { setMembershipStatus } from '../../utils/fetch-helpers.js';
-import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
-import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
+import { setMembershipStatus } from '../../../utils/fetch-helpers.js';
+import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
+import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
 import { Link } from 'react-router-dom';
 
 const GroupCard = ({ group, isMemberPage }) => {

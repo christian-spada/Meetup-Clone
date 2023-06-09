@@ -3,14 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import { restoreUserThunk as restoreUser } from './store/session';
-import StartGroupPage from './components/StartGroupPage/StartGroupPage';
-import LandingPage from './components/LandingPage/LandingPage';
-import GroupsListPage from './components/GroupListPage/GroupsListPage';
-import EventsListPage from './components/EventsListPage/EventsListPage';
-import GroupDetailsPage from './components/GroupDetailsPage/GroupDetailsPage';
-import ManageGroupsPage from './components/ManageGroupsPage/ManageGroupsPage';
-import UpdateGroupPage from './components/UpdateGroupPage/UpdateGroupPage';
-import CreateEventPage from './components/CreateEventPage/CreateEventPage';
+import LandingPage from './components/LandingPage';
+import StartGroupPage from './components/Groups/StartGroupPage';
+import GroupsListPage from './components/Groups/GroupListPage';
+import EventsListPage from './components/Events/EventsListPage';
+import GroupDetailsPage from './components/Groups/GroupDetailsPage';
+import ManageGroupsPage from './components/Groups/ManageGroupsPage';
+import UpdateGroupPage from './components/Groups/UpdateGroupPage';
+import CreateEventPage from './components/Events/CreateEventPage';
+import EventDetailsPage from './components/Events/EventDetailsPage';
 
 function App() {
 	const dispatch = useDispatch();
@@ -48,6 +49,9 @@ function App() {
 					</Route>
 					<Route exact path="/events">
 						<EventsListPage />
+					</Route>
+					<Route path="/events/:eventId">
+						<EventDetailsPage />
 					</Route>
 				</Switch>
 			)}

@@ -4,6 +4,7 @@ import { normalizeData } from './storeUtils';
 // === ACTIONS ===
 
 const GET_ALL_GROUPS = 'groups/getAllGroups';
+const GET_USER_GROUPS = 'groups/getUserGroups';
 const GET_SINGLE_GROUP = 'groups/getSingleGroup';
 const CREATE_GROUP = 'groups/createGroup';
 const DELETE_GROUP = 'groups/deleteGroup';
@@ -12,6 +13,13 @@ const UPDATE_GROUP = 'groups/updateGroup';
 const getAllGroups = groups => {
 	return {
 		type: GET_ALL_GROUPS,
+		payload: groups,
+	};
+};
+
+const getUserGroups = groups => {
+	return {
+		type: GET_USER_GROUPS,
 		payload: groups,
 	};
 };
@@ -53,6 +61,18 @@ export const getAllGroupsThunk = () => async dispatch => {
 	return data.Groups;
 };
 
+export const getUserGroupsThunk = () => async dispatch => {
+	try {
+		const res = await csrfFetch('/api/groups/current');
+		const groupData = await res.json();
+		dispatch(getUserGroups(groupData.Groups));
+		return groupData.Groups;
+	} catch (err) {
+		console.log(err);
+		return err;
+	}
+};
+
 export const getSingleGroupThunk = groupId => async dispatch => {
 	const res = await csrfFetch(`/api/groups/${groupId}`);
 
@@ -86,8 +106,7 @@ export const createGroupThunk = (group, image) => async dispatch => {
 
 		return newGroup;
 	} catch (err) {
-		const errors = await err.json();
-		return errors;
+		return err;
 	}
 };
 
@@ -116,8 +135,8 @@ export const deleteGroupThunk = groupToDelete => async dispatch => {
 
 		return message;
 	} catch (err) {
-		const error = await err.json();
-		return error;
+		console.log(err);
+		return err;
 	}
 };
 
@@ -137,6 +156,11 @@ const groupsReducer = (state = initialState, action) => {
 				...state,
 				singleGroup: action.payload,
 			};
+		case GET_USER_GROUPS:
+			return {
+				...state,
+				allGroups: normalizeData(action.payload),
+			};
 		case CREATE_GROUP:
 			const newGroup = normalizeData(action.payload);
 			return {
@@ -147,9 +171,8 @@ const groupsReducer = (state = initialState, action) => {
 			const newState = {
 				...state,
 				allGroups: { ...state.allGroups },
-				singleGroup: { ...state.singleGroup },
+				singleGroup: {},
 			};
-			console.log(newState);
 			delete newState.allGroups[action.payload.id];
 			return newState;
 		case UPDATE_GROUP:
