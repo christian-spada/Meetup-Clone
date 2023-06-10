@@ -29,10 +29,10 @@ const CreateEventPage = () => {
 			validation.type = 'Event type is required';
 		}
 		if (!startDate) {
-			validation.eventStart = 'Event start is required';
+			validation.startDate = 'Event start is required';
 		}
 		if (!endDate) {
-			validation.eventEnd = 'Event end is required';
+			validation.endDate = 'Event end is required';
 		}
 		const isValidImgUrl =
 			imgUrl.endsWith('.jpg') || imgUrl.endsWith('.png') || imgUrl.endsWith('.jpeg');
@@ -110,12 +110,12 @@ const CreateEventPage = () => {
 						value={startDate}
 						onChange={e => setStartDate(e.target.value)}
 					/>
-					{errors.eventStart && <ErrorView error={errors.eventStart} />}
+					{errors.startDate && <ErrorView error={errors.startDate} />}
 				</div>
 				<div className="create-event__end-date-container">
 					<p>When does your event end?</p>
 					<input type="datetime-local" value={endDate} onChange={e => setEndDate(e.target.value)} />
-					{errors.eventEnd && <ErrorView error={errors.eventEnd} />}
+					{errors.endDate && <ErrorView error={errors.endDate} />}
 				</div>
 			</section>
 			<section className="create-event__image-section">
