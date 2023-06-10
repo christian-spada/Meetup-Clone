@@ -29,8 +29,8 @@
 }
 
 .group-details__group-image {
-	width: 100%;
-	height: 100%;
+	max-width: 400px;
+	max-height: 400px;
 }
 
 .group-details__join-group-btn {

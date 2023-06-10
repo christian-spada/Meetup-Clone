@@ -86,7 +86,7 @@ const GroupDetailsPage = () => {
 					</div>
 					<img
 						className="group-details__group-image"
-						src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
+						src={group.GroupImages[0].url}
 						alt="img"
 					></img>
 				</div>
