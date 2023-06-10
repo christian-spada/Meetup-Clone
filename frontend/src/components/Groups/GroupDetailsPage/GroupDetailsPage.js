@@ -86,7 +86,7 @@ const GroupDetailsPage = () => {
 					</div>
 					<img
 						className="group-details__group-image"
-						src={group.GroupImages[0].url}
+						src={group?.GroupImages && group.GroupImages[0] && group.GroupImages[0].url}
 						alt="img"
 					></img>
 				</div>
