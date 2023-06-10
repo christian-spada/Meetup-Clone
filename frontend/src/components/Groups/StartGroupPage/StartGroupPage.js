@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createGroupThunk as createGroup } from '../../../store/groups';
@@ -15,9 +15,10 @@ const StartGroupPage = () => {
 	const [groupStatus, setGroupStatus] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
 	const [errors, setErrors] = useState({});
-	const validation = {};
 
-	useEffect(() => {
+	const handleGroupSubmit = async e => {
+		const validation = {};
+
 		if (!location) {
 			validation.location = 'Location is required';
 		}
@@ -38,9 +39,7 @@ const StartGroupPage = () => {
 		if (!groupStatus) {
 			validation.groupStatus = 'Visibility Type is required';
 		}
-	}, [desc.length, name, location, imgUrl, groupType, groupStatus, validation]);
 
-	const handleGroupSubmit = async e => {
 		if (Object.keys(validation).length) {
 			setErrors(validation);
 			return;
@@ -67,6 +66,7 @@ const StartGroupPage = () => {
 			setErrors(res.errors);
 		}
 	};
+
 	return (
 		<div className="start-group">
 			<section className="start-group__heading">

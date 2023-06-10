@@ -6,7 +6,6 @@ const GET_ALL_EVENTS = 'events/getAllEvents';
 const CREATE_EVENT = 'events/createEvent';
 const GET_SINGLE_EVENT = 'events/getSingleEvent';
 const DELETE_EVENT = 'events/deleteEvent';
-const ADD_IMAGE_TO_EVENT = 'events/addImageToEvent';
 
 const getAllEvents = events => {
 	return {
@@ -33,13 +32,6 @@ const deleteEvent = eventToDelete => {
 	return {
 		type: DELETE_EVENT,
 		payload: eventToDelete,
-	};
-};
-
-const addImageToEvent = image => {
-	return {
-		type: ADD_IMAGE_TO_EVENT,
-		payload: image,
 	};
 };
 
@@ -74,14 +66,13 @@ export const getSingleEventThunk = eventId => async dispatch => {
 
 export const addImageToEventThunk = (image, eventId) => async dispatch => {
 	try {
-		const res = await csrfFetch(`/api/events/${eventId}/images`);
 	} catch (err) {
 		console.log(err);
 		return err;
 	}
 };
 
-export const createEventThunk = (event, groupId, image) => async dispatch => {
+export const createEventThunk = (event, groupId, image, venue) => async dispatch => {
 	try {
 		const res = await csrfFetch(`/api/groups/${groupId}/events`, {
 			method: 'POST',
@@ -89,16 +80,20 @@ export const createEventThunk = (event, groupId, image) => async dispatch => {
 		});
 
 		const newEvent = await res.json();
+		newEvent.previewImage = image.url;
+		newEvent.Venue = { id: venue.id, city: venue.city, state: venue.state };
+
+		csrfFetch(`/api/events/${newEvent.id}/images`, {
+			method: 'POST',
+			body: JSON.stringify(image),
+		});
+
 		dispatch(createEvent(newEvent));
 
-		// === SHOULD I DISPATCH IMAGE?? ===
-		// dispatch(addImageToEventThunk(addImageToEvent(image)));
-
-		console.log('thunk resolved event', newEvent);
 		return newEvent;
 	} catch (err) {
-		console.log('thunk error', err);
-		return err;
+		const error = await err.json();
+		return error;
 	}
 };
 
@@ -146,10 +141,7 @@ const eventsReducer = (state = initialState, action) => {
 				singleEvent: {},
 			};
 			delete newState.allEvents[action.payload.id];
-		// case ADD_IMAGE_TO_EVENT:
-		//   return {
-		//     ...state,
-		//   }
+			return newState;
 		default:
 			return state;
 	}

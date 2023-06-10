@@ -24,7 +24,7 @@ const UpdateGroupPage = () => {
 
 	useEffect(() => {
 		dispatch(getSingleGroup(groupId));
-	}, [dispatch]);
+	}, [dispatch, groupId]);
 
 	useEffect(() => {
 		if (user === null) {
@@ -32,7 +32,7 @@ const UpdateGroupPage = () => {
 		}
 	}, [user, history]);
 
-	useEffect(() => {
+	const handleGroupSubmit = async e => {
 		if (!location) {
 			validation.location = 'Location is required';
 		}
@@ -48,9 +48,6 @@ const UpdateGroupPage = () => {
 		if (!groupStatus || groupStatus === '(select one)') {
 			validation.groupStatus = 'Visibility Type is required';
 		}
-	}, [desc.length, name, location, groupType, groupStatus, validation]);
-
-	const handleGroupSubmit = async e => {
 		if (Object.keys(validation).length) {
 			setErrors(validation);
 			return;
@@ -71,6 +68,8 @@ const UpdateGroupPage = () => {
 
 		if (res.id) {
 			history.push(`/groups/${res.id}`);
+		} else {
+			setErrors(res.errors);
 		}
 	};
 	return (

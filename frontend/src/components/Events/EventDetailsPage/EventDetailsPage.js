@@ -8,8 +8,10 @@ import { useParams } from 'react-router-dom';
 import { formatDateAndTime } from '../../../utils/helpers';
 import ConfirmDeleteModal from '../../ConfirmDeleteModal';
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const EventDetailsPage = () => {
+	const history = useHistory();
 	const { eventId } = useParams();
 	const dispatch = useDispatch();
 	const event = useSelector(state => state.events.singleEvent);
@@ -48,7 +50,7 @@ const EventDetailsPage = () => {
 					<div className="event-details__event-info-container">
 						<h2>{event.name}</h2>
 						<p>
-							host by {groupOrganizer?.firstName} {groupOrganizer?.lastName}
+							Hosted by {groupOrganizer?.firstName} {groupOrganizer?.lastName}
 						</p>
 					</div>
 				</div>
@@ -59,7 +61,10 @@ const EventDetailsPage = () => {
 						src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
 						alt="img"
 					/>
-					<div className="event-details__group-card">
+					<div
+						onClick={() => history.push(`/groups/${group.id}`)}
+						className="event-details__group-card"
+					>
 						<img
 							src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
 							alt="img"
@@ -93,7 +98,7 @@ const EventDetailsPage = () => {
 							<span>
 								<i className="fa-solid fa-dollar-sign"></i>
 							</span>
-							<span>{event.price === 0 ? 'FREE' : event.price}</span>
+							<span>{event.price === 0 ? 'FREE' : `$ ${event.price}`}</span>
 						</div>
 						<div className="event-details__type-container">
 							<div>
@@ -103,7 +108,7 @@ const EventDetailsPage = () => {
 								<span className="event-details__margin-left">{event.type}</span>
 							</div>
 							<div>
-								{user.id === groupOrganizer?.id && (
+								{user?.id === groupOrganizer?.id && (
 									<OpenModalMenuItem
 										className="event-details__delete-event-btn"
 										itemText="Delete"
@@ -117,11 +122,7 @@ const EventDetailsPage = () => {
 					</div>
 					<div className="event-details__details-desc">
 						<h3>Details</h3>
-						<p>
-							filler text filler text filler text filler text filler text filler text filler text
-							filler text filler text filler text filler text filler text filler text filler text
-							filler text filler text filler text filler text filler text filler text
-						</p>
+						<p>{event.description}</p>
 					</div>
 				</div>
 			</section>

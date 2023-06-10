@@ -149,6 +149,16 @@ router.post('/', requireAuth, validateGroup, async (req, res) => {
 		state,
 	});
 
+	// === TEMP FIX - HARDCODE NEW VENUE TO SOLVE FRONTEND ISSUE WHERE A NEWLY CREATED GROUP DOESN'T HAVE A VENUE FOR A NEWLY CREATED EVENT TO WORK. ADJUST BACKEND ASSOCIATIONS TO ACTUALLY FIX PROBLEM IN FUTURE ===
+	await Venue.create({
+		groupId: newGroup.id,
+		address: '123 Disney Lane',
+		city: 'New York',
+		state: 'NY',
+		lat: 37.7645358,
+		lng: -122.4730327,
+	});
+
 	const newMembership = await Membership.create({
 		userId: req.user.id,
 		groupId: newGroup.id,

@@ -36,6 +36,7 @@
 	padding: 2rem;
 	height: 90px;
 	align-self: self-end;
+	cursor: pointer;
 }
 
 .event-details__group-card > img {
