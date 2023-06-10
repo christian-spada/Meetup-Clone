@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import './LandingPage.css';
 import { useSelector } from 'react-redux';
-
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import SignupFormModal from '../SignupFormModal';
 const LandingPage = () => {
 	const userSession = useSelector(state => state.session.user);
 
@@ -60,7 +61,11 @@ const LandingPage = () => {
 			</section>
 			{!userSession && (
 				<section className="main-content__join-meetup-section">
-					<button className="main-content__join-meetup-btn">Join Meetup</button>
+					<OpenModalMenuItem
+						className="main-content__join-meetup-btn"
+						itemText="Join Meetup"
+						modalComponent={<SignupFormModal />}
+					/>
 				</section>
 			)}
 		</div>
