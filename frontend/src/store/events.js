@@ -6,7 +6,6 @@ const GET_ALL_EVENTS = 'events/getAllEvents';
 const CREATE_EVENT = 'events/createEvent';
 const GET_SINGLE_EVENT = 'events/getSingleEvent';
 const DELETE_EVENT = 'events/deleteEvent';
-const ADD_IMAGE_TO_EVENT = 'events/addImageToEvent';
 
 const getAllEvents = events => {
 	return {
@@ -33,13 +32,6 @@ const deleteEvent = eventToDelete => {
 	return {
 		type: DELETE_EVENT,
 		payload: eventToDelete,
-	};
-};
-
-const addImageToEvent = image => {
-	return {
-		type: ADD_IMAGE_TO_EVENT,
-		payload: image,
 	};
 };
 
@@ -150,10 +142,6 @@ const eventsReducer = (state = initialState, action) => {
 			};
 			delete newState.allEvents[action.payload.id];
 			return newState;
-		// case ADD_IMAGE_TO_EVENT:
-		//   return {
-		//     ...state,
-		//   }
 		default:
 			return state;
 	}
