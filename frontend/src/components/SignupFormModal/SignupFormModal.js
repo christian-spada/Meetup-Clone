@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import { signupThunk as signup } from '../../store/session';
@@ -14,32 +14,70 @@ const SignupFormModal = () => {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [errors, setErrors] = useState({});
+	const [isDisabled, setIsDisabled] = useState(true);
 	const { closeModal } = useModal();
 
-	const handleSubmit = e => {
-		e.preventDefault();
-		if (password === confirmPassword) {
-			setErrors({});
-			return dispatch(
-				signup({
-					email,
-					username,
-					firstName,
-					lastName,
-					password,
-				})
-			)
-				.then(closeModal)
-				.catch(async res => {
-					const data = await res.json();
-					if (data && data.errors) {
-						setErrors(data.errors);
-					}
-				});
+	useEffect(() => {
+		const isBtnEnabled =
+			firstName.length &&
+			lastName.length &&
+			username.length >= 4 &&
+			password.length >= 6 &&
+			password === confirmPassword;
+
+		if (isBtnEnabled) {
+			setIsDisabled(false);
+		} else {
+			setIsDisabled(true);
 		}
-		return setErrors({
-			confirmPassword: 'Confirm Password field must be the same as the Password field',
-		});
+	}, [firstName, lastName, username, password.length, password, confirmPassword]);
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+
+		if (password !== confirmPassword) {
+			return setErrors({
+				confirmPassword: 'Confirm Password field must be the same as the Password field',
+			});
+		}
+
+		const user = {
+			email,
+			username,
+			firstName,
+			lastName,
+			password,
+		};
+
+		const res = await dispatch(signup(user));
+
+		if (res.id) {
+			closeModal();
+		} else {
+			setErrors(res.errors);
+		}
+		// if (password === confirmPassword) {
+		// 	setErrors({});
+		// 	return dispatch(
+		// 		signup({
+		// 			email,
+		// 			username,
+		// 			firstName,
+		// 			lastName,
+		// 			password,
+		// 		})
+		// 	)
+		// 		.then(closeModal)
+		// 		.catch(async res => {
+		// 			const data = await res.json();
+		// 			if (data && data.errors) {
+		// 				setErrors(data.errors);
+		// 			}
+		// 		});
+		// }
+		// return setErrors({
+		// 	confirmPassword: 'Confirm Password field must be the same as the Password field',
+		// });
 	};
 
 	return (
@@ -100,7 +138,10 @@ const SignupFormModal = () => {
 					required
 				/>
 				{errors.confirmPassword && <ErrorView error={errors.confirmPassword} />}
-				<button className="signup-modal__signup-btn" type="submit">
+				<button
+					className={isDisabled ? 'signup-modal__disabled-btn' : 'signup-modal__signup-btn'}
+					type="submit"
+				>
 					Sign Up
 				</button>
 			</form>

@@ -10,32 +10,32 @@ options.tableName = 'EventImages';
 const eventImagesData = [
 	{
 		eventId: 1,
-		url: '/image',
-		preview: false,
+		url: 'https://cdn.discordapp.com/attachments/1116875350929068035/1117171634315468850/joel-filipe-QwoNAhbmLLo-unsplash.jpg',
+		preview: true,
 	},
 	{
 		eventId: 2,
-		url: '/image',
+		url: 'https://cdn.discordapp.com/attachments/1116875350929068035/1117171635196272780/spacex--p-KCm6xB9I-unsplash.jpg',
 		preview: true,
 	},
 	{
 		eventId: 3,
-		url: '/image',
+		url: 'https://cdn.discordapp.com/attachments/1116875350929068035/1117172850961436853/alexander-andrews-eNoeWZkO7Zc-unsplash.jpg',
 		preview: true,
 	},
 	{
 		eventId: 4,
-		url: '/image',
+		url: 'https://cdn.discordapp.com/attachments/1116875350929068035/1117172850588123228/alex-fxrwJGMCz_g-unsplash.jpg',
 		preview: true,
 	},
 	{
 		eventId: 5,
-		url: '/image',
-		preview: false,
+		url: 'https://cdn.discordapp.com/attachments/1116875350929068035/1117172851817074698/willian-justen-de-vasconcellos-KTdWSxukp54-unsplash.jpg',
+		preview: true,
 	},
 	{
 		eventId: 6,
-		url: '/image',
+		url: 'https://cdn.discordapp.com/attachments/1116875350929068035/1117172851414401116/greg-rakozy-oMpAz-DN-9I-unsplash.jpg',
 		preview: true,
 	},
 ];

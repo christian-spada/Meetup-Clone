@@ -105,3 +105,8 @@
 .event-details__margin-left {
 	margin-left: 0.6rem;
 }
+
+.event-details__event-img {
+	max-width: 400px;
+	max-height: 400px;
+}

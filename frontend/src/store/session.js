@@ -46,20 +46,20 @@ export const restoreUserThunk = () => async dispatch => {
 };
 
 export const signupThunk = user => async dispatch => {
-	const { username, firstName, lastName, email, password } = user;
-	const res = await csrfFetch('/api/users', {
-		method: 'POST',
-		body: JSON.stringify({
-			username,
-			firstName,
-			lastName,
-			email,
-			password,
-		}),
-	});
-	const data = await res.json();
-	dispatch(setUser(data.user));
-	return res;
+	try {
+		const res = await csrfFetch('/api/users', {
+			method: 'POST',
+			body: JSON.stringify(user),
+		});
+
+		const data = await res.json();
+		dispatch(setUser(data.user));
+
+		return data.user;
+	} catch (err) {
+		const error = await err.json();
+		return error;
+	}
 };
 
 const initialState = { user: null };

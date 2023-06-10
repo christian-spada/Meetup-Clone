@@ -86,7 +86,7 @@ const GroupDetailsPage = () => {
 					</div>
 					<img
 						className="group-details__group-image"
-						src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
+						src={group.GroupImages[0].url}
 						alt="img"
 					></img>
 				</div>
@@ -97,7 +97,11 @@ const GroupDetailsPage = () => {
 							{group.city}, {group.state}
 						</p>
 						<div className="group-details__group-status-container">
-							<p>## events</p>
+							<p>
+								{eventsArr?.length !== 1
+									? `${eventsArr.length} Events`
+									: `${eventsArr.length} Event`}
+							</p>
 							<span>•</span>
 							<p>{group.private ? 'Private' : 'Public'}</p>
 						</div>

@@ -26,7 +26,7 @@ const GroupCard = ({ group, isMemberPage }) => {
 		if (isMemberPage) {
 			setMembershipStatus(group.id, user, setMemberStatus);
 		}
-	}, []);
+	}, [group.id, user, isMemberPage]);
 
 	let memberBtns;
 	if (isMemberPage) {
@@ -53,11 +53,7 @@ const GroupCard = ({ group, isMemberPage }) => {
 	return (
 		<div className="card" onClick={handleGroupClick}>
 			<div className="card__img-container">
-				<img
-					className="card__img"
-					src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
-					alt="img"
-				/>
+				<img className="card__img" src={group.previewImage} alt="img" />
 			</div>
 			<div className="card__info-container">
 				<h2 className="card__title">{group.name}</h2>
@@ -67,7 +63,11 @@ const GroupCard = ({ group, isMemberPage }) => {
 				<p className="card__group-about">{group.about}</p>
 				<div className="card__btn-row">
 					<div className="card__event-visibility-info">
-						<span>## events</span>
+						<span>
+							{group.numMembers !== 1
+								? `${group.numMembers} Members`
+								: `${group.numMembers} Member`}
+						</span>
 						<span>•</span>
 						<span>{group.private ? 'Private' : 'Public'}</span>
 					</div>
