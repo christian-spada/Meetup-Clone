@@ -1,3 +1,7 @@
+.signup-modal {
+	width: 347px;
+}
+
 .signup-modal__title {
 	font-size: 14px;
 	text-align: center;
@@ -11,10 +15,18 @@
 	font-size: 10px;
 }
 
-.signup-modal__signup-btn {
-	background-color: hsl(343, 77%, 51%);
+.signup-modal__signup-btn,
+.signup-modal__disabled-btn {
 	color: #fff;
 	border: none;
 	border-radius: 5px;
 	padding: 0.3rem 0.8rem;
+}
+
+.signup-modal__signup-btn {
+	background-color: hsl(343, 77%, 51%);
+}
+
+.signup-modal__disabled-btn {
+	background-color: hsl(0, 0%, 56%);
 }
