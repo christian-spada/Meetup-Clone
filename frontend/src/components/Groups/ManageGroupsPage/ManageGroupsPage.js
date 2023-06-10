@@ -10,7 +10,7 @@ const ManageGroupsPage = () => {
 
 	useEffect(() => {
 		dispatch(getUserGroups());
-	}, []);
+	}, [dispatch]);
 
 	const userGroups = Object.values(userGroupData);
 
