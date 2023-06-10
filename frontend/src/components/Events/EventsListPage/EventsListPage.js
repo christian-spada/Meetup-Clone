@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import './EventsListPage.css';
 import { getAllEventsThunk as getAllEvents } from '../../../store/events';
 import { EventCard } from './EventCard';
-import { formatDateAndTime } from '../../../utils/helpers';
 
 const EventsListPage = () => {
 	const dispatch = useDispatch();

@@ -9,11 +9,9 @@ import {
 import { setMembershipStatus } from '../../../utils/fetch-helpers';
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
-import { useHistory } from 'react-router-dom';
 import { EventCard } from '../../Events/EventsListPage/EventCard';
 
 const GroupDetailsPage = () => {
-	const history = useHistory();
 	const dispatch = useDispatch();
 	const { groupId } = useParams();
 	const group = useSelector(state => state.groups.singleGroup);
