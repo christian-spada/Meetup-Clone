@@ -62,7 +62,7 @@ const EventDetailsPage = () => {
 						onClick={() => history.push(`/groups/${group.id}`)}
 						className="event-details__group-card"
 					>
-						<img src={group && group.GroupImages[0].url} alt="img" />
+						<img src={group?.GroupImages && group.GroupImages[0].url} alt="img" />
 						<div className="event-details__group-card-info">
 							<h3>{group?.name}</h3>
 							<p>{group?.private ? 'Private' : 'Public'}</p>
