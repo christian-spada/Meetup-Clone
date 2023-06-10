@@ -97,7 +97,11 @@ const GroupDetailsPage = () => {
 							{group.city}, {group.state}
 						</p>
 						<div className="group-details__group-status-container">
-							<p>## events</p>
+							<p>
+								{eventsArr?.length !== 1
+									? `${eventsArr.length} Events`
+									: `${eventsArr.length} Event`}
+							</p>
 							<span>•</span>
 							<p>{group.private ? 'Private' : 'Public'}</p>
 						</div>

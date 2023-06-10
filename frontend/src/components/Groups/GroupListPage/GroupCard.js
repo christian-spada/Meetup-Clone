@@ -67,7 +67,11 @@ const GroupCard = ({ group, isMemberPage }) => {
 				<p className="card__group-about">{group.about}</p>
 				<div className="card__btn-row">
 					<div className="card__event-visibility-info">
-						<span>## events</span>
+						<span>
+							{group.numMembers !== 1
+								? `${group.numMembers} Members`
+								: `${group.numMembers} Member`}
+						</span>
 						<span>•</span>
 						<span>{group.private ? 'Private' : 'Public'}</span>
 					</div>
