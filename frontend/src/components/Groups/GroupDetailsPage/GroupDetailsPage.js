@@ -1,5 +1,6 @@
 import { NavLink, useParams } from 'react-router-dom';
 import './GroupDetailsPage.css';
+import '../../Events/EventCard/EventCard.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {

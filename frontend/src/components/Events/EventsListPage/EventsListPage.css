@@ -1,6 +1,9 @@
 .events-view {
 	margin: 5rem auto;
-	max-width: 60%;
+	padding: 1rem;
+	max-width: 875px;
+	border-radius: 8px;
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
 }
 
 .events-view__group-event-selection-section {

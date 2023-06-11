@@ -16,12 +16,15 @@
 .group-card__img-container {
 	display: flex;
 	align-items: center;
+	width: 200px;
+	height: 200px;
 }
 
 .group-card__img {
-	max-width: 100px;
-	max-height: 100px;
+	width: 200px;
+	height: 200px;
 	border-radius: 8px;
+	object-fit: cover;
 }
 
 .group-card__location {
@@ -30,12 +33,16 @@
 }
 
 .group-card__group-about {
-	font-size: 10px;
+	font-size: 0.9rem;
+	word-break: break-all;
 }
 
 .group-card__btn-row {
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 4rem;
 }
 
 .group-card__event-visibility-info {
@@ -64,4 +71,16 @@
 
 .group-card__member-btn {
 	background-color: hsl(343, 77%, 51%);
+}
+
+@media (max-width: 550px) {
+	.group-card {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+	.group-card__btn-row {
+		justify-content: center;
+		margin-top: 0;
+	}
 }

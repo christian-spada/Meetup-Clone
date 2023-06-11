@@ -13,19 +13,21 @@ const EventCard = ({ event }) => {
 
 	return (
 		<div className="event-card" onClick={handleEventClick}>
-			<div className="event-card__img-container">
-				<img className="event-card__img" src={event.previewImage} alt="img" />
-			</div>
-			<div className="event-card__info-container">
-				<div className="event-card__date-info">
-					<span>{formattedDate}</span>
-					<span>•</span>
-					<span>{formattedTime}</span>
+			<div className="event-card__details">
+				<div className="event-card__img-container">
+					<img className="event-card__img" src={event.previewImage} alt="img" />
 				</div>
-				<h2 className="event-card__title">{event.name}</h2>
-				<p className="event-card__location">
-					{event.Venue.city}, {event.Venue.state}
-				</p>
+				<div className="event-card__info-container">
+					<div className="event-card__date-info">
+						<span>{formattedDate}</span>
+						<span>•</span>
+						<span>{formattedTime}</span>
+					</div>
+					<h2 className="event-card__title">{event.name}</h2>
+					<p className="event-card__location">
+						{event.Venue.city}, {event.Venue.state}
+					</p>
+				</div>
 			</div>
 			<div className="event-card__description">
 				<p>{event.description}</p>
