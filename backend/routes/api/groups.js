@@ -353,7 +353,7 @@ router.get('/:groupId/events', async (req, res) => {
 			groupId,
 		},
 		attributes: {
-			exclude: ['description', 'price', 'capacity', 'createdAt', 'updatedAt'],
+			exclude: ['price', 'capacity', 'createdAt', 'updatedAt'],
 		},
 		include: [
 			{ model: Group, attributes: ['id', 'name', 'city', 'state'] },

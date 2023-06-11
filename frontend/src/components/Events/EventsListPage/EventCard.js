@@ -27,6 +27,9 @@ export const EventCard = ({ event }) => {
 					{event.Venue.city}, {event.Venue.state}
 				</p>
 			</div>
+			<div className="card__description">
+				<p>{event.description}</p>
+			</div>
 		</div>
 	);
 };

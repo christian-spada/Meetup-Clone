@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './EventsListPage.css';
 import { getAllEventsThunk as getAllEvents } from '../../../store/events';
 import { EventCard } from './EventCard';
+import { sortEvents } from '../../../utils/helpers';
 
 const EventsListPage = () => {
 	const dispatch = useDispatch();
@@ -23,9 +24,7 @@ const EventsListPage = () => {
 	}
 
 	const allEventsArr = Object.values(allEvents);
-	allEventsArr.sort((event1, event2) => {
-		return new Date(event1.startDate) - new Date(event2.startDate);
-	});
+	const sortedEvents = sortEvents(allEventsArr);
 
 	return (
 		<div className="events-view">
@@ -49,7 +48,7 @@ const EventsListPage = () => {
 				<p>{currentSelection} in Meetup</p>
 			</section>
 			<section className="events-view__list">
-				{allEventsArr?.map(event => (
+				{sortedEvents?.map(event => (
 					<EventCard key={event.id} event={event} />
 				))}
 			</section>

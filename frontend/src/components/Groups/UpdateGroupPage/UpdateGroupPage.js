@@ -14,11 +14,12 @@ const UpdateGroupPage = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.session.user);
-	const [location, setLocation] = useState('');
-	const [name, setName] = useState('');
-	const [desc, setDesc] = useState('');
-	const [groupType, setGroupType] = useState('');
-	const [groupStatus, setGroupStatus] = useState('');
+	const group = useSelector(state => state.groups.singleGroup);
+	const [location, setLocation] = useState(`${group?.city}, ${group?.state}`);
+	const [name, setName] = useState(group?.name);
+	const [about, setAbout] = useState(group?.about);
+	const [groupType, setGroupType] = useState(group?.type);
+	const [groupStatus, setGroupStatus] = useState(group?.private ? 'Private' : 'Public');
 	const [errors, setErrors] = useState({});
 	const validation = {};
 
@@ -27,10 +28,10 @@ const UpdateGroupPage = () => {
 	}, [dispatch, groupId]);
 
 	useEffect(() => {
-		if (user === null) {
+		if (user === null || user?.id !== group?.organizerId) {
 			history.push('/');
 		}
-	}, [user, history]);
+	}, [user, history, group?.organizerId]);
 
 	const handleGroupSubmit = async e => {
 		if (!location) {
@@ -39,8 +40,8 @@ const UpdateGroupPage = () => {
 		if (!name) {
 			validation.name = 'Name is required';
 		}
-		if (desc.length < 50) {
-			validation.desc = 'Description must be at least 50 characters long';
+		if (about.length < 50) {
+			validation.about = 'Description must be at least 50 characters long';
 		}
 		if (!groupType || groupType === '(select one)') {
 			validation.groupType = 'Group Type is required';
@@ -57,7 +58,7 @@ const UpdateGroupPage = () => {
 
 		const updatedGroup = {
 			name,
-			about: desc,
+			about,
 			type: groupType,
 			private: groupStatus === 'Private' ? true : false,
 			city,
@@ -106,10 +107,10 @@ const UpdateGroupPage = () => {
 				></input>
 				{errors.name && <ErrorView error={errors.name} />}
 			</section>
-			<section className="update-group__group-desc-input-section">
+			<section className="update-group__group-about-input-section">
 				<h3>Now describe what your group will be about</h3>
 				<p>People will see this when we promote your group.</p>
-				<ol className="update-group__group-desc-prompts">
+				<ol className="update-group__group-about-prompts">
 					<li>What's the purpose of the group?</li>
 					<li> Who should join?</li>
 					<li>What will you do at your events?</li>
@@ -118,10 +119,10 @@ const UpdateGroupPage = () => {
 					placeholder="Please write at least 50 characters"
 					cols="35"
 					rows="10"
-					value={desc}
-					onChange={e => setDesc(e.target.value)}
+					value={about}
+					onChange={e => setAbout(e.target.value)}
 				></textarea>
-				{errors.desc && <ErrorView error={errors.desc} />}
+				{errors.about && <ErrorView error={errors.about} />}
 			</section>
 			<section className="update-group__final-steps-section">
 				<h3>Final steps...</h3>

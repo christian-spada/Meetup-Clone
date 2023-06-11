@@ -41,10 +41,7 @@ const ProfileButton = ({ user }) => {
 		closeMenu();
 		history.push('/groups/current');
 	};
-	const handleYourEventsClick = e => {
-		closeMenu();
-		history.push('/events/current');
-	};
+	const handleYourEventsClick = e => {};
 
 	const ulClassName = 'profile-dropdown' + (showMenu ? '' : ' hidden');
 	const profileArrowDirection = showMenu ? 'up' : 'down';

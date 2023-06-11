@@ -10,6 +10,7 @@ import { setMembershipStatus } from '../../../utils/fetch-helpers';
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
 import { EventCard } from '../../Events/EventsListPage/EventCard';
+import { sortEvents } from '../../../utils/helpers';
 
 const GroupDetailsPage = () => {
 	const dispatch = useDispatch();
@@ -39,6 +40,9 @@ const GroupDetailsPage = () => {
 	eventsArr?.sort((event1, event2) => {
 		return new Date(event1.startDate) - new Date(event2.startDate);
 	});
+
+	const isGroupPage = true;
+	const { sortedEvents, pastEvents } = sortEvents(eventsArr, isGroupPage);
 
 	const { firstName, lastName } = group.Organizer;
 
@@ -124,10 +128,18 @@ const GroupDetailsPage = () => {
 						<h2>What we're about</h2>
 						<p>{group.about}</p>
 					</div>
-					<div className="group-details__events-container">
-						<h3>Upcoming Events (#{eventsArr?.length})</h3>
+					<div className="group-details__upcoming-events-container">
+						<h3>Upcoming Events (#{sortedEvents?.length})</h3>
 						<div className="group-details__event-cards">
-							{eventsArr?.map(event => (
+							{sortedEvents?.map(event => (
+								<EventCard key={event.id} event={event} />
+							))}
+						</div>
+					</div>
+					<div className="group-details__past-events-container">
+						<h3>Past Events (#{pastEvents?.length})</h3>
+						<div className="group-details__event-cards">
+							{pastEvents?.map(event => (
 								<EventCard key={event.id} event={event} />
 							))}
 						</div>

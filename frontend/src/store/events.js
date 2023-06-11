@@ -45,7 +45,6 @@ export const getAllEventsThunk = () => async dispatch => {
 
 		return eventsData.Events;
 	} catch (err) {
-		console.log(err);
 		return err;
 	}
 };
@@ -59,15 +58,6 @@ export const getSingleEventThunk = eventId => async dispatch => {
 
 		return event;
 	} catch (err) {
-		console.log(err);
-		return err;
-	}
-};
-
-export const addImageToEventThunk = (image, eventId) => async dispatch => {
-	try {
-	} catch (err) {
-		console.log(err);
 		return err;
 	}
 };
@@ -108,7 +98,6 @@ export const deleteEventThunk = eventToDelete => async dispatch => {
 		console.log(message);
 		return message;
 	} catch (err) {
-		console.log(err);
 		return err;
 	}
 };

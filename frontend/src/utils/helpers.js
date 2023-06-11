@@ -21,3 +21,21 @@ export const formatDateAndTime = dateData => {
 
 	return { formattedDate, formattedTime };
 };
+
+export const sortEvents = (events, isGroupPage) => {
+	const sortedEvents = [...events]?.sort((event1, event2) => {
+		return new Date({ ...event1 }.startDate) - new Date({ ...event2 }.startDate);
+	});
+
+	const pastEventsTotal = sortedEvents.filter(
+		({ startDate }) => new Date(startDate) < new Date()
+	).length;
+
+	const pastEvents = sortedEvents.splice(0, pastEventsTotal);
+
+	if (isGroupPage) {
+		return { sortedEvents, pastEvents };
+	}
+
+	return sortedEvents.concat(pastEvents);
+};

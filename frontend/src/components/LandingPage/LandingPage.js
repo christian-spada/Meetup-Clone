@@ -11,9 +11,9 @@ const LandingPage = () => {
 			<section className="main-content__title-section">
 				<h1>The people platform -- Where interests become friendships</h1>
 				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, omnis eaque.
-					Laboriosam, natus. Nisi maiores laboriosam exercitationem nulla doloribus amet
-					consequuntur illo fugit quasi error repellendus ex quia, quas reiciendis!
+					Whatever your interest, from hiking and reading to networking and skill sharing, there are
+					thousands of people who share it on Meetup. Events are happening every day—sign up to join
+					the fun.
 				</p>
 			</section>
 			<section className="main-content__image-section">
@@ -25,7 +25,10 @@ const LandingPage = () => {
 			</section>
 			<section className="main-content__meetup-works-section">
 				<h2>How Meetup works</h2>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, omnis eaque.</p>
+				<p>
+					Meet new people who share your interests through online and in-person events. It's free to
+					create an account.
+				</p>
 			</section>
 			<section className="main-content__cards-section">
 				<div className="main-content__cards-container">
@@ -35,7 +38,9 @@ const LandingPage = () => {
 							alt="img"
 						></img>
 						<NavLink to="/groups">See all groups</NavLink>
-						<p>Lorem ipsum dolor sit amet consectetur</p>
+						<p>
+							Do what you love, meet others who love it, find your community. The rest is history!
+						</p>
 					</div>
 					<div>
 						<img
@@ -43,7 +48,10 @@ const LandingPage = () => {
 							alt="img"
 						></img>
 						<NavLink to="/events">Find an event</NavLink>
-						<p>Lorem ipsum dolor sit amet consectetur</p>
+						<p>
+							Events are happening on just about any topic you can think of, from online gaming and
+							photography to yoga and hiking.
+						</p>
 					</div>
 					<div>
 						<img
@@ -55,7 +63,9 @@ const LandingPage = () => {
 						) : (
 							<p className="main-content__start-group-link-disabled">Start a new group</p>
 						)}
-						<p>Lorem ipsum dolor sit amet consectetur</p>
+						<p>
+							You don’t have to be an expert to gather people together and explore shared interests.
+						</p>
 					</div>
 				</div>
 			</section>
