@@ -17,6 +17,9 @@
 	gap: 0.2rem;
 	margin-top: 3rem;
 }
+.group-details__group-info > h2 {
+	margin-bottom: 0.8rem;
+}
 
 .group-details__group-status-container {
 	display: flex;
