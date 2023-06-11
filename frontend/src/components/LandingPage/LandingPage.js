@@ -9,21 +9,23 @@ const LandingPage = () => {
 
 	return (
 		<div className="main-content">
-			<section className="main-content__title-section">
-				<h1>The people platform -- Where interests become friendships</h1>
-				<p>
-					Whatever your interest, from hiking and reading to networking and skill sharing, there are
-					thousands of people who share it on Meetup. Events are happening every day—sign up to join
-					the fun.
-				</p>
-			</section>
-			<section className="main-content__image-section">
-				<img
-					src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
-					className="main-content__image"
-					alt="img"
-				></img>
-			</section>
+			<div className="main-content__flex">
+				<section className="main-content__title-section">
+					<h1>The people platform -- Where interests become friendships</h1>
+					<p>
+						Whatever your interest, from hiking and reading to networking and skill sharing, there
+						are thousands of people who share it on Meetup. Events are happening every day—sign up
+						to join the fun.
+					</p>
+				</section>
+				<section className="main-content__image-section">
+					<img
+						src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=1080"
+						className="main-content__image"
+						alt="img"
+					></img>
+				</section>
+			</div>
 			<section className="main-content__meetup-works-section">
 				<h2>How Meetup works</h2>
 				<p>
