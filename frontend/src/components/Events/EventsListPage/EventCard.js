@@ -9,7 +9,6 @@ export const EventCard = ({ event }) => {
 		history.push(`/events/${event.id}`);
 	};
 
-	console.log(event);
 	const { formattedDate, formattedTime } = formatDateAndTime(event.startDate);
 
 	return (
