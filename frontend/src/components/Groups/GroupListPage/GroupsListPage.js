@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllGroupsThunk as getAllGroups } from '../../../store/groups';
 import GroupCard from '../GroupCard';
 import './GroupsListPage.css';
+import '../GroupCard/GroupCard.css';
 
 const GroupsListPage = () => {
 	const dispatch = useDispatch();

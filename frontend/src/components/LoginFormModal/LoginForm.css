@@ -1,5 +1,4 @@
 .login-modal {
-	/* padding: 2rem; */
 	text-align: center;
 }
 
@@ -10,7 +9,7 @@
 }
 
 .login-title {
-	font-size: 1rem;
+	font-size: 2rem;
 	margin-bottom: 1rem;
 }
 
@@ -22,7 +21,7 @@
 
 .login-input-label {
 	margin-right: 1rem;
-	font-size: 10px;
+	font-size: 1.3rem;
 	text-align: left;
 }
 
@@ -31,5 +30,11 @@
 	color: #fff;
 	border: none;
 	border-radius: 5px;
+	padding: 0.3rem 0.8rem;
+	font-size: 1.2rem;
+}
+
+.demo-user-btn {
+	margin-top: 0.5rem;
 	padding: 0.3rem 0.8rem;
 }

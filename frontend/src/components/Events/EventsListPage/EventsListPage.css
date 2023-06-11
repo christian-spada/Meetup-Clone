@@ -11,6 +11,7 @@
 	flex-direction: column;
 	gap: 0.8rem;
 	padding-bottom: 1rem;
+	font-size: 1.1rem;
 }
 
 .events-view__title-container {

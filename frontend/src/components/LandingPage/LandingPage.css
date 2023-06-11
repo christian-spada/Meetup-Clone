@@ -1,6 +1,4 @@
 .main-content {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
 	margin: 3rem auto;
 	width: 50%;
 	gap: 4rem 2rem;

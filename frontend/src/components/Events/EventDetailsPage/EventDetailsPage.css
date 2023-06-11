@@ -110,3 +110,7 @@
 	border-radius: 8px;
 	object-fit: cover;
 }
+
+.event-details__breadcrumb-container > span {
+	margin-right: 0.5rem;
+}

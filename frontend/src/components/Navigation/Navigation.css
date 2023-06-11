@@ -28,7 +28,7 @@
 .header__action-btn-container {
 	display: flex;
 	gap: 1rem;
-	font-size: 8px;
+	font-size: 1rem;
 	align-items: center;
 }
 
