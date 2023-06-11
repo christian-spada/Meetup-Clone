@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import './GroupsListPage.css';
+import './GroupCard.css';
 import { setMembershipStatus } from '../../../utils/fetch-helpers.js';
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
@@ -32,12 +32,12 @@ const GroupCard = ({ group, isMemberPage }) => {
 	if (isMemberPage) {
 		memberStatus === 'host'
 			? (memberBtns = (
-					<div className="card__host-btns">
-						<Link to={`/groups/${group.id}/edit`} className="card__update-btn">
+					<div className="group-card__host-btns">
+						<Link to={`/groups/${group.id}/edit`} className="group-card__update-btn">
 							Update
 						</Link>
 						<OpenModalMenuItem
-							className="card__delete-btn"
+							className="group-card__delete-btn"
 							itemText="Delete"
 							modalComponent={<ConfirmDeleteModal groupToDelete={group} />}
 						/>
@@ -45,24 +45,24 @@ const GroupCard = ({ group, isMemberPage }) => {
 			  ))
 			: (memberBtns = (
 					<div>
-						<button className="card__member-btn">Unjoin</button>
+						<button className="group-card__member-btn">Unjoin</button>
 					</div>
 			  ));
 	}
 
 	return (
-		<div className="card" onClick={handleGroupClick}>
-			<div className="card__img-container">
-				<img className="card__img" src={group.previewImage} alt="img" />
+		<div className="group-card" onClick={handleGroupClick}>
+			<div className="group-card__img-container">
+				<img className="group-card__img" src={group.previewImage} alt="img" />
 			</div>
-			<div className="card__info-container">
-				<h2 className="card__title">{group.name}</h2>
-				<p className="card__location">
+			<div className="group-card__info-container">
+				<h2 className="group-card__title">{group.name}</h2>
+				<p className="group-card__location">
 					{group.city}, {group.state}
 				</p>
-				<p className="card__group-about">{group.about}</p>
-				<div className="card__btn-row">
-					<div className="card__event-visibility-info">
+				<p className="group-card__group-about">{group.about}</p>
+				<div className="group-card__btn-row">
+					<div className="group-card__event-visibility-info">
 						<span>
 							{group.numMembers !== 1
 								? `${group.numMembers} Members`

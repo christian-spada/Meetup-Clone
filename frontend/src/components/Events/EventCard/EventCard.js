@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom';
-import './EventsListPage.css';
+import './EventCard.css';
 import { formatDateAndTime } from '../../../utils/helpers';
 
-export const EventCard = ({ event }) => {
+const EventCard = ({ event }) => {
 	const history = useHistory();
 
 	const handleEventClick = () => {
@@ -12,24 +12,26 @@ export const EventCard = ({ event }) => {
 	const { formattedDate, formattedTime } = formatDateAndTime(event.startDate);
 
 	return (
-		<div className="card" onClick={handleEventClick}>
-			<div className="card__img-container">
-				<img className="card__img" src={event.previewImage} alt="img" />
+		<div className="event-card" onClick={handleEventClick}>
+			<div className="event-card__img-container">
+				<img className="event-card__img" src={event.previewImage} alt="img" />
 			</div>
-			<div className="card__info-container">
-				<div className="card__date-info">
+			<div className="event-card__info-container">
+				<div className="event-card__date-info">
 					<span>{formattedDate}</span>
 					<span>•</span>
 					<span>{formattedTime}</span>
 				</div>
-				<h2 className="card__title">{event.name}</h2>
-				<p className="card__location">
+				<h2 className="event-card__title">{event.name}</h2>
+				<p className="event-card__location">
 					{event.Venue.city}, {event.Venue.state}
 				</p>
 			</div>
-			<div className="card__description">
+			<div className="event-card__description">
 				<p>{event.description}</p>
 			</div>
 		</div>
 	);
 };
+
+export default EventCard;

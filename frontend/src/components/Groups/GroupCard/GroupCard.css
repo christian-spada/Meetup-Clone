@@ -1,0 +1,67 @@
+.group-card {
+	display: flex;
+	gap: 2rem;
+	border-top: 1px solid gray;
+	padding: 1rem;
+	cursor: pointer;
+}
+
+.group-card__info-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	flex-grow: 1;
+}
+
+.group-card__img-container {
+	display: flex;
+	align-items: center;
+}
+
+.group-card__img {
+	max-width: 100px;
+	max-height: 100px;
+	border-radius: 8px;
+}
+
+.group-card__location {
+	font-size: 12px;
+	color: rgb(110, 110, 110);
+}
+
+.group-card__group-about {
+	font-size: 10px;
+}
+
+.group-card__btn-row {
+	display: flex;
+	justify-content: space-between;
+}
+
+.group-card__event-visibility-info {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.group-card__host-btns > li,
+.group-card__host-btns > a,
+.group-card__member-btn {
+	padding: 0.3rem 0.6rem;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+	margin-right: 0.5rem;
+}
+
+.group-card__update-btn {
+	background-color: hsl(188, 96%, 28%);
+}
+
+.group-card__delete-btn {
+	background-color: hsl(343, 77%, 51%);
+}
+
+.group-card__member-btn {
+	background-color: hsl(343, 77%, 51%);
+}

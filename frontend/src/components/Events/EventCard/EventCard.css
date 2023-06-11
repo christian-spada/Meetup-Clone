@@ -1,0 +1,44 @@
+.event-card {
+	display: flex;
+	gap: 2rem;
+	border-top: 1px solid gray;
+	padding: 1rem;
+	cursor: pointer;
+}
+
+.event-card__info-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.event-card__date-info {
+	display: flex;
+	gap: 0.6rem;
+}
+
+.event-card__img-container {
+	display: flex;
+	align-items: center;
+}
+
+.event-card__img {
+	max-width: 100px;
+	max-height: 100px;
+	border-radius: 8px;
+}
+
+.event-card__location {
+	font-size: 12px;
+	color: rgb(110, 110, 110);
+}
+
+.event-card__group-about {
+	font-size: 10px;
+}
+
+.event-card__status-info {
+	display: flex;
+	gap: 0.5rem;
+	color: rgb(110, 110, 110);
+}
