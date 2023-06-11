@@ -3,6 +3,7 @@ import './LandingPage.css';
 import { useSelector } from 'react-redux';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import SignupFormModal from '../SignupFormModal';
+
 const LandingPage = () => {
 	const userSession = useSelector(state => state.session.user);
 

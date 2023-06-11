@@ -1,4 +1,4 @@
-import GroupCard from '../GroupListPage/GroupCard';
+import GroupCard from '../GroupCard';
 import { useEffect } from 'react';
 import './ManageGroupsPage.css';
 import { useDispatch, useSelector } from 'react-redux';

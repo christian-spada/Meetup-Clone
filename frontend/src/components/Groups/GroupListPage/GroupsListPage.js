@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllGroupsThunk as getAllGroups } from '../../../store/groups';
-import GroupCard from './GroupCard';
+import GroupCard from '../GroupCard';
 import './GroupsListPage.css';
 
 const GroupsListPage = () => {

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { useDispatch, useSelector } from 'react-redux';
 import './EventsListPage.css';
 import { getAllEventsThunk as getAllEvents } from '../../../store/events';
-import { EventCard } from './EventCard';
+import EventCard from '../EventCard';
 import { sortEvents } from '../../../utils/helpers';
 
 const EventsListPage = () => {
