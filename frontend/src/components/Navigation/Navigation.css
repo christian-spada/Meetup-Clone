@@ -11,12 +11,13 @@
 
 .header__greetup-home-link {
 	font-weight: 900;
+	font-size: 2rem;
 	color: hsl(343, 77%, 51%);
 }
 
 .fa-user-circle {
 	color: hsl(343, 77%, 51%);
-	font-size: 20px;
+	font-size: 2rem;
 	cursor: pointer;
 }
 
@@ -53,7 +54,7 @@
 }
 
 .header__start-group {
-	font-size: 10px;
+	font-size: 1rem;
 	cursor: pointer;
 }
 
@@ -63,6 +64,8 @@
 
 .header__profile-btn-arrow {
 	color: rgb(189, 189, 189);
+	position: relative;
+	bottom: 5px;
 }
 
 .profile-dropdown {
@@ -70,11 +73,11 @@
 	border: 2px solid black;
 	border-radius: 5px;
 	padding: 0.5rem;
-	font-size: 12px;
+	font-size: 1rem;
 	position: absolute;
 	right: 1rem;
-	top: 2.5rem;
-	z-index: 1000;
+	top: 3.5rem;
+	z-index: 100;
 	list-style: none;
 }
 
