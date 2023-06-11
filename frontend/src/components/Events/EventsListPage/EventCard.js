@@ -9,6 +9,7 @@ export const EventCard = ({ event }) => {
 		history.push(`/events/${event.id}`);
 	};
 
+	console.log(event);
 	const { formattedDate, formattedTime } = formatDateAndTime(event.startDate);
 
 	return (
@@ -26,6 +27,9 @@ export const EventCard = ({ event }) => {
 				<p className="card__location">
 					{event.Venue.city}, {event.Venue.state}
 				</p>
+			</div>
+			<div className="card__description">
+				<p>{event.description}</p>
 			</div>
 		</div>
 	);
