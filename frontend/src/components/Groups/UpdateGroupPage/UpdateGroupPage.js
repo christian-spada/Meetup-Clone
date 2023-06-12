@@ -15,7 +15,7 @@ const UpdateGroupPage = () => {
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.session.user);
 	const group = useSelector(state => state.groups.singleGroup);
-	const [location, setLocation] = useState(`${group?.city}, ${group?.state}`);
+	const [location, setLocation] = useState(`${group?.city ?? ''}, ${group?.state ?? ''}`);
 	const [name, setName] = useState(group?.name);
 	const [about, setAbout] = useState(group?.about);
 	const [groupType, setGroupType] = useState(group?.type);
@@ -77,6 +77,7 @@ const UpdateGroupPage = () => {
 			setErrors(res.errors);
 		}
 	};
+
 	return (
 		<div className="update-group">
 			<section className="update-group__heading">
