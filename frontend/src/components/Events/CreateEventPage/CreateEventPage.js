@@ -83,8 +83,8 @@ const CreateEventPage = () => {
 				<div className="create-event__name-input-container">
 					<p>What is the name of your event?</p>
 					<input value={name} onChange={e => setName(e.target.value)} placeholder="Event Name" />
+					{errors.name && <ErrorView error={errors.name} />}
 				</div>
-				{errors.name && <ErrorView error={errors.name} />}
 			</section>
 			<section className="create-event__visibility-price-section">
 				<div className="create-event__type-input-container">
@@ -131,6 +131,7 @@ const CreateEventPage = () => {
 					<textarea
 						value={description}
 						onChange={e => setDescription(e.target.value)}
+						rows={10}
 						placeholder="Please include at least 30 characters"
 					/>
 					{errors.description && <ErrorView error={errors.description} />}
