@@ -32,8 +32,12 @@
 	gap: 0.3rem;
 }
 
+.group-details__img-container {
+	width: 600px;
+}
+
 .group-details__group-image {
-	width: 400px;
+	width: 100%;
 	height: 400px;
 	border-radius: 8px;
 }
@@ -106,7 +110,7 @@
 	background-color: hsl(188, 96%, 28%);
 }
 
-@media (max-width: 703px) {
+@media (max-width: 924px) {
 	.group-details__group-section {
 		display: flex;
 		flex-direction: column;
@@ -121,5 +125,11 @@
 
 	.group-details__action-btns-container {
 		margin-top: 1rem;
+	}
+}
+
+@media (max-width: 620px) {
+	.group-details__img-container {
+		width: 400px;
 	}
 }

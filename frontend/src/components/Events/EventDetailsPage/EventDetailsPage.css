@@ -13,9 +13,14 @@
 	gap: 2rem;
 }
 
-.event-details__details-section > img {
-	width: 519px;
-	height: 304px;
+.event-details__img-container {
+	width: 800px;
+}
+
+.event-details__event-img {
+	width: 100%;
+	height: 300px;
+	object-fit: cover;
 }
 
 .event-details__heading-info {
@@ -153,5 +158,12 @@
 
 	.event-details__event-info-card {
 		margin-top: 1rem;
+	}
+
+	.event-details__img-container {
+		width: 600px;
+	}
+	.event-details__event-img {
+		margin-left: 6.3rem;
 	}
 }
