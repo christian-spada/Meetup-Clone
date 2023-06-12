@@ -75,7 +75,7 @@ const LoginFormModal = () => {
 					/>
 				</div>
 				{errors.credential && <ErrorView error={errors.credential} />}
-				<button type="submit" className="login-btn" disabled={isDisabled}>
+				<button type="submit" className={!isDisabled ? 'login-btn' : 'login-btn-disabled'}>
 					Log In
 				</button>
 				<button className="demo-user-btn" onClick={handleDemoUser}>
