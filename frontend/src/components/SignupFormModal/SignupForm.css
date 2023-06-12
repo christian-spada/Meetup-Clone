@@ -30,4 +30,5 @@
 
 .signup-modal__disabled-btn {
 	background-color: hsl(0, 0%, 56%);
+	cursor: not-allowed;
 }
