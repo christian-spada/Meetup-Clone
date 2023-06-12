@@ -1,5 +1,6 @@
 import { NavLink, useParams } from 'react-router-dom';
 import './GroupDetailsPage.css';
+import '../../Events/EventCard/EventCard.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {
@@ -9,7 +10,7 @@ import {
 import { setMembershipStatus } from '../../../utils/fetch-helpers';
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem';
 import ConfirmDeleteModal from '../../ConfirmDeleteModal/ConfirmDeleteModal';
-import { EventCard } from '../../Events/EventsListPage/EventCard';
+import EventCard from '../../Events/EventCard';
 import { sortEvents } from '../../../utils/helpers';
 
 const GroupDetailsPage = () => {

@@ -28,10 +28,14 @@ const UpdateGroupPage = () => {
 	}, [dispatch, groupId]);
 
 	useEffect(() => {
-		if (user === null || user?.id !== group?.organizerId) {
+		if (user === null) {
 			history.push('/');
 		}
-	}, [user, history, group?.organizerId]);
+
+		if (Object.keys(group).length && user?.id !== group.organizerId) {
+			history.push('/');
+		}
+	}, [user, history, group]);
 
 	const handleGroupSubmit = async e => {
 		if (!location) {
@@ -76,7 +80,7 @@ const UpdateGroupPage = () => {
 	return (
 		<div className="update-group">
 			<section className="update-group__heading">
-				<h3>UPDATE YOUR GROUPS INFORMATION</h3>
+				<h2>UPDATE YOUR GROUPS INFORMATION</h2>
 				<p>We'll walk you through a few steps to update your group's information</p>
 			</section>
 			<section className="update-group__location-input-section">

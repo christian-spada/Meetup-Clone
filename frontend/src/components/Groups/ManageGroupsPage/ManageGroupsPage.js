@@ -1,6 +1,7 @@
-import GroupCard from '../GroupListPage/GroupCard';
+import GroupCard from '../GroupCard';
 import { useEffect } from 'react';
 import './ManageGroupsPage.css';
+import '../GroupCard/GroupCard.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserGroupsThunk as getUserGroups } from '../../../store/groups';
 
