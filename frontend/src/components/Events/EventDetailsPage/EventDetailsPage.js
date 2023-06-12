@@ -56,12 +56,12 @@ const EventDetailsPage = () => {
 				</div>
 			</section>
 			<section className="event-details__details-section">
-				<div className="event-details__details-grid">
-					<img
-						className="event-details__event-img"
-						src={event?.EventImages && event.EventImages[0] && event.EventImages[0].url}
-						alt="img"
-					/>
+				<img
+					className="event-details__event-img"
+					src={event?.EventImages && event.EventImages[0] && event.EventImages[0].url}
+					alt="img"
+				/>
+				<div className="event-details__event-info-container">
 					<div
 						onClick={() => history.push(`/groups/${group.id}`)}
 						className="event-details__group-card"
@@ -121,11 +121,11 @@ const EventDetailsPage = () => {
 							</div>
 						</div>
 					</div>
-					<div className="event-details__details-desc">
-						<h3>Details</h3>
-						<p>{event.description}</p>
-					</div>
 				</div>
+			</section>
+			<section className="event-details__details-desc-section">
+				<h3>Details</h3>
+				<p>{event.description}</p>
 			</section>
 		</div>
 	);
