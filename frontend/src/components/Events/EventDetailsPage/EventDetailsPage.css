@@ -10,13 +10,16 @@
 
 .event-details__details-section {
 	display: flex;
-	/* justify-content: center; */
 	gap: 2rem;
 }
 
 .event-details__details-section > img {
 	width: 519px;
 	height: 304px;
+}
+
+.event-details__heading-info {
+	margin-top: 1rem;
 }
 
 .event-details__event-info-container {

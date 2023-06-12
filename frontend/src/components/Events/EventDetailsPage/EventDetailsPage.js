@@ -47,7 +47,7 @@ const EventDetailsPage = () => {
 						</span>
 						<NavLink to="/events">Events</NavLink>
 					</div>
-					<div className="event-details__event-info-container">
+					<div className="event-details__heading-info">
 						<h2>{event.name}</h2>
 						<p>
 							Hosted by {groupOrganizer?.firstName} {groupOrganizer?.lastName}

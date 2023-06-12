@@ -2,6 +2,7 @@
 	margin: 5rem auto;
 	max-width: 1120px;
 	gap: 4rem 2rem;
+	padding: 0 1.5rem;
 }
 
 .main-content__title-section {
@@ -32,7 +33,6 @@
 
 .main-content__meetup-works-section {
 	margin-top: 1rem;
-	grid-column: span 2;
 	text-align: center;
 	padding: 4rem;
 }
@@ -81,8 +81,8 @@
 }
 
 .main-content__join-meetup-section {
-	grid-column: span 2;
-	margin: 0 auto;
+	display: flex;
+	justify-content: center;
 }
 
 .main-content__join-meetup-btn {
@@ -97,6 +97,8 @@
 
 .main-content__start-group-link-disabled {
 	color: gray;
+	font-size: 1.3rem;
+	margin-bottom: 1rem;
 }
 
 @media (max-width: 870px) {
