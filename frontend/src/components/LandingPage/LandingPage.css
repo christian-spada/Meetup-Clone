@@ -22,6 +22,7 @@
 
 .main-content__flex {
 	display: flex;
+	gap: 4rem;
 }
 
 .main-content__image-section > img {
